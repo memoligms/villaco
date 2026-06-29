@@ -8,6 +8,10 @@ import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { ApiError, createReservation } from "@/lib/api";
 
+function todayISO() {
+  return new Date().toISOString().slice(0, 10);
+}
+
 interface FormState {
   checkIn: string;
   checkOut: string;
@@ -160,10 +164,10 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
           <h2 className="text-lg font-bold text-brand-navy">{t.reservation.dateGuestHeading}</h2>
           <div className="mt-4 grid grid-cols-2 gap-3">
             <Field label={t.reservation.checkIn} error={errors.checkIn}>
-              <input type="date" value={form.checkIn} onChange={(e) => update("checkIn", e.target.value)} className="input" />
+              <input type="date" min={todayISO()} value={form.checkIn} onChange={(e) => update("checkIn", e.target.value)} className="input" />
             </Field>
             <Field label={t.reservation.checkOut} error={errors.checkOut}>
-              <input type="date" value={form.checkOut} onChange={(e) => update("checkOut", e.target.value)} className="input" />
+              <input type="date" min={form.checkIn || todayISO()} value={form.checkOut} onChange={(e) => update("checkOut", e.target.value)} className="input" />
             </Field>
           </div>
           <Field label={t.reservation.guestCount} error={errors.guestCount}>
