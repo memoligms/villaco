@@ -15,6 +15,16 @@ export const createReservationSchema = z
     extraServiceIds: z.array(z.object({ id: z.string().uuid(), quantity: z.number().int().min(1).default(1) })).optional(),
   })
   .superRefine((data, ctx) => {
+    // Geçmiş tarihli giriş engellenir (bugünden önce olamaz).
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (data.checkIn < today) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["checkIn"],
+        message: "Geçmiş bir tarih için rezervasyon oluşturulamaz.",
+      });
+    }
     if (data.checkOut <= data.checkIn) {
       ctx.addIssue({
         code: "custom",
