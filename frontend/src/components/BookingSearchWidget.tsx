@@ -38,7 +38,7 @@ export function BookingSearchWidget() {
           type="date"
           min={todayISO()}
           value={checkIn}
-          onChange={(e) => setCheckIn(e.target.value)}
+          onChange={(e) => setCheckIn(e.target.value && e.target.value < todayISO() ? todayISO() : e.target.value)}
           className="w-full border-none p-0 text-sm font-semibold text-brand-navy outline-none"
         />
       </Field>
@@ -50,7 +50,7 @@ export function BookingSearchWidget() {
           type="date"
           min={checkIn || todayISO()}
           value={checkOut}
-          onChange={(e) => setCheckOut(e.target.value)}
+          onChange={(e) => setCheckOut(e.target.value && e.target.value < (checkIn || todayISO()) ? (checkIn || todayISO()) : e.target.value)}
           className="w-full border-none p-0 text-sm font-semibold text-brand-navy outline-none"
         />
       </Field>

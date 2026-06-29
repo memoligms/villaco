@@ -96,6 +96,13 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
     setForm((prev) => ({ ...prev, [key]: value }));
   }
 
+  // Tarih seçiminde geçmiş tarih girilirse (mobil takvim min'i zorlamasa bile) bugüne çekilir.
+  function updateDate(key: "checkIn" | "checkOut", value: string) {
+    const today = todayISO();
+    const safe = value && value < today ? today : value;
+    setForm((prev) => ({ ...prev, [key]: safe }));
+  }
+
   function toggleService(serviceId: string, checked: boolean) {
     setSelectedServices((prev) => {
       const next = { ...prev };
@@ -164,10 +171,10 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
           <h2 className="text-lg font-bold text-brand-navy">{t.reservation.dateGuestHeading}</h2>
           <div className="mt-4 grid grid-cols-2 gap-3">
             <Field label={t.reservation.checkIn} error={errors.checkIn}>
-              <input type="date" min={todayISO()} value={form.checkIn} onChange={(e) => update("checkIn", e.target.value)} className="input" />
+              <input type="date" min={todayISO()} value={form.checkIn} onChange={(e) => updateDate("checkIn", e.target.value)} className="input" />
             </Field>
             <Field label={t.reservation.checkOut} error={errors.checkOut}>
-              <input type="date" min={form.checkIn || todayISO()} value={form.checkOut} onChange={(e) => update("checkOut", e.target.value)} className="input" />
+              <input type="date" min={form.checkIn || todayISO()} value={form.checkOut} onChange={(e) => updateDate("checkOut", e.target.value)} className="input" />
             </Field>
           </div>
           <Field label={t.reservation.guestCount} error={errors.guestCount}>
