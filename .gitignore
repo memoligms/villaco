@@ -1,0 +1,36 @@
+# Bağımlılıklar
+node_modules/
+
+# Ortam değişkenleri / gizli anahtarlar — ASLA commit edilmez
+.env
+.env.*
+!.env.example
+!.env.local.example
+
+# Build çıktıları
+dist/
+.next/
+out/
+build/
+*.tsbuildinfo
+next-env.d.ts
+
+# Prisma generated client
+backend/src/generated/
+
+# Çalışma zamanı kullanıcı yüklemeleri (sunucu açılışta klasörü yeniden oluşturur)
+backend/public/uploads/
+
+# Claude Code yerel ayarları
+.claude/
+
+# Büyük kaynak görsel arşivi — uygulama tarafından kullanılmıyor, yerelde tutulur
+/RESİMLER/
+
+# İşletim sistemi / editör
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

@@ -1,0 +1,132 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  FAILED
+}
+
+model User {
+  id           String        @id @default(uuid())
+  fullName     String        @map("full_name")
+  email        String        @unique
+  phone        String
+  createdAt    DateTime      @default(now()) @map("created_at")
+  reservations Reservation[]
+
+  @@map("users")
+}
+
+model Villa {
+  id               String        @id @default(uuid())
+  name             String
+  slug             String        @unique
+  description      String
+  location         String
+  address          String        @default("")
+  maxGuest         Int           @map("max_guest")
+  baseNightlyPrice Decimal       @db.Decimal(10, 2) @map("base_nightly_price")
+  cleaningFee      Decimal       @db.Decimal(10, 2) @default(0) @map("cleaning_fee")
+  depositFee       Decimal       @db.Decimal(10, 2) @default(0) @map("deposit_fee")
+  images           String[]
+  amenities        String[]
+  isActive         Boolean       @default(true) @map("is_active")
+  // { en: { name, description, location, address, amenities: string[] }, de: {...}, ru: {...} }
+  translations     Json?
+  createdAt        DateTime      @default(now()) @map("created_at")
+  reservations     Reservation[]
+
+  @@map("villa")
+}
+
+model Reservation {
+  id               String                    @id @default(uuid())
+  reservationCode  String                    @unique @map("reservation_code")
+  userId           String                    @map("user_id")
+  user             User                      @relation(fields: [userId], references: [id])
+  villaId          String                    @map("villa_id")
+  villa            Villa                     @relation(fields: [villaId], references: [id])
+  checkIn          DateTime                  @map("check_in")
+  checkOut         DateTime                  @map("check_out")
+  guestCount       Int                       @map("guest_count")
+  nightCount       Int                       @map("night_count")
+  nightlyPrice     Decimal                   @db.Decimal(10, 2) @map("nightly_price")
+  cleaningFee      Decimal                   @db.Decimal(10, 2) @map("cleaning_fee")
+  depositFee       Decimal                   @db.Decimal(10, 2) @map("deposit_fee")
+  totalPrice       Decimal                   @db.Decimal(10, 2) @map("total_price")
+  note             String?
+  paymentStatus    PaymentStatus             @default(PENDING) @map("payment_status")
+  reservationStatus ReservationStatus        @default(PENDING) @map("reservation_status")
+  createdAt        DateTime                  @default(now()) @map("created_at")
+  payment          Payment?
+  extraServices    ReservationExtraService[]
+
+  @@index([villaId, checkIn, checkOut])
+  @@map("reservations")
+}
+
+model Payment {
+  id                  String      @id @default(uuid())
+  reservationId       String      @unique @map("reservation_id")
+  reservation         Reservation @relation(fields: [reservationId], references: [id])
+  iyzicoPaymentId     String?     @map("iyzico_payment_id")
+  iyzicoConversationId String?    @map("iyzico_conversation_id")
+  amount              Decimal     @db.Decimal(10, 2)
+  currency            String      @default("USD")
+  status              PaymentStatus @default(PENDING)
+  rawResponse         Json?       @map("raw_response")
+  createdAt           DateTime    @default(now()) @map("created_at")
+
+  @@map("payments")
+}
+
+model ExtraService {
+  id            String                    @id @default(uuid())
+  name          String
+  description   String?
+  price         Decimal                   @db.Decimal(10, 2)
+  isActive      Boolean                   @default(true) @map("is_active")
+  // { en: { name, description }, de: {...}, ru: {...} }
+  translations  Json?
+  reservations  ReservationExtraService[]
+
+  @@map("extra_services")
+}
+
+model ReservationExtraService {
+  id              String       @id @default(uuid())
+  reservationId   String       @map("reservation_id")
+  reservation     Reservation  @relation(fields: [reservationId], references: [id])
+  extraServiceId  String       @map("extra_service_id")
+  extraService    ExtraService @relation(fields: [extraServiceId], references: [id])
+  quantity        Int          @default(1)
+  totalPrice      Decimal      @db.Decimal(10, 2) @map("total_price")
+
+  @@map("reservation_extra_services")
+}
+
+model ContactMessage {
+  id        String   @id @default(uuid())
+  fullName  String   @map("full_name")
+  email     String
+  phone     String
+  message   String
+  isRead    Boolean  @default(false) @map("is_read")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("contact_messages")
+}

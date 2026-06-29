@@ -1,0 +1,237 @@
+export interface LegalBlock {
+  type: "p" | "h2";
+  text: string;
+}
+
+export interface Translations {
+  common: {
+    bookNow: string;
+    loading: string;
+    close: string;
+    previous: string;
+    next: string;
+    errorGeneric: string;
+    nightsSuffix: string;
+    guestsSuffix: string;
+    backendError: string;
+  };
+  header: {
+    villaDetails: string;
+    about: string;
+    location: string;
+    contact: string;
+    bookNow: string;
+  };
+  footer: {
+    tagline: string;
+    corporateTitle: string;
+    about: string;
+    location: string;
+    kvkk: string;
+    privacy: string;
+    distanceSales: string;
+    cancellation: string;
+    contactTitle: string;
+    copyright: string;
+    designBy: string;
+    adminLink: string;
+  };
+  trustBadges: {
+    heading: string;
+    items: { title: string; desc: string }[];
+  };
+  booking: {
+    checkIn: string;
+    checkOut: string;
+    guests: string;
+    guestOption: (n: number) => string;
+    nightsBadge: (n: number) => string;
+    searchCta: string;
+  };
+  home: {
+    badge: string;
+    title: string;
+    subtitle: string;
+    heroCtaMobile: string;
+    villaFeatures: string;
+    gallery: string;
+    priceCardLabel: string;
+    maxGuestLabel: string;
+    cleaningFeeLabel: string;
+    depositLabel: string;
+    bookNow: string;
+    viewAllDetails: string;
+    noVillaError: string;
+    ctaTitle: string;
+    ctaSubtitle: string;
+    ctaButton: string;
+  };
+  villaDetails: {
+    metaTitle: string;
+    metaDesc: string;
+    overviewHeading: string;
+    addressLabel: string;
+    layoutHeading: string;
+    layoutDetails: { label: string; value: string }[];
+    amenitiesHeading: string;
+    houseRulesHeading: string;
+    houseRules: {
+      checkIn: { title: string; desc: string };
+      checkOut: { title: string; desc: string };
+      earlyCheckIn: { title: string; desc: string };
+      breakfast: { title: string; desc: string };
+      rental: { title: string; desc: string };
+      extraServices: { title: string; desc: string };
+    };
+    galleryHeading: string;
+    galleryHint: string;
+    priceCardNightly: string;
+    maxGuestLabel: string;
+    cleaningFeeLabel: string;
+    depositLabel: string;
+    bookNow: string;
+    locationLink: string;
+    errorLoad: string;
+  };
+  about: {
+    metaTitle: string;
+    metaDesc: string;
+    heroEyebrow: string;
+    heroTitle: string;
+    introHeading: string;
+    introParagraphs: string[];
+    stats: { value: string; label: string }[];
+    valuesHeading: string;
+    valuesSubheading: string;
+    values: { title: string; desc: string; icon: string }[];
+    ctaHeading: string;
+    ctaSubheading: string;
+    ctaVillaDetails: string;
+    ctaBookNow: string;
+  };
+  location: {
+    metaTitle: string;
+    metaDesc: string;
+    eyebrow: string;
+    title: string;
+    intro: string;
+    mapTitle: string;
+    addressLabel: string;
+    addressValue: string;
+    phoneLine: string;
+    emailLine: string;
+    directionsCta: string;
+    distancesHeading: string;
+    distancesSubheading: string;
+    distances: { title: string; distance: string; duration: string; note: string; icon: string }[];
+    tipsHeading: string;
+    tips: { title: string; desc: string }[];
+    ctaHeading: string;
+    ctaSubheading: string;
+    ctaButton: string;
+  };
+  reservation: {
+    dateGuestHeading: string;
+    checkIn: string;
+    checkOut: string;
+    guestCount: string;
+    extraServicesHeading: string;
+    perUnit: string;
+    contactHeading: string;
+    fullName: string;
+    phone: string;
+    email: string;
+    note: string;
+    notePlaceholder: string;
+    summaryHeading: string;
+    summaryCheckIn: string;
+    summaryCheckOut: string;
+    summaryNightsLabel: string;
+    summaryGuestsLabel: string;
+    summaryNights: (n: number) => string;
+    summaryGuests: (n: number) => string;
+    summaryNightly: (n: number) => string;
+    summaryCleaning: string;
+    summaryDeposit: string;
+    summaryExtras: string;
+    summaryTotal: string;
+    submitCta: string;
+    submitting: string;
+    submitError: string;
+    validation: {
+      checkInRequired: string;
+      checkOutRequired: string;
+      checkInPast: string;
+      checkOutAfterCheckIn: string;
+      guestMin: string;
+      guestMax: (max: number) => string;
+      nameMin: string;
+      emailInvalid: string;
+      phoneInvalid: string;
+    };
+  };
+  payment: {
+    summaryTitle: string;
+    checkInLabel: string;
+    checkOutLabel: string;
+    nightsLabel: string;
+    guestsLabel: string;
+    nightlyTimes: (n: number) => string;
+    cleaningLabel: string;
+    depositLabel: string;
+    extrasLabel: string;
+    totalLabel: string;
+    customerInfoTitle: string;
+    reservationCodeLabel: string;
+    securePaymentLabel: string;
+    sandboxTitle: string;
+    sandboxNote: string;
+    alreadyPaid: string;
+    formPreparing: string;
+    formError: string;
+  };
+  paymentSuccess: {
+    heading: string;
+    message: string;
+    reservationCode: string;
+    villaLabel: string;
+    paymentStatusLabel: string;
+    paymentStatusPaid: string;
+    paymentStatusPending: string;
+    backHome: string;
+  };
+  paymentFailed: {
+    heading: string;
+    message: string;
+    retryCta: string;
+    backHome: string;
+    contactCta: string;
+  };
+  contact: {
+    metaTitle: string;
+    heading: string;
+    intro: string;
+    emailLabel: string;
+    phoneLabel: string;
+    formName: string;
+    formEmail: string;
+    formPhone: string;
+    formMessage: string;
+    submitCta: string;
+    submitting: string;
+    successMessage: string;
+    submitError: string;
+    validation: {
+      nameMin: string;
+      emailInvalid: string;
+      phoneInvalid: string;
+      messageMin: string;
+    };
+  };
+  legal: {
+    kvkk: { title: string; blocks: LegalBlock[] };
+    privacy: { title: string; blocks: LegalBlock[] };
+    distanceSales: { title: string; blocks: LegalBlock[] };
+    cancellation: { title: string; blocks: LegalBlock[] };
+  };
+}
