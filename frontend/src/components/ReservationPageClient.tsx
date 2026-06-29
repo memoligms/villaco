@@ -277,11 +277,12 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
             </div>
           </div>
 
+          {/* Ödeme adımı şimdilik pasif (iyzico production hazır olunca `disabled` kaldırılıp renk geri verilecek) */}
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={submitting}
-            className="mt-6 w-full rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-blue-dark disabled:opacity-60"
+            disabled
+            className="mt-6 w-full cursor-not-allowed rounded-full bg-slate-300 px-6 py-3 text-sm font-semibold text-white opacity-60"
           >
             {submitting ? t.reservation.submitting : t.reservation.submitCta}
           </button>

@@ -37,15 +37,6 @@ export function VillaDetailsPageClient() {
   const addressLine = villa.address;
   const heroImage = villa.images[0];
 
-  const houseRules = [
-    t.villaDetails.houseRules.checkIn,
-    t.villaDetails.houseRules.checkOut,
-    t.villaDetails.houseRules.earlyCheckIn,
-    t.villaDetails.houseRules.breakfast,
-    t.villaDetails.houseRules.rental,
-    t.villaDetails.houseRules.extraServices,
-  ];
-
   return (
     <div>
       {/* Hero */}
@@ -103,19 +94,6 @@ export function VillaDetailsPageClient() {
                   </li>
                 ))}
               </ul>
-            </section>
-
-            {/* Konaklama Bilgileri */}
-            <section>
-              <h2 className="text-2xl font-bold text-brand-navy">{t.villaDetails.houseRulesHeading}</h2>
-              <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {houseRules.map((rule) => (
-                  <div key={rule.title} className="card">
-                    <p className="font-semibold text-brand-navy">{rule.title}</p>
-                    <p className="mt-1 text-sm text-slate-500">{rule.desc}</p>
-                  </div>
-                ))}
-              </div>
             </section>
 
             {/* Galeri */}
