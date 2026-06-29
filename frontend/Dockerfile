@@ -3,7 +3,8 @@ FROM node:20-slim AS builder
 WORKDIR /app
 
 COPY package.json package-lock.json ./
-RUN npm ci
+# NODE_ENV=production ortamında bile devDependencies (next, typescript) kurulsun
+RUN npm ci --include=dev
 
 COPY . .
 
