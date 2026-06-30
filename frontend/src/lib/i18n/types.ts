@@ -32,6 +32,7 @@ export interface Translations {
     distanceSales: string;
     cancellation: string;
     contactTitle: string;
+    securePayment: string;
     copyright: string;
     designBy: string;
     adminLink: string;

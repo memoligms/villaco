@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useT } from "@/lib/i18n/LanguageContext";
+import { CardLogos } from "./CardLogos";
 
 export function Footer() {
   const t = useT();
@@ -61,6 +62,10 @@ export function Footer() {
             <li>ahmethafi@gmail.com</li>
             <li>+90 533 590 05 90</li>
           </ul>
+          <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">
+            {t.footer.securePayment}
+          </p>
+          <CardLogos className="mt-2" />
         </div>
       </div>
       <div className="flex flex-col items-center justify-center gap-3 border-t border-white/10 py-4 text-center text-xs text-slate-500 sm:flex-row sm:gap-6">

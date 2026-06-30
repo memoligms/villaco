@@ -29,6 +29,7 @@ export const de: Translations = {
     distanceSales: "Fernabsatzvertrag",
     cancellation: "Stornierungs- & Rückerstattungsbedingungen",
     contactTitle: "Kontakt",
+    securePayment: "Sichere Zahlung",
     copyright: "Alle Rechte vorbehalten.",
     designBy: "Design & Entwicklung",
     adminLink: "Verwaltung",

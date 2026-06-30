@@ -7,6 +7,7 @@ import { getExtraServices, getVilla } from "@/lib/api";
 import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { ApiError, createReservation } from "@/lib/api";
+import { CardLogos } from "./CardLogos";
 
 function todayISO() {
   return new Date().toISOString().slice(0, 10);
@@ -284,15 +285,18 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
             </div>
           </div>
 
-          {/* Ödeme adımı şimdilik pasif (iyzico production hazır olunca `disabled` kaldırılıp renk geri verilecek) */}
           <button
             type="button"
             onClick={handleSubmit}
-            disabled
-            className="mt-6 w-full cursor-not-allowed rounded-full bg-slate-300 px-6 py-3 text-sm font-semibold text-white opacity-60"
+            disabled={submitting}
+            className="mt-6 w-full rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-blue-dark disabled:opacity-60"
           >
             {submitting ? t.reservation.submitting : t.reservation.submitCta}
           </button>
+
+          <div className="mt-3 flex items-center justify-center gap-2">
+            <CardLogos />
+          </div>
         </div>
       </aside>
     </div>

@@ -29,6 +29,7 @@ export const tr: Translations = {
     distanceSales: "Mesafeli Satış Sözleşmesi",
     cancellation: "İptal & İade Koşulları",
     contactTitle: "İletişim",
+    securePayment: "Güvenli Ödeme",
     copyright: "Tüm hakları saklıdır.",
     designBy: "Tasarım & Yazılım",
     adminLink: "Yönetim",

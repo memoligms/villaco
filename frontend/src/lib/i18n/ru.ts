@@ -29,6 +29,7 @@ export const ru: Translations = {
     distanceSales: "Договор дистанционной продажи",
     cancellation: "Условия отмены и возврата",
     contactTitle: "Контакты",
+    securePayment: "Безопасная оплата",
     copyright: "Все права защищены.",
     designBy: "Дизайн и разработка",
     adminLink: "Админ",
