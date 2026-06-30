@@ -28,6 +28,22 @@ export function CardLogos({ className = "" }: { className?: string }) {
           <path d="M20 4.6a10 10 0 0 0 0 14.8 10 10 0 0 0 0-14.8Z" fill="#FF5F00" />
         </svg>
       </span>
+
+      {/* iyzico */}
+      <span className="inline-flex h-7 items-center justify-center rounded-md border border-slate-200 bg-white px-2">
+        <svg viewBox="0 0 60 16" width="48" height="13" role="img" aria-label="iyzico">
+          <text
+            x="0"
+            y="13"
+            fontFamily="Arial, Helvetica, sans-serif"
+            fontSize="15"
+            fontWeight="700"
+            fill="#1E64FF"
+          >
+            iyzico
+          </text>
+        </svg>
+      </span>
     </div>
   );
 }
