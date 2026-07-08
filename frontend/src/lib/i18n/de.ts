@@ -38,7 +38,7 @@ export const de: Translations = {
     heading: "Warum Villa Yalıkavak?",
     items: [
       { title: "Lizenzierte Touristenunterkunft", desc: "Villa-Betrieb gemäß den gesetzlichen Vorschriften." },
-      { title: "Sichere Zahlungsabwicklung", desc: "256-Bit-SSL-Verschlüsselung, gesichert durch iyzico." },
+      { title: "Sichere Zahlungsabwicklung", desc: "256-Bit-SSL-Verschlüsselung." },
       { title: "Transparente Preisgestaltung", desc: "Keine versteckten Kosten, alle Posten sind klar einsehbar." },
       { title: "Schnelle Kommunikation", desc: "Sofortiger Support vor und nach Ihrer Reservierung." },
       { title: "Support nach der Buchung", desc: "Wir stehen Ihnen während Ihres gesamten Aufenthalts zur Seite." },
@@ -226,8 +226,8 @@ export const de: Translations = {
     customerInfoTitle: "Kundeninformationen",
     reservationCodeLabel: "Reservierungscode:",
     securePaymentLabel: "Sichere Zahlung",
-    sandboxTitle: "Zahlung mit iyzico (Test/Sandbox)",
-    sandboxNote: "In dieser Umgebung werden keine echten Zahlungsdaten erfasst. Das untenstehende Formular ist mit der iyzico-Sandbox-Infrastruktur verbunden.",
+    sandboxTitle: "Sichere Zahlung (Test/Sandbox)",
+    sandboxNote: "In dieser Umgebung werden keine echten Zahlungsdaten erfasst. Das untenstehende Formular ist mit der Test-Zahlungsinfrastruktur (Sandbox) verbunden.",
     alreadyPaid: "Die Zahlung für diese Reservierung wurde bereits abgeschlossen. Reservierungscode:",
     formPreparing: "Sichere Zahlungsseite wird vorbereitet...",
     formError: "Das Zahlungsformular konnte nicht geladen werden.",
@@ -282,7 +282,7 @@ export const de: Translations = {
         {
           type: "p",
           text:
-            "Ihre personenbezogenen Daten werden ausschließlich zur Abwicklung der Zahlung an unseren Zahlungsdienstleister iyzico weitergegeben und gemäß den geltenden Vorschriften geschützt.",
+            "Ihre personenbezogenen Daten werden ausschließlich zur Abwicklung der Zahlung an unseren Zahlungsdienstleister weitergegeben und gemäß den geltenden Vorschriften geschützt.",
         },
         {
           type: "p",
@@ -315,7 +315,7 @@ export const de: Translations = {
         {
           type: "p",
           text:
-            "Ihre Zahlungsinformationen werden niemals auf unseren Servern gespeichert; Zahlungen werden über unseren sicheren Zahlungsdienstleister iyzico mit branchenüblicher Verschlüsselung abgewickelt.",
+            "Ihre Zahlungsinformationen werden niemals auf unseren Servern gespeichert; Zahlungen werden über unseren sicheren Zahlungsdienstleister mit branchenüblicher Verschlüsselung abgewickelt.",
         },
       ],
     },

@@ -38,7 +38,7 @@ export const tr: Translations = {
     heading: "Neden Yalıkavak Villa?",
     items: [
       { title: "Turizm Konaklama Onaylı", desc: "Yasal mevzuata uygun villa işletmeciliği." },
-      { title: "Güvenli Ödeme Altyapısı", desc: "iyzico güvenceli 256-bit SSL şifreleme." },
+      { title: "Güvenli Ödeme Altyapısı", desc: "256-bit SSL ile güvenli şifreleme." },
       { title: "Şeffaf Fiyatlandırma", desc: "Gizli ücret yok, tüm kalemler net görünür." },
       { title: "Hızlı İletişim", desc: "Rezervasyon öncesi ve sonrası anında destek." },
       { title: "Rezervasyon Sonrası Destek", desc: "Konaklama boyunca yanınızdayız." },
@@ -226,8 +226,8 @@ export const tr: Translations = {
     customerInfoTitle: "Müşteri Bilgileri",
     reservationCodeLabel: "Rezervasyon kodu:",
     securePaymentLabel: "Güvenli Ödeme",
-    sandboxTitle: "iyzico ile Ödeme (Test/Sandbox)",
-    sandboxNote: "Bu ortamda gerçek ödeme bilgisi alınmaz. Aşağıdaki form iyzico sandbox altyapısına bağlıdır.",
+    sandboxTitle: "Güvenli Ödeme (Test/Sandbox)",
+    sandboxNote: "Bu ortamda gerçek ödeme bilgisi alınmaz. Aşağıdaki form test (sandbox) ödeme altyapısına bağlıdır.",
     alreadyPaid: "Bu rezervasyon için ödeme zaten tamamlanmış. Rezervasyon kodu:",
     formPreparing: "Güvenli ödeme sayfası hazırlanıyor...",
     formError: "Ödeme formu yüklenemedi.",
@@ -282,7 +282,7 @@ export const tr: Translations = {
         {
           type: "p",
           text:
-            "Kişisel verileriniz, ödeme altyapı sağlayıcımız iyzico ile yalnızca ödeme işleminin gerçekleştirilmesi amacıyla paylaşılır ve ilgili mevzuata uygun olarak korunur.",
+            "Kişisel verileriniz, ödeme altyapı sağlayıcımız ile yalnızca ödeme işleminin gerçekleştirilmesi amacıyla paylaşılır ve ilgili mevzuata uygun olarak korunur.",
         },
         {
           type: "p",
@@ -315,7 +315,7 @@ export const tr: Translations = {
         {
           type: "p",
           text:
-            "Ödeme bilgileriniz hiçbir şekilde sunucularımızda saklanmaz; ödemeler güvenli ödeme altyapısı sağlayıcımız iyzico üzerinden, endüstri standardı şifreleme ile işlenir.",
+            "Ödeme bilgileriniz hiçbir şekilde sunucularımızda saklanmaz; ödemeler güvenli ödeme altyapısı sağlayıcımız üzerinden, endüstri standardı şifreleme ile işlenir.",
         },
       ],
     },

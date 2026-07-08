@@ -38,7 +38,7 @@ export const en: Translations = {
     heading: "Why Yalıkavak Villa?",
     items: [
       { title: "Licensed Tourist Accommodation", desc: "Villa operation compliant with legal regulations." },
-      { title: "Secure Payment Infrastructure", desc: "256-bit SSL encryption secured by iyzico." },
+      { title: "Secure Payment Infrastructure", desc: "256-bit SSL encryption." },
       { title: "Transparent Pricing", desc: "No hidden fees, every item is shown clearly." },
       { title: "Fast Communication", desc: "Instant support before and after your reservation." },
       { title: "Post-Booking Support", desc: "We're with you throughout your stay." },
@@ -226,8 +226,8 @@ export const en: Translations = {
     customerInfoTitle: "Customer Information",
     reservationCodeLabel: "Reservation code:",
     securePaymentLabel: "Secure Payment",
-    sandboxTitle: "Payment with iyzico (Test/Sandbox)",
-    sandboxNote: "No real payment information is collected in this environment. The form below is connected to the iyzico sandbox infrastructure.",
+    sandboxTitle: "Secure Payment (Test/Sandbox)",
+    sandboxNote: "No real payment information is collected in this environment. The form below is connected to the test (sandbox) payment infrastructure.",
     alreadyPaid: "Payment for this reservation has already been completed. Reservation code:",
     formPreparing: "Preparing secure payment page...",
     formError: "The payment form could not be loaded.",
@@ -282,7 +282,7 @@ export const en: Translations = {
         {
           type: "p",
           text:
-            "Your personal data is shared with our payment infrastructure provider iyzico solely for the purpose of processing payments, and is protected in accordance with applicable legislation.",
+            "Your personal data is shared with our payment infrastructure provider solely for the purpose of processing payments, and is protected in accordance with applicable legislation.",
         },
         {
           type: "p",
@@ -315,7 +315,7 @@ export const en: Translations = {
         {
           type: "p",
           text:
-            "Your payment information is never stored on our servers; payments are processed through our secure payment infrastructure provider iyzico, with industry-standard encryption.",
+            "Your payment information is never stored on our servers; payments are processed through our secure payment infrastructure provider, with industry-standard encryption.",
         },
       ],
     },
