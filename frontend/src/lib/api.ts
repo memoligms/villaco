@@ -72,6 +72,24 @@ export function initializePayment(reservationCode: string): Promise<InitiatePaym
   });
 }
 
+export interface SipayCardInput {
+  holderName: string;
+  number: string;
+  expiryMonth: string;
+  expiryYear: string;
+  cvv: string;
+}
+
+export function initializeSipayPayment(
+  reservationCode: string,
+  card: SipayCardInput
+): Promise<{ html: string }> {
+  return request<{ html: string }>("/payments/sipay/initialize", {
+    method: "POST",
+    body: JSON.stringify({ reservationCode, card }),
+  });
+}
+
 export interface ContactPayload {
   fullName: string;
   email: string;

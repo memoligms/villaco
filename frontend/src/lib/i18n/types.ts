@@ -190,6 +190,17 @@ export interface Translations {
     alreadyPaid: string;
     formPreparing: string;
     formError: string;
+    cardHolder: string;
+    cardNumber: string;
+    cardMonth: string;
+    cardYear: string;
+    cardCvv: string;
+    payNow: string;
+    redirecting: string;
+    cardHolderError: string;
+    cardNumberError: string;
+    cardExpiryError: string;
+    cardCvvError: string;
   };
   paymentSuccess: {
     heading: string;

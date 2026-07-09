@@ -74,6 +74,91 @@ export function validateHashKey(hashKey: string): SipayHashResult | null {
   }
 }
 
+export interface Sipay3DParams {
+  cardHolderName: string;
+  cardNumber: string;
+  expiryMonth: string;
+  expiryYear: string;
+  cvv: string;
+  currencyCode: string;
+  total: number;
+  invoiceId: string;
+  invoiceDescription: string;
+  name: string;
+  surname: string;
+  itemName: string;
+  returnUrl: string;
+  cancelUrl: string;
+  ip: string;
+}
+
+export interface Sipay3DResult {
+  ok: boolean;
+  html?: string;
+  errorMessage?: string;
+  raw?: unknown;
+}
+
+// paySmart3D çağrısı: kart + sipariş bilgisiyle 3D Secure formunu (HTML) döndürür.
+// Bu HTML tarayıcıya verilip bankanın 3D sayfasına yönlendirme yapılır.
+export async function create3DPayment(params: Sipay3DParams): Promise<Sipay3DResult> {
+  const token = await getSipayToken();
+  const installment = 1;
+  const total = params.total.toFixed(2);
+  const hashKey = generateHashKey(total, installment, params.currencyCode, params.invoiceId);
+
+  const payload = {
+    cc_holder_name: params.cardHolderName,
+    cc_no: params.cardNumber.replace(/\s+/g, ""),
+    expiry_month: params.expiryMonth,
+    expiry_year: params.expiryYear,
+    cvv: params.cvv,
+    currency_code: params.currencyCode,
+    installments_number: installment,
+    invoice_id: params.invoiceId,
+    invoice_description: params.invoiceDescription,
+    name: params.name,
+    surname: params.surname,
+    total,
+    merchant_key: env.sipay.merchantKey,
+    items: JSON.stringify([
+      { name: params.itemName, price: total, quantity: 1, description: params.invoiceDescription },
+    ]),
+    cancel_url: params.cancelUrl,
+    return_url: params.returnUrl,
+    hash_key: hashKey,
+    ip: params.ip,
+  };
+
+  const res = await fetch(`${env.sipay.baseUrl}/api/paySmart3D`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+  const text = await res.text();
+
+  // Başarılıysa Sipay HTML (3D form) döndürür; hata durumunda JSON döner.
+  const trimmed = text.trimStart();
+  if (trimmed.startsWith("<")) {
+    return { ok: true, html: text };
+  }
+
+  let parsed: unknown = null;
+  try {
+    parsed = JSON.parse(text);
+  } catch {
+    parsed = text;
+  }
+  const message =
+    (parsed as { status_description?: string })?.status_description ?? "Ödeme başlatılamadı.";
+  return { ok: false, errorMessage: message, raw: parsed };
+}
+
 // app_id + app_secret ile bearer token alır.
 export async function getSipayToken(): Promise<string> {
   const res = await fetch(`${env.sipay.baseUrl}${TOKEN_PATH}`, {

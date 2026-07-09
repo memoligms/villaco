@@ -3,7 +3,7 @@
 import type { Reservation } from "@/lib/types";
 import { useT, useFormatDate } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
-import { IyzicoCheckout } from "@/components/IyzicoCheckout";
+import { SipayCheckout } from "@/components/SipayCheckout";
 
 export function PaymentPageClient({ reservation }: { reservation: Reservation }) {
   const t = useT();
@@ -73,7 +73,7 @@ export function PaymentPageClient({ reservation }: { reservation: Reservation })
           <p className="mt-2 text-sm text-slate-500">{t.payment.sandboxNote}</p>
 
           <div className="mt-6">
-            <IyzicoCheckout reservationCode={reservation.reservationCode} />
+            <SipayCheckout reservationCode={reservation.reservationCode} />
           </div>
         </div>
       </div>
