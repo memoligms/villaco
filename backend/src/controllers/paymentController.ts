@@ -170,7 +170,8 @@ export async function initializeSipayPayment(req: Request, res: Response) {
 }
 
 export async function handleSipayCallback(req: Request, res: Response) {
-  const body = (req.body ?? {}) as Record<string, string>;
+  // Sipay başarı durumunda POST, bazı hata durumlarında GET ile döner.
+  const body = { ...(req.query as Record<string, string>), ...(req.body as Record<string, string>) };
   const hashKey = body.hash_key ?? "";
   const invoiceId = body.invoice_id ?? "";
 

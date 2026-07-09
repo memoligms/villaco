@@ -16,5 +16,6 @@ router.post("/iyzico/callback", express.urlencoded({ extended: true }), asyncHan
 // Sipay
 router.post("/sipay/initialize", asyncHandler(initializeSipayPayment));
 router.post("/sipay/callback", express.urlencoded({ extended: true }), asyncHandler(handleSipayCallback));
+router.get("/sipay/callback", asyncHandler(handleSipayCallback));
 
 export default router;
