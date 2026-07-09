@@ -1,6 +1,6 @@
 export function formatCurrency(value: string | number): string {
   const num = typeof value === "string" ? Number(value) : value;
-  return new Intl.NumberFormat("tr-TR", { style: "currency", currency: "USD" }).format(num);
+  return new Intl.NumberFormat("tr-TR", { style: "currency", currency: "TRY" }).format(num);
 }
 
 export function formatDate(value: string | Date, locale = "tr-TR"): string {

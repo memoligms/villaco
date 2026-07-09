@@ -21,7 +21,7 @@ async function main() {
     location: "Yalıkavak, Bodrum",
     address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Sitesi, C Blok Villa 1, Yalıkavak / Bodrum",
     maxGuest: 10,
-    baseNightlyPrice: 1200,
+    baseNightlyPrice: 56268,
     cleaningFee: 0,
     depositFee: 0,
     images: Array.from({ length: 49 }, (_, i) => `/villa/villa-${String(i + 1).padStart(2, "0")}.jpg`),
@@ -114,7 +114,7 @@ async function main() {
     {
       name: "Ekstra Temizlik",
       description: "Konaklama sırasında talep edilen ilave temizlik hizmeti.",
-      price: 150,
+      price: 7034,
       translations: {
         en: { name: "Extra Cleaning", description: "Additional cleaning service requested during your stay." },
         de: { name: "Extra-Reinigung", description: "Zusätzlicher Reinigungsservice, der während Ihres Aufenthalts angefordert wird." },
@@ -124,7 +124,7 @@ async function main() {
     {
       name: "Havalimanı Transfer (Gidiş-Dönüş)",
       description: "Milas-Bodrum Havalimanı - villa arası gidiş-dönüş özel transfer.",
-      price: 200,
+      price: 9378,
       translations: {
         en: { name: "Airport Transfer (Round Trip)", description: "Private round-trip transfer between Milas-Bodrum Airport and the villa." },
         de: { name: "Flughafentransfer (Hin- und Rückfahrt)", description: "Privater Hin- und Rücktransfer zwischen dem Flughafen Milas-Bodrum und der Villa." },
@@ -134,7 +134,7 @@ async function main() {
     {
       name: "6 Saat Şöförlü VIP Van",
       description: "6 saat tahsisli, şöförlü VIP Van hizmeti.",
-      price: 250,
+      price: 11723,
       translations: {
         en: { name: "6-Hour Chauffeured VIP Van", description: "6 hours of dedicated, chauffeured VIP Van service." },
         de: { name: "6 Stunden chauffierter VIP-Van", description: "6 Stunden exklusiver, chauffierter VIP-Van-Service." },
@@ -144,7 +144,7 @@ async function main() {
     {
       name: "8 Saat Şöförlü VIP Van",
       description: "8 saat tahsisli, şöförlü VIP Van hizmeti.",
-      price: 300,
+      price: 14067,
       translations: {
         en: { name: "8-Hour Chauffeured VIP Van", description: "8 hours of dedicated, chauffeured VIP Van service." },
         de: { name: "8 Stunden chauffierter VIP-Van", description: "8 Stunden exklusiver, chauffierter VIP-Van-Service." },
@@ -154,7 +154,7 @@ async function main() {
     {
       name: "Günlük Tekne Turu",
       description: "11:00-17:00 arası, öğle yemeği ve soft içecekler dahil, 6 kişilik özel tekne turu.",
-      price: 1250,
+      price: 58613,
       translations: {
         en: { name: "Daily Boat Trip", description: "Private boat trip for 6 people, 11:00-17:00, including lunch and soft drinks." },
         de: { name: "Tägliche Bootstour", description: "Private Bootstour für 6 Personen, 11:00-17:00 Uhr, inklusive Mittagessen und Softdrinks." },

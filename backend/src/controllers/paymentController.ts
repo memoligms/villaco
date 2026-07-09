@@ -6,7 +6,7 @@ import { initiateCheckoutForm, retrieveCheckoutForm } from "../services/iyzicoSe
 import { create3DPayment, isSipayConfigured, validateHashKey } from "../services/sipayService";
 import { env } from "../config/env";
 
-const PAYMENT_CURRENCY = "USD";
+const PAYMENT_CURRENCY = "TRY";
 
 export async function initializePayment(req: Request, res: Response) {
   const { reservationCode } = req.body as { reservationCode?: string };

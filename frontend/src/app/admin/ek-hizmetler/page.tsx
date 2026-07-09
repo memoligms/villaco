@@ -210,7 +210,7 @@ export default function AdminExtraServicesPage() {
                 />
               </label>
               <label className="block text-sm font-medium text-slate-700">
-                Fiyat ($)
+                Fiyat (₺)
                 <input
                   type="number"
                   min={0}

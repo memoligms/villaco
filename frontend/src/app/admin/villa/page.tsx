@@ -199,7 +199,7 @@ export default function AdminVillaSettingsPage() {
                 className="input"
               />
             </Field>
-            <Field label="Gecelik Fiyat ($)">
+            <Field label="Gecelik Fiyat (₺)">
               <input
                 type="number"
                 min={0}
@@ -208,7 +208,7 @@ export default function AdminVillaSettingsPage() {
                 className="input"
               />
             </Field>
-            <Field label="Temizlik Ücreti ($)">
+            <Field label="Temizlik Ücreti (₺)">
               <input
                 type="number"
                 min={0}
@@ -217,7 +217,7 @@ export default function AdminVillaSettingsPage() {
                 className="input"
               />
             </Field>
-            <Field label="Depozito ($)">
+            <Field label="Depozito (₺)">
               <input
                 type="number"
                 min={0}

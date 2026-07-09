@@ -76,10 +76,12 @@ export function useFormatPrice() {
   const { rates } = useContext(CurrencyContext);
 
   return (value: string | number) => {
-    const amountUsd = typeof value === "string" ? Number(value) : value;
+    // Baz para birimi TRY'dir. Kurlar USD bazlı (rates[X] = 1 USD karşılığı X).
+    // TRY tutarını hedef para birimine çevir: amountTry * (rates[hedef] / rates[TRY]).
+    const amountTry = typeof value === "string" ? Number(value) : value;
     const currency = LANGUAGE_CURRENCY[language];
-    const rate = currency === "USD" ? 1 : rates[currency] ?? FALLBACK_RATES[currency];
-    const converted = amountUsd * rate;
+    const perUsd = (c: string) => rates[c] ?? FALLBACK_RATES[c] ?? 1;
+    const converted = currency === "TRY" ? amountTry : amountTry * (perUsd(currency) / perUsd("TRY"));
     return new Intl.NumberFormat(LANGUAGE_LOCALE[language], { style: "currency", currency }).format(converted);
   };
 }
