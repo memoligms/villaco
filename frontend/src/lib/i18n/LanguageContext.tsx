@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { DEFAULT_LANGUAGE, isLanguage, LANGUAGE_LOCALE, type Language } from "./languages";
+import { DEFAULT_LANGUAGE, isLanguage, LANGUAGE_LOCALE, RTL_LANGUAGES, type Language } from "./languages";
 import { TRANSLATIONS } from "./index";
 import type { Translations } from "./types";
 import { formatDate } from "@/lib/format";
@@ -33,6 +33,8 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     // client so CSS text-transform:uppercase doesn't apply Turkish dotted-I
     // casing rules (e.g. "ANREISE" -> "ANREİSE") to non-Turkish text.
     document.documentElement.lang = language;
+    // Arapça gibi sağdan sola diller için yön ayarı.
+    document.documentElement.dir = RTL_LANGUAGES.includes(language) ? "rtl" : "ltr";
   }, [language]);
 
   function setLanguage(lang: Language) {

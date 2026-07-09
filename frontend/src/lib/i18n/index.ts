@@ -4,8 +4,9 @@ import { tr } from "./tr";
 import { en } from "./en";
 import { de } from "./de";
 import { ru } from "./ru";
+import { ar } from "./ar";
 
-export const TRANSLATIONS: Record<Language, Translations> = { tr, en, de, ru };
+export const TRANSLATIONS: Record<Language, Translations> = { tr, en, de, ru, ar };
 
 export * from "./languages";
 export * from "./types";

@@ -1,4 +1,4 @@
-const SUPPORTED_LANGS = new Set(["en", "de", "ru"]);
+const SUPPORTED_LANGS = new Set(["en", "de", "ru", "ar"]);
 
 export function parseLang(value: unknown): string | null {
   const lang = typeof value === "string" ? value.toLowerCase() : "";

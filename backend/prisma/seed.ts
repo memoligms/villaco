@@ -100,6 +100,27 @@ async function main() {
           "Ранний заезд (при наличии возможности, бесплатно)",
         ],
       },
+      ar: {
+        name: "فيلا بودروم الفاخرة، إطلالة بحرية ومسبح خاص",
+        description:
+          "فيلا فاخرة في يالِكافاك ببودروم بإطلالة بحرية غير محجوبة ومسبح خاص منفصل. الفيلا لك بالكامل؛ تُؤجَّر ككل وليس لكل شخص. بأربع غرف نوم وخمسة أسرّة مزدوجة وأربعة حمّامات ومرحاض ضيوف، فهي مثالية للمجموعات الكبيرة والعائلات.\n\nالوصول من الساعة 14:00 والمغادرة بحد أقصى 10:00. الوصول المبكر مجاني حسب التوفّر. خدمة الإفطار غير متوفرة.",
+        location: "يالِكافاك، بودروم",
+        address: "شارع غيريش، 6441 سوكاك رقم:4، مجمّع يالِكافاك، مبنى C، فيلا 1، يالِكافاك / بودروم",
+        amenities: [
+          "الفيلا بالكامل لك (وليست لكل شخص)",
+          "إطلالة بحرية غير محجوبة",
+          "مسبح خاص منفصل",
+          "4 غرف نوم",
+          "5 أسرّة مزدوجة",
+          "4 حمّامات + مرحاض ضيوف",
+          "مطبخ مجهّز بالكامل",
+          "واي فاي",
+          "تكييف",
+          "موقف سيارات مجاني",
+          "الوصول 14:00 / المغادرة 10:00",
+          "وصول مبكر (حسب التوفّر، مجانًا)",
+        ],
+      },
     },
   };
 
@@ -119,6 +140,7 @@ async function main() {
         en: { name: "Extra Cleaning", description: "Additional cleaning service requested during your stay." },
         de: { name: "Extra-Reinigung", description: "Zusätzlicher Reinigungsservice, der während Ihres Aufenthalts angefordert wird." },
         ru: { name: "Дополнительная уборка", description: "Дополнительная уборка по запросу во время проживания." },
+        ar: { name: "تنظيف إضافي", description: "خدمة تنظيف إضافية عند الطلب أثناء الإقامة." },
       },
     },
     {
@@ -129,6 +151,7 @@ async function main() {
         en: { name: "Airport Transfer (Round Trip)", description: "Private round-trip transfer between Milas-Bodrum Airport and the villa." },
         de: { name: "Flughafentransfer (Hin- und Rückfahrt)", description: "Privater Hin- und Rücktransfer zwischen dem Flughafen Milas-Bodrum und der Villa." },
         ru: { name: "Трансфер из аэропорта (туда и обратно)", description: "Частный трансфер в обе стороны между аэропортом Милас-Бодрум и виллой." },
+        ar: { name: "نقل من المطار (ذهابًا وإيابًا)", description: "نقل خاص ذهابًا وإيابًا بين مطار ميلاس-بودروم والفيلا." },
       },
     },
     {
@@ -139,6 +162,7 @@ async function main() {
         en: { name: "6-Hour Chauffeured VIP Van", description: "6 hours of dedicated, chauffeured VIP Van service." },
         de: { name: "6 Stunden chauffierter VIP-Van", description: "6 Stunden exklusiver, chauffierter VIP-Van-Service." },
         ru: { name: "VIP-вэн с водителем на 6 часов", description: "6 часов индивидуального обслуживания VIP-вэном с водителем." },
+        ar: { name: "فان VIP بسائق لمدة 6 ساعات", description: "خدمة فان VIP بسائق مخصّصة لمدة 6 ساعات." },
       },
     },
     {
@@ -149,6 +173,7 @@ async function main() {
         en: { name: "8-Hour Chauffeured VIP Van", description: "8 hours of dedicated, chauffeured VIP Van service." },
         de: { name: "8 Stunden chauffierter VIP-Van", description: "8 Stunden exklusiver, chauffierter VIP-Van-Service." },
         ru: { name: "VIP-вэн с водителем на 8 часов", description: "8 часов индивидуального обслуживания VIP-вэном с водителем." },
+        ar: { name: "فان VIP بسائق لمدة 8 ساعات", description: "خدمة فان VIP بسائق مخصّصة لمدة 8 ساعات." },
       },
     },
     {
@@ -159,6 +184,7 @@ async function main() {
         en: { name: "Daily Boat Trip", description: "Private boat trip for 6 people, 11:00-17:00, including lunch and soft drinks." },
         de: { name: "Tägliche Bootstour", description: "Private Bootstour für 6 Personen, 11:00-17:00 Uhr, inklusive Mittagessen und Softdrinks." },
         ru: { name: "Ежедневная морская прогулка", description: "Частная прогулка на лодке для 6 человек, 11:00-17:00, включая обед и безалкогольные напитки." },
+        ar: { name: "رحلة بحرية يومية", description: "رحلة بحرية خاصة لـ 6 أشخاص، من 11:00 إلى 17:00، تشمل الغداء والمشروبات الغازية." },
       },
     },
   ];

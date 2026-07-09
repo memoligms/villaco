@@ -1,4 +1,4 @@
-export const LANGUAGES = ["tr", "en", "de", "ru"] as const;
+export const LANGUAGES = ["tr", "en", "de", "ru", "ar"] as const;
 export type Language = (typeof LANGUAGES)[number];
 
 export const LANGUAGE_LABELS: Record<Language, string> = {
@@ -6,6 +6,7 @@ export const LANGUAGE_LABELS: Record<Language, string> = {
   en: "English",
   de: "Deutsch",
   ru: "Русский",
+  ar: "العربية",
 };
 
 export const LANGUAGE_FLAGS: Record<Language, string> = {
@@ -13,6 +14,7 @@ export const LANGUAGE_FLAGS: Record<Language, string> = {
   en: "🇬🇧",
   de: "🇩🇪",
   ru: "🇷🇺",
+  ar: "🇸🇦",
 };
 
 export const LANGUAGE_CURRENCY: Record<Language, "TRY" | "USD" | "EUR" | "RUB"> = {
@@ -20,6 +22,7 @@ export const LANGUAGE_CURRENCY: Record<Language, "TRY" | "USD" | "EUR" | "RUB"> 
   en: "USD",
   de: "EUR",
   ru: "RUB",
+  ar: "USD",
 };
 
 export const LANGUAGE_LOCALE: Record<Language, string> = {
@@ -27,7 +30,11 @@ export const LANGUAGE_LOCALE: Record<Language, string> = {
   en: "en-US",
   de: "de-DE",
   ru: "ru-RU",
+  ar: "ar",
 };
+
+// Sağdan sola yazılan diller.
+export const RTL_LANGUAGES: Language[] = ["ar"];
 
 export const DEFAULT_LANGUAGE: Language = "tr";
 
