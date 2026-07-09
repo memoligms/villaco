@@ -18,6 +18,14 @@ export const env = {
     secretKey: required("IYZICO_SECRET_KEY"),
     baseUrl: required("IYZICO_BASE_URL", "https://sandboxapi.iyzipay.com"),
   },
+  // Sipay ödeme altyapısı (opsiyonel — dolu değilse Sipay akışı devre dışı kalır)
+  sipay: {
+    appId: process.env.SIPAY_APP_ID ?? "",
+    appSecret: process.env.SIPAY_APP_SECRET ?? "",
+    merchantKey: process.env.SIPAY_MERCHANT_KEY ?? "",
+    merchantId: process.env.SIPAY_MERCHANT_ID ?? "",
+    baseUrl: process.env.SIPAY_BASE_URL ?? "https://provisioning.sipay.com.tr/ccpayment",
+  },
   frontendBaseUrl: required("FRONTEND_BASE_URL", "http://localhost:3000"),
   backendBaseUrl: required("BACKEND_BASE_URL", "http://localhost:4000"),
   admin: {
