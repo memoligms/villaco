@@ -4,9 +4,11 @@ import Image from "next/image";
 import Link from "next/link";
 import { useT } from "@/lib/i18n/LanguageContext";
 import { CardLogos } from "./CardLogos";
+import { useSiteSettings } from "./SiteSettingsProvider";
 
 export function Footer() {
   const t = useT();
+  const { contactEmail, contactPhone } = useSiteSettings();
 
   return (
     <footer className="mt-16 border-t border-slate-200 bg-brand-navy text-slate-300">
@@ -59,8 +61,8 @@ export function Footer() {
         <div>
           <p className="text-sm font-semibold text-white">{t.footer.contactTitle}</p>
           <ul className="mt-2 space-y-1 text-sm">
-            <li>ahmethafi@gmail.com</li>
-            <li>+90 533 590 05 90</li>
+            <li>{contactEmail}</li>
+            <li>{contactPhone}</li>
           </ul>
           <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">
             {t.footer.securePayment}

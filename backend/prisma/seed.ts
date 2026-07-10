@@ -20,6 +20,8 @@ async function main() {
     description: villaDescriptionTr,
     location: "Yalıkavak, Bodrum",
     address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Sitesi, C Blok Villa 1, Yalıkavak / Bodrum",
+    contactEmail: "ahmethafi@gmail.com",
+    contactPhone: "+90 533 590 05 90",
     maxGuest: 10,
     baseNightlyPrice: 56268,
     cleaningFee: 0,

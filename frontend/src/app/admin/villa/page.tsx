@@ -9,6 +9,8 @@ interface FormState {
   name: string;
   location: string;
   address: string;
+  contactEmail: string;
+  contactPhone: string;
   description: string;
   maxGuest: string;
   baseNightlyPrice: string;
@@ -37,6 +39,8 @@ export default function AdminVillaSettingsPage() {
           name: v.name,
           location: v.location,
           address: v.address ?? "",
+          contactEmail: v.contactEmail ?? "",
+          contactPhone: v.contactPhone ?? "",
           description: v.description,
           maxGuest: String(v.maxGuest),
           baseNightlyPrice: String(v.baseNightlyPrice),
@@ -127,6 +131,8 @@ export default function AdminVillaSettingsPage() {
         name: form.name.trim(),
         location: form.location.trim(),
         address: form.address.trim(),
+        contactEmail: form.contactEmail.trim(),
+        contactPhone: form.contactPhone.trim(),
         description: form.description.trim(),
         maxGuest: Number(form.maxGuest),
         baseNightlyPrice: Number(form.baseNightlyPrice),
@@ -176,6 +182,24 @@ export default function AdminVillaSettingsPage() {
               className="input resize-none"
             />
           </Field>
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <Field label="İletişim E-posta">
+              <input
+                type="email"
+                value={form.contactEmail}
+                onChange={(e) => update("contactEmail", e.target.value)}
+                className="input"
+              />
+            </Field>
+            <Field label="İletişim Telefon">
+              <input
+                type="tel"
+                value={form.contactPhone}
+                onChange={(e) => update("contactPhone", e.target.value)}
+                className="input"
+              />
+            </Field>
+          </div>
           <Field label="Açıklama">
             <textarea
               rows={5}

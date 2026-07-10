@@ -2,9 +2,11 @@
 
 import { ContactForm } from "@/components/ContactForm";
 import { useT } from "@/lib/i18n/LanguageContext";
+import { useSiteSettings } from "@/components/SiteSettingsProvider";
 
 export default function ContactPage() {
   const t = useT();
+  const { contactEmail, contactPhone } = useSiteSettings();
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6">
@@ -13,11 +15,11 @@ export default function ContactPage() {
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
           <p className="text-sm font-semibold text-brand-navy">{t.contact.emailLabel}</p>
-          <p className="mt-1 text-slate-600">ahmethafi@gmail.com</p>
+          <p className="mt-1 text-slate-600">{contactEmail}</p>
         </div>
         <div className="rounded-2xl border border-slate-200 bg-white p-5">
           <p className="text-sm font-semibold text-brand-navy">{t.contact.phoneLabel}</p>
-          <p className="mt-1 text-slate-600">+90 533 590 05 90</p>
+          <p className="mt-1 text-slate-600">{contactPhone}</p>
         </div>
       </div>
 

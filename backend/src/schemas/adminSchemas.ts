@@ -19,6 +19,8 @@ export const updateVillaSchema = z.object({
   description: z.string().trim().min(10).optional(),
   location: z.string().trim().min(2).optional(),
   address: z.string().trim().max(500).optional(),
+  contactEmail: z.string().trim().email().max(200).optional(),
+  contactPhone: z.string().trim().min(5).max(40).optional(),
   maxGuest: z.number().int().min(1).optional(),
   baseNightlyPrice: z.number().min(0).optional(),
   cleaningFee: z.number().min(0).optional(),

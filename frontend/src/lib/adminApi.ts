@@ -103,6 +103,8 @@ export const adminApi = {
     description: string;
     location: string;
     address: string;
+    contactEmail: string;
+    contactPhone: string;
     maxGuest: number;
     baseNightlyPrice: number;
     cleaningFee: number;

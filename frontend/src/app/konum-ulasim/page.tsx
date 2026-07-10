@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useT } from "@/lib/i18n/LanguageContext";
+import { useSiteSettings } from "@/components/SiteSettingsProvider";
 
 const MAP_QUERY = encodeURIComponent("Yalıkavak Sitesi, Geriş Caddesi, Yalıkavak, Bodrum");
 
@@ -13,6 +14,7 @@ const OSM_EMBED = `https://www.openstreetmap.org/export/embed.html?bbox=${MAP_BB
 
 export default function LocationPage() {
   const t = useT();
+  const { contactEmail, contactPhone } = useSiteSettings();
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
@@ -48,11 +50,11 @@ export default function LocationPage() {
             </div>
             <div className="flex items-center gap-2">
               <span className="text-brand-blue">📞</span>
-              <span>{t.location.phoneLine}</span>
+              <span>{contactPhone}</span>
             </div>
             <div className="flex items-center gap-2">
               <span className="text-brand-blue">✉️</span>
-              <span>{t.location.emailLine}</span>
+              <span>{contactEmail}</span>
             </div>
           </div>
 

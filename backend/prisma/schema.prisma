@@ -38,6 +38,8 @@ model Villa {
   description      String
   location         String
   address          String        @default("")
+  contactEmail     String        @default("ahmethafi@gmail.com") @map("contact_email")
+  contactPhone     String        @default("+90 533 590 05 90") @map("contact_phone")
   maxGuest         Int           @map("max_guest")
   baseNightlyPrice Decimal       @db.Decimal(10, 2) @map("base_nightly_price")
   cleaningFee      Decimal       @db.Decimal(10, 2) @default(0) @map("cleaning_fee")
