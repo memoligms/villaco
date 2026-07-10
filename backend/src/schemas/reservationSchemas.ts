@@ -12,6 +12,16 @@ export const createReservationSchema = z
       .trim()
       .regex(/^\+?[0-9 ]{10,15}$/, "Geçerli bir telefon numarası girin."),
     note: z.string().trim().max(1000).optional(),
+    guests: z
+      .array(
+        z.object({
+          gender: z.enum(["male", "female"]),
+          firstName: z.string().trim().min(1).max(100),
+          lastName: z.string().trim().min(1).max(100),
+        })
+      )
+      .max(50)
+      .optional(),
     extraServiceIds: z.array(z.object({ id: z.string().uuid(), quantity: z.number().int().min(1).default(1) })).optional(),
   })
   .superRefine((data, ctx) => {

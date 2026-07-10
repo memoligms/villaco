@@ -144,6 +144,17 @@ export interface Translations {
     email: string;
     note: string;
     notePlaceholder: string;
+    guestInfoHeading: string;
+    guestInfoHint: string;
+    guestLabel: (n: number) => string;
+    gender: string;
+    genderMale: string;
+    genderFemale: string;
+    firstName: string;
+    lastName: string;
+    kvkkAccept: string;
+    kvkkRead: string;
+    kvkkHide: string;
     summaryHeading: string;
     summaryCheckIn: string;
     summaryCheckOut: string;
@@ -169,6 +180,8 @@ export interface Translations {
       nameMin: string;
       emailInvalid: string;
       phoneInvalid: string;
+      guestsRequired: string;
+      kvkkRequired: string;
     };
   };
   payment: {

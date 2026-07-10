@@ -319,6 +319,22 @@ function ReservationDetail({ reservation, onClose }: { reservation: Reservation;
           {reservation.note ? <Row label="Not" value={reservation.note} /> : null}
         </dl>
 
+        {reservation.guests && reservation.guests.length > 0 ? (
+          <div className="mt-5">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">Misafirler</h3>
+            <ul className="mt-2 space-y-1 text-sm text-slate-600">
+              {reservation.guests.map((g, i) => (
+                <li key={i} className="flex justify-between gap-4">
+                  <span>
+                    {i + 1}. {g.firstName} {g.lastName}
+                  </span>
+                  <span className="text-slate-400">{g.gender === "female" ? "Kadın" : "Erkek"}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
+
         {reservation.extraServices?.length > 0 && (
           <div className="mt-5">
             <h3 className="text-xs font-semibold uppercase tracking-wide text-slate-400">Ek Hizmetler</h3>

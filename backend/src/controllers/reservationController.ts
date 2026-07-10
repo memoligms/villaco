@@ -86,6 +86,7 @@ export async function createReservation(req: Request, res: Response) {
       depositFee: villa.depositFee,
       totalPrice: breakdown.totalPrice,
       note: input.note,
+      guests: input.guests ?? undefined,
       extraServices: {
         create: extraSelections.map((e) => ({
           extraServiceId: e.service.id,

@@ -55,6 +55,7 @@ export interface Reservation {
   depositFee: string;
   totalPrice: string;
   note?: string | null;
+  guests?: { gender: "male" | "female"; firstName: string; lastName: string }[] | null;
   paymentStatus: PaymentStatus;
   reservationStatus: ReservationStatus;
   extraServices: ReservationExtraService[];

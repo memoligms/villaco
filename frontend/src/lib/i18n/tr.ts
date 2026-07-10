@@ -185,6 +185,17 @@ export const tr: Translations = {
     email: "E-posta",
     note: "Not / Özel Talep",
     notePlaceholder: "Örn: Erken giriş talebi, özel gün kutlaması vb.",
+    guestInfoHeading: "Misafir Bilgileri",
+    guestInfoHint: "Konaklayacak her misafir için bilgileri giriniz.",
+    guestLabel: (n) => `${n}. Misafir`,
+    gender: "Cinsiyet",
+    genderMale: "Erkek",
+    genderFemale: "Kadın",
+    firstName: "Ad",
+    lastName: "Soyad",
+    kvkkAccept: "KVKK Aydınlatma Metni'ni okudum ve kabul ediyorum.",
+    kvkkRead: "Metni oku",
+    kvkkHide: "Gizle",
     summaryHeading: "Sipariş Özeti",
     summaryCheckIn: "Giriş Tarihi",
     summaryCheckOut: "Çıkış Tarihi",
@@ -210,6 +221,8 @@ export const tr: Translations = {
       nameMin: "Ad soyad en az 4 karakter olmalıdır.",
       emailInvalid: "Geçerli bir e-posta girin.",
       phoneInvalid: "Geçerli bir telefon numarası girin.",
+      guestsRequired: "Lütfen tüm misafirlerin ad ve soyadını girin.",
+      kvkkRequired: "Devam etmek için KVKK Aydınlatma Metni'ni kabul etmelisiniz.",
     },
   },
   payment: {
@@ -288,17 +301,54 @@ export const tr: Translations = {
         {
           type: "p",
           text:
-            "Yalıkavak Villa olarak, 6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") kapsamında veri sorumlusu sıfatıyla, rezervasyon ve ödeme süreçlerinde elde ettiğimiz kişisel verilerinizi (ad, soyad, telefon, e-posta, konaklama tercihleri) hizmetlerimizin sunulması, rezervasyon yönetimi ve yasal yükümlülüklerimizin yerine getirilmesi amacıyla işlemekteyiz.",
+            "İşbu Aydınlatma Metni, 6698 sayılı Kişisel Verilerin Korunması Kanunu (\"KVKK\") ve ilgili ikincil mevzuat uyarınca, veri sorumlusu sıfatıyla hareket eden Yalıkavak Villa tarafından, misafirlerimizin ve web sitemiz ziyaretçilerinin kişisel verilerinin işlenmesine ilişkin usul ve esasları açıklamak amacıyla hazırlanmıştır.",
+        },
+        { type: "h2", text: "1. Veri Sorumlusu" },
+        {
+          type: "p",
+          text:
+            "Kişisel verileriniz, veri sorumlusu Yalıkavak Villa (Geriş Caddesi, 6441 Sokak No:4, Yalıkavak, Bodrum / Muğla; e-posta: ahmethafi@gmail.com; telefon: +90 533 590 05 90) tarafından aşağıda açıklanan kapsamda işlenmektedir.",
+        },
+        { type: "h2", text: "2. İşlenen Kişisel Veriler" },
+        {
+          type: "p",
+          text:
+            "Kimlik verileri (ad, soyad, cinsiyet, konaklayacak misafir bilgileri), iletişim verileri (telefon, e-posta), müşteri işlem verileri (rezervasyon tarihleri, konaklama ve ek hizmet tercihleri, rezervasyon kodu), işlem güvenliği verileri (IP adresi) ve talep/şikâyet verileri işlenmektedir. Ödeme kartı bilgileriniz tarafımızca saklanmaz; doğrudan lisanslı ödeme kuruluşu nezdinde işlenir.",
+        },
+        { type: "h2", text: "3. İşleme Amaçları" },
+        {
+          type: "p",
+          text:
+            "Kişisel verileriniz; rezervasyon ve konaklama süreçlerinin yürütülmesi, sözleşmenin kurulması ve ifası, ödeme işlemlerinin gerçekleştirilmesi, faturalandırma, müşteri ilişkileri ve destek hizmetlerinin sağlanması, talep ve şikâyetlerin yönetimi, hukuki yükümlülüklerin yerine getirilmesi ve bilgi güvenliğinin sağlanması amaçlarıyla işlenir.",
+        },
+        { type: "h2", text: "4. Hukuki Sebepler" },
+        {
+          type: "p",
+          text:
+            "Verileriniz, KVKK m.5 uyarınca; bir sözleşmenin kurulması veya ifasıyla doğrudan ilgili olması, veri sorumlusunun hukuki yükümlülüğünü yerine getirmesi, bir hakkın tesisi/kullanılması/korunması ve ilgili kişinin temel hak ve özgürlüklerine zarar vermemek kaydıyla meşru menfaat hukuki sebeplerine dayanılarak işlenir.",
+        },
+        { type: "h2", text: "5. Aktarım" },
+        {
+          type: "p",
+          text:
+            "Kişisel verileriniz; yalnızca ödeme işleminin gerçekleştirilmesi amacıyla lisanslı ödeme/banka kuruluşlarına, hukuki yükümlülük kapsamında yetkili kamu kurum ve kuruluşlarına ve hizmetin sunulması için gerekli olduğu ölçüde tedarikçilerimize, KVKK'ya uygun olarak aktarılabilir. Verileriniz pazarlama amacıyla üçüncü taraflarla paylaşılmaz.",
+        },
+        { type: "h2", text: "6. Saklama Süresi" },
+        {
+          type: "p",
+          text:
+            "Kişisel verileriniz, işleme amaçlarının gerektirdiği süre ve ilgili mevzuatta öngörülen zamanaşımı/saklama süreleri (özellikle mali mevzuat kapsamında 10 yıl) boyunca saklanır; sürenin sonunda silinir, yok edilir veya anonim hâle getirilir.",
+        },
+        { type: "h2", text: "7. Haklarınız (KVKK m.11)" },
+        {
+          type: "p",
+          text:
+            "Kişisel verilerinizin işlenip işlenmediğini öğrenme, işlenmişse buna ilişkin bilgi talep etme, işleme amacını ve amaca uygun kullanılıp kullanılmadığını öğrenme, yurt içinde/yurt dışında aktarıldığı üçüncü kişileri bilme, eksik/yanlış işlenmişse düzeltilmesini, şartları oluştuğunda silinmesini/yok edilmesini ve bunların aktarıldığı kişilere bildirilmesini isteme, işlenen verilerin analiz edilmesi suretiyle aleyhinize bir sonucun ortaya çıkmasına itiraz etme ve zarara uğramanız hâlinde zararın giderilmesini talep etme haklarına sahipsiniz.",
         },
         {
           type: "p",
           text:
-            "Kişisel verileriniz, ödeme altyapı sağlayıcımız ile yalnızca ödeme işleminin gerçekleştirilmesi amacıyla paylaşılır ve ilgili mevzuata uygun olarak korunur.",
-        },
-        {
-          type: "p",
-          text:
-            "KVKK'nın 11. maddesi kapsamındaki haklarınızı kullanmak için ahmethafi@gmail.com adresinden bizimle iletişime geçebilirsiniz.",
+            "Haklarınızı kullanmak için taleplerinizi ahmethafi@gmail.com adresine iletebilirsiniz. Başvurularınız, KVKK ve ilgili mevzuatta öngörülen süreler içinde ücretsiz olarak sonuçlandırılır.",
         },
       ],
     },
@@ -308,25 +358,49 @@ export const tr: Translations = {
         {
           type: "p",
           text:
-            "Yalıkavak Villa olarak, web sitemiz üzerinden topladığımız kişisel verilerin gizliliğini ve güvenliğini korumayı taahhüt ediyoruz. Bu politika, hangi verilerin toplandığını ve nasıl kullanıldığını açıklar.",
+            "Yalıkavak Villa olarak, web sitemiz (yalikavakvilla.com) üzerinden topladığımız kişisel verilerin gizliliğini ve güvenliğini korumaya büyük önem veriyoruz. İşbu Gizlilik Politikası; hangi verilerin, hangi amaçlarla toplandığını, nasıl kullanıldığını ve korunduğunu şeffaf biçimde açıklamak amacıyla hazırlanmıştır. Sitemizi kullanarak bu politikada belirtilen esasları kabul etmiş sayılırsınız.",
         },
         { type: "h2", text: "Toplanan Bilgiler" },
         {
           type: "p",
           text:
-            "Rezervasyon ve iletişim formları aracılığıyla ad, soyad, e-posta, telefon numarası ve konaklama tercihlerinize ilişkin bilgiler toplanır.",
+            "Rezervasyon ve iletişim formları aracılığıyla ad, soyad, cinsiyet, konaklayacak misafir bilgileri, e-posta, telefon numarası, konaklama ve ek hizmet tercihleri ile rezervasyon bilgileri toplanır. Ayrıca site kullanımınız sırasında IP adresi ve teknik bağlantı verileri gibi bilgiler otomatik olarak kaydedilebilir.",
         },
-        { type: "h2", text: "Bilgilerin Kullanımı" },
+        { type: "h2", text: "Bilgilerin Kullanım Amaçları" },
         {
           type: "p",
           text:
-            "Toplanan bilgiler yalnızca rezervasyon işlemlerinin yürütülmesi, müşteri desteği sağlanması ve yasal yükümlülüklerin yerine getirilmesi amacıyla kullanılır; üçüncü taraflarla pazarlama amacıyla paylaşılmaz.",
+            "Toplanan bilgiler; rezervasyon işlemlerinin yürütülmesi, ödeme ve faturalandırma süreçlerinin tamamlanması, müşteri desteği sağlanması, hizmet kalitesinin iyileştirilmesi ve yasal yükümlülüklerin yerine getirilmesi amacıyla kullanılır. Bilgileriniz, açık rızanız olmaksızın üçüncü taraflarla pazarlama amacıyla paylaşılmaz.",
+        },
+        { type: "h2", text: "Çerezler (Cookies)" },
+        {
+          type: "p",
+          text:
+            "Web sitemiz, kullanıcı deneyimini iyileştirmek, dil ve para birimi tercihlerinizi hatırlamak ve temel site işlevlerini sağlamak amacıyla zorunlu ve işlevsel çerezler kullanabilir. Tarayıcı ayarlarınızdan çerezleri yönetebilir veya engelleyebilirsiniz; ancak bazı çerezlerin devre dışı bırakılması site işlevlerini etkileyebilir.",
+        },
+        { type: "h2", text: "Üçüncü Taraf Hizmet Sağlayıcılar" },
+        {
+          type: "p",
+          text:
+            "Ödeme işlemleri, lisanslı ve PCI-DSS uyumlu ödeme kuruluşları aracılığıyla gerçekleştirilir. Bu sağlayıcılarla yalnızca ödemenin tamamlanması için gerekli veriler paylaşılır ve söz konusu paylaşım ilgili mevzuata uygun olarak yürütülür.",
         },
         { type: "h2", text: "Veri Güvenliği" },
         {
           type: "p",
           text:
-            "Ödeme bilgileriniz hiçbir şekilde sunucularımızda saklanmaz; ödemeler güvenli ödeme altyapısı sağlayıcımız üzerinden, endüstri standardı şifreleme ile işlenir.",
+            "Kişisel verilerinizin güvenliği için SSL şifrelemesi dâhil olmak üzere idari ve teknik tedbirler alınır. Ödeme kartı bilgileriniz hiçbir şekilde sunucularımızda saklanmaz; ödemeler güvenli ödeme altyapısı üzerinden, endüstri standardı şifreleme ile işlenir.",
+        },
+        { type: "h2", text: "Saklama ve İmha" },
+        {
+          type: "p",
+          text:
+            "Kişisel verileriniz, işleme amaçları için gerekli olan süre ve yasal saklama yükümlülükleri boyunca muhafaza edilir; sürenin sonunda silinir, yok edilir veya anonim hâle getirilir.",
+        },
+        { type: "h2", text: "Politika Değişiklikleri ve İletişim" },
+        {
+          type: "p",
+          text:
+            "İşbu Gizlilik Politikası zaman zaman güncellenebilir; güncel sürüm bu sayfada yayımlanır. Sorularınız ve talepleriniz için ahmethafi@gmail.com adresinden bize ulaşabilirsiniz.",
         },
       ],
     },
@@ -336,25 +410,49 @@ export const tr: Translations = {
         {
           type: "p",
           text:
-            "Bu sözleşme, Yalıkavak Villa üzerinden elektronik ortamda gerçekleştirilen villa konaklama rezervasyonlarına ilişkin tarafların hak ve yükümlülüklerini düzenler.",
+            "İşbu Mesafeli Satış Sözleşmesi (\"Sözleşme\"), 6502 sayılı Tüketicinin Korunması Hakkında Kanun ve Mesafeli Sözleşmeler Yönetmeliği uyarınca, Yalıkavak Villa (\"Satıcı/Hizmet Sağlayıcı\") ile yalikavakvilla.com üzerinden elektronik ortamda rezervasyon oluşturan misafir (\"Alıcı/Tüketici\") arasında, aşağıda belirtilen villa konaklama hizmetinin satışına ilişkin tarafların hak ve yükümlülüklerini düzenler.",
         },
-        { type: "h2", text: "1. Hizmetin Tanımı" },
+        { type: "h2", text: "1. Taraflar" },
         {
           type: "p",
           text:
-            "Hizmet, belirlenen tarihler arasında seçilen villada konaklama hakkının sağlanmasından ibarettir. Rezervasyon, ödemenin tamamlanması ile kesinleşir.",
+            "SATICI: Yalıkavak Villa — Geriş Caddesi, 6441 Sokak No:4, Yalıkavak, Bodrum / Muğla — E-posta: ahmethafi@gmail.com — Telefon: +90 533 590 05 90. ALICI: Rezervasyon formunda kimlik ve iletişim bilgilerini beyan eden misafir.",
         },
-        { type: "h2", text: "2. Ücret ve Ödeme" },
+        { type: "h2", text: "2. Sözleşmenin Konusu ve Hizmetin Tanımı" },
         {
           type: "p",
           text:
-            "Toplam tutar; gecelik konaklama ücreti, temizlik ücreti ve depozitodan oluşur ve rezervasyon onay ekranında şeffaf şekilde gösterilir. Ödemeler güvenli ödeme altyapısı üzerinden tahsil edilir.",
+            "Sözleşmenin konusu, Alıcı tarafından seçilen giriş-çıkış tarihleri arasında, ilanda nitelikleri belirtilen villada konaklama hakkının sağlanmasıdır. Villa kişi başı değil, tamamı Alıcı'ya tahsis edilecek şekilde kiralanır. Rezervasyon, ödemenin başarıyla tamamlanması ile kesinleşir.",
         },
-        { type: "h2", text: "3. Cayma Hakkı" },
+        { type: "h2", text: "3. Ücret, Ödeme ve Faturalandırma" },
         {
           type: "p",
           text:
-            "Konaklama hizmetleri, belirli bir tarihte ifa edilmek üzere yapılan rezervasyonlar olduğundan, Mesafeli Sözleşmeler Yönetmeliği kapsamında cayma hakkı istisnaları geçerlidir. İptal ve iade koşulları için İptal & İade Politikamızı inceleyiniz.",
+            "Toplam tutar; gecelik konaklama ücreti (gece sayısı ile çarpılarak), varsa temizlik ücreti, depozito ve seçilen ek hizmet bedellerinden oluşur ve rezervasyon onay ekranında vergiler dâhil, şeffaf biçimde gösterilir. Ödemeler, lisanslı ve PCI-DSS uyumlu ödeme altyapısı üzerinden 3D Secure ile güvenli şekilde tahsil edilir. Kart bilgileri Satıcı tarafından saklanmaz.",
+        },
+        { type: "h2", text: "4. Hizmetin İfası ve Kuralları" },
+        {
+          type: "p",
+          text:
+            "Giriş saati en erken 14:00, çıkış saati en geç 10:00'dir. Erken giriş, müsaitliğe bağlı olarak ücretsiz sağlanabilir. Alıcı, konaklayacak misafir sayısını ve bilgilerini doğru beyan etmekle yükümlüdür; villanın azami misafir kapasitesi aşılamaz.",
+        },
+        { type: "h2", text: "5. Cayma Hakkı" },
+        {
+          type: "p",
+          text:
+            "Mesafeli Sözleşmeler Yönetmeliği'nin 15. maddesi uyarınca, belirli bir tarihte veya dönemde yapılması gereken konaklama hizmetlerine ilişkin sözleşmelerde cayma hakkı bulunmamaktadır. Bu nedenle konaklama rezervasyonları, aşağıdaki iptal/iade koşullarına tabidir.",
+        },
+        { type: "h2", text: "6. İptal ve İade" },
+        {
+          type: "p",
+          text:
+            "Rezervasyon iptal ve iade talepleri, İptal & İade Politikamızda belirtilen koşullara göre değerlendirilir. Onaylanan iadeler, ödemenin yapıldığı yöntemle ve yasal süreler içinde gerçekleştirilir.",
+        },
+        { type: "h2", text: "7. Uyuşmazlıkların Çözümü ve Yürürlük" },
+        {
+          type: "p",
+          text:
+            "İşbu Sözleşme'den doğabilecek uyuşmazlıklarda, ilgili mevzuatta belirlenen parasal sınırlar dâhilinde Tüketici Hakem Heyetleri ve Tüketici Mahkemeleri yetkilidir. Alıcı, rezervasyonu tamamlayarak işbu Sözleşme'yi okuduğunu ve kabul ettiğini beyan eder.",
         },
       ],
     },

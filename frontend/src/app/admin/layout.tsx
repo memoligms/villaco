@@ -8,6 +8,7 @@ import { clearAdminToken, getAdminToken } from "@/lib/adminApi";
 
 const navItems = [
   { href: "/admin", label: "Dashboard", exact: true },
+  { href: "/admin/takvim", label: "Takvim" },
   { href: "/admin/rezervasyonlar", label: "Rezervasyonlar" },
   { href: "/admin/mesajlar", label: "Mesajlar" },
   { href: "/admin/ek-hizmetler", label: "Ek Hizmetler" },

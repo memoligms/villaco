@@ -37,6 +37,12 @@ export function getExtraServices(lang?: string): Promise<ExtraService[]> {
   return request<ExtraService[]>(`/extra-services${q}`, { cache: "no-store" });
 }
 
+export interface GuestInput {
+  gender: "male" | "female";
+  firstName: string;
+  lastName: string;
+}
+
 export interface CreateReservationPayload {
   checkIn: string;
   checkOut: string;
@@ -45,6 +51,7 @@ export interface CreateReservationPayload {
   email: string;
   phone: string;
   note?: string;
+  guests?: GuestInput[];
   extraServiceIds?: { id: string; quantity: number }[];
 }
 

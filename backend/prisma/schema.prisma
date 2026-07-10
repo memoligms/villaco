@@ -69,6 +69,8 @@ model Reservation {
   depositFee       Decimal                   @db.Decimal(10, 2) @map("deposit_fee")
   totalPrice       Decimal                   @db.Decimal(10, 2) @map("total_price")
   note             String?
+  // [{ gender: "male"|"female", firstName, lastName }, ...] — misafir bilgileri
+  guests           Json?
   paymentStatus    PaymentStatus             @default(PENDING) @map("payment_status")
   reservationStatus ReservationStatus        @default(PENDING) @map("reservation_status")
   createdAt        DateTime                  @default(now()) @map("created_at")

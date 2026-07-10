@@ -6,7 +6,7 @@ import type { ExtraService, Villa } from "@/lib/types";
 import { getExtraServices, getVilla } from "@/lib/api";
 import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
-import { ApiError, createReservation } from "@/lib/api";
+import { ApiError, createReservation, type GuestInput } from "@/lib/api";
 import { CardLogos } from "./CardLogos";
 
 function todayISO() {
@@ -69,9 +69,29 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
     note: "",
   });
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
+  const [guests, setGuests] = useState<GuestInput[]>([]);
+  const [kvkkAccepted, setKvkkAccepted] = useState(false);
+  const [kvkkOpen, setKvkkOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const guestCountNum = Math.max(1, Math.min(Number(form.guestCount) || 1, villa.maxGuest));
+
+  // Misafir sayısı değiştikçe misafir bilgi satırlarını senkronla.
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setGuests((prev) => {
+      const next = [...prev];
+      while (next.length < guestCountNum) next.push({ gender: "male", firstName: "", lastName: "" });
+      next.length = guestCountNum;
+      return next;
+    });
+  }, [guestCountNum]);
+
+  function updateGuest(index: number, key: keyof GuestInput, value: string) {
+    setGuests((prev) => prev.map((g, i) => (i === index ? { ...g, [key]: value } : g)));
+  }
 
   const nights = useMemo(() => {
     if (!form.checkIn || !form.checkOut) return 0;
@@ -137,6 +157,11 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
     if (!/^\S+@\S+\.\S+$/.test(form.email)) next.email = t.reservation.validation.emailInvalid;
     if (!/^\+?[0-9 ]{10,15}$/.test(form.phone.trim())) next.phone = t.reservation.validation.phoneInvalid;
 
+    if (guests.some((g) => g.firstName.trim().length < 1 || g.lastName.trim().length < 1)) {
+      next.guests = t.reservation.validation.guestsRequired;
+    }
+    if (!kvkkAccepted) next.kvkk = t.reservation.validation.kvkkRequired;
+
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -155,6 +180,11 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
         email: form.email.trim(),
         phone: form.phone.trim(),
         note: form.note.trim() || undefined,
+        guests: guests.map((g) => ({
+          gender: g.gender,
+          firstName: g.firstName.trim(),
+          lastName: g.lastName.trim(),
+        })),
         extraServiceIds: Object.entries(selectedServices).map(([id, quantity]) => ({ id, quantity })),
       });
       router.push(`/odeme/${reservation.reservationCode}`);
@@ -262,6 +292,51 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
           </Field>
         </div>
 
+        {/* Misafir Bilgileri — misafir sayısına göre satır */}
+        <div className="card">
+          <h2 className="text-lg font-bold text-brand-navy">{t.reservation.guestInfoHeading}</h2>
+          <p className="mt-1 text-xs text-slate-500">{t.reservation.guestInfoHint}</p>
+          <div className="mt-4 space-y-4">
+            {guests.map((g, i) => (
+              <div key={i} className="rounded-xl border border-slate-200 p-3">
+                <p className="text-xs font-semibold uppercase tracking-wide text-slate-400">
+                  {t.reservation.guestLabel(i + 1)}
+                </p>
+                <div className="mt-2 grid grid-cols-1 gap-3 sm:grid-cols-3">
+                  <label className="block text-sm font-medium text-slate-700">
+                    {t.reservation.gender}
+                    <select
+                      value={g.gender}
+                      onChange={(e) => updateGuest(i, "gender", e.target.value)}
+                      className="input mt-1"
+                    >
+                      <option value="male">{t.reservation.genderMale}</option>
+                      <option value="female">{t.reservation.genderFemale}</option>
+                    </select>
+                  </label>
+                  <label className="block text-sm font-medium text-slate-700">
+                    {t.reservation.firstName}
+                    <input
+                      value={g.firstName}
+                      onChange={(e) => updateGuest(i, "firstName", e.target.value)}
+                      className="input mt-1"
+                    />
+                  </label>
+                  <label className="block text-sm font-medium text-slate-700">
+                    {t.reservation.lastName}
+                    <input
+                      value={g.lastName}
+                      onChange={(e) => updateGuest(i, "lastName", e.target.value)}
+                      className="input mt-1"
+                    />
+                  </label>
+                </div>
+              </div>
+            ))}
+          </div>
+          {errors.guests ? <p className="mt-2 text-xs font-medium text-red-600">{errors.guests}</p> : null}
+        </div>
+
         {submitError ? <p className="text-sm font-medium text-red-600">{submitError}</p> : null}
       </div>
 
@@ -288,11 +363,48 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
           <button
             type="button"
             onClick={handleSubmit}
-            disabled={submitting}
-            className="mt-6 w-full rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-blue-dark disabled:opacity-60"
+            disabled={submitting || !kvkkAccepted}
+            className="mt-6 w-full rounded-full bg-brand-blue px-6 py-3 text-sm font-semibold text-white transition hover:bg-brand-blue-dark disabled:cursor-not-allowed disabled:opacity-60"
           >
             {submitting ? t.reservation.submitting : t.reservation.submitCta}
           </button>
+
+          {/* KVKK Aydınlatma Metni — oku (açılır/kapanır) ve kabul et */}
+          <div className="mt-3">
+            <label className="flex items-start gap-2 text-xs text-slate-600">
+              <input
+                type="checkbox"
+                checked={kvkkAccepted}
+                onChange={(e) => setKvkkAccepted(e.target.checked)}
+                className="mt-0.5"
+              />
+              <span>
+                {t.reservation.kvkkAccept}{" "}
+                <button
+                  type="button"
+                  onClick={() => setKvkkOpen((o) => !o)}
+                  className="font-medium text-brand-blue underline underline-offset-2"
+                >
+                  {kvkkOpen ? t.reservation.kvkkHide : t.reservation.kvkkRead}
+                </button>
+              </span>
+            </label>
+            {errors.kvkk ? <p className="mt-1 text-xs font-medium text-red-600">{errors.kvkk}</p> : null}
+            {kvkkOpen ? (
+              <div className="mt-2 max-h-60 space-y-2 overflow-y-auto rounded-lg border border-slate-200 bg-slate-50 p-3 text-xs leading-relaxed text-slate-600">
+                <p className="text-sm font-bold text-brand-navy">{t.legal.kvkk.title}</p>
+                {t.legal.kvkk.blocks.map((b, i) =>
+                  b.type === "h2" ? (
+                    <p key={i} className="pt-1 font-semibold text-brand-navy">
+                      {b.text}
+                    </p>
+                  ) : (
+                    <p key={i}>{b.text}</p>
+                  )
+                )}
+              </div>
+            ) : null}
+          </div>
 
           <div className="mt-3 flex items-center justify-center gap-2">
             <CardLogos />
