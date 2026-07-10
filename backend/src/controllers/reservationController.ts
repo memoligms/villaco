@@ -18,12 +18,19 @@ export async function createReservation(req: Request, res: Response) {
     throw new AppError(`Bu villa en fazla ${villa.maxGuest} misafir kabul etmektedir.`, 422);
   }
 
+  // Müsaitlik: onaylanan (ödenmiş) rezervasyonlar her zaman bloklar.
+  // PENDING (ödeme bekleyen) yalnızca son 1 saatte oluşturulduysa bloklar; böylece
+  // ödemesi tamamlanmayan/terk edilen denemeler tarihleri kalıcı olarak kapatmaz.
+  const pendingCutoff = new Date(Date.now() - 60 * 60 * 1000);
   const overlapping = await prisma.reservation.findFirst({
     where: {
       villaId: villa.id,
-      reservationStatus: { in: ["PENDING", "CONFIRMED"] },
       checkIn: { lt: input.checkOut },
       checkOut: { gt: input.checkIn },
+      OR: [
+        { reservationStatus: "CONFIRMED" },
+        { reservationStatus: "PENDING", createdAt: { gt: pendingCutoff } },
+      ],
     },
   });
   if (overlapping) {
