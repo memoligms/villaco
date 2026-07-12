@@ -6,7 +6,6 @@ import { prisma } from "../config/prisma";
 import { env } from "../config/env";
 import { AppError } from "../utils/AppError";
 import { signAdminToken } from "../middleware/requireAdmin";
-import { isMailerConfigured, sendMail } from "../services/mailer";
 import {
   adminLoginSchema,
   changePasswordSchema,
@@ -39,64 +38,24 @@ export async function adminLogin(req: Request, res: Response) {
   res.json({ success: true, data: { token, username } });
 }
 
-function maskEmail(email: string): string {
-  const [user, domain] = email.split("@");
-  if (!domain) return email;
-  const shown = user.slice(0, 2);
-  return `${shown}${"*".repeat(Math.max(1, user.length - 2))}@${domain}`;
-}
-
-// Şifre değişikliği için iletişim e-postasına 6 haneli onay kodu gönderir.
-export async function adminRequestPasswordCode(_req: Request, res: Response) {
-  if (!isMailerConfigured()) {
-    throw new AppError("E-posta gönderimi yapılandırılmamış (SMTP ayarları eksik).", 503);
-  }
-
-  const villa = await prisma.villa.findUnique({ where: { slug: VILLA_SLUG } });
-  const to = villa?.contactEmail;
-  if (!to) {
-    throw new AppError("İletişim e-postası tanımlı değil.", 400);
-  }
-
-  const code = String(Math.floor(100000 + Math.random() * 900000));
-  const codeHash = await bcrypt.hash(code, 10);
-  const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 dakika
-
-  await prisma.adminSetting.upsert({
-    where: { id: 1 },
-    create: { id: 1, resetCodeHash: codeHash, resetCodeExpiresAt: expiresAt },
-    update: { resetCodeHash: codeHash, resetCodeExpiresAt: expiresAt },
-  });
-
-  await sendMail(
-    to,
-    "Yalıkavak Villa — Admin Şifre Değişikliği Onay Kodu",
-    `Admin panel şifrenizi değiştirmek için onay kodunuz: ${code}\n\nBu kod 10 dakika geçerlidir. Bu talebi siz yapmadıysanız dikkate almayınız.`
-  );
-
-  res.json({ success: true, data: { sentTo: maskEmail(to) } });
-}
-
-// Onay kodu doğruysa yeni şifreyi (hash'li) kaydeder.
+// Mevcut şifre doğruysa yeni şifreyi (bcrypt hash) kaydeder.
 export async function adminChangePassword(req: Request, res: Response) {
-  const { code, newPassword } = changePasswordSchema.parse(req.body);
+  const { currentPassword, newPassword } = changePasswordSchema.parse(req.body);
 
   const setting = await prisma.adminSetting.findUnique({ where: { id: 1 } });
-  if (!setting?.resetCodeHash || !setting.resetCodeExpiresAt) {
-    throw new AppError("Önce onay kodu talep etmelisiniz.", 400);
-  }
-  if (setting.resetCodeExpiresAt.getTime() < Date.now()) {
-    throw new AppError("Onay kodunun süresi doldu. Lütfen yeni kod isteyin.", 400);
-  }
-  const codeOk = await bcrypt.compare(code, setting.resetCodeHash);
-  if (!codeOk) {
-    throw new AppError("Onay kodu hatalı.", 400);
+  const currentOk = setting?.passwordHash
+    ? await bcrypt.compare(currentPassword, setting.passwordHash)
+    : currentPassword === env.admin.password;
+
+  if (!currentOk) {
+    throw new AppError("Mevcut şifre hatalı.", 400);
   }
 
   const passwordHash = await bcrypt.hash(newPassword, 10);
-  await prisma.adminSetting.update({
+  await prisma.adminSetting.upsert({
     where: { id: 1 },
-    data: { passwordHash, resetCodeHash: null, resetCodeExpiresAt: null },
+    create: { id: 1, passwordHash },
+    update: { passwordHash },
   });
 
   res.json({ success: true, data: { message: "Şifre başarıyla değiştirildi." } });

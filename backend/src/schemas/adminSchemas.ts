@@ -6,7 +6,7 @@ export const adminLoginSchema = z.object({
 });
 
 export const changePasswordSchema = z.object({
-  code: z.string().trim().regex(/^\d{6}$/, "Onay kodu 6 haneli olmalıdır."),
+  currentPassword: z.string().min(1, "Mevcut şifre gereklidir."),
   newPassword: z.string().min(8, "Yeni şifre en az 8 karakter olmalıdır.").max(100),
 });
 

@@ -7,7 +7,6 @@ import {
   adminChangePassword,
   adminCreateExtraService,
   adminDeleteExtraService,
-  adminRequestPasswordCode,
   adminDeleteImage,
   adminGetReservation,
   adminGetVilla,
@@ -31,7 +30,6 @@ router.post("/login", loginRateLimit, asyncHandler(adminLogin));
 // Protected
 router.use(requireAdmin);
 router.get("/stats", asyncHandler(adminStats));
-router.post("/password/request-code", asyncHandler(adminRequestPasswordCode));
 router.post("/password/change", asyncHandler(adminChangePassword));
 router.get("/reservations", asyncHandler(adminListReservations));
 router.get("/reservations/:id", asyncHandler(adminGetReservation));

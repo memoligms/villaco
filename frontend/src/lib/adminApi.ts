@@ -153,13 +153,10 @@ export const adminApi = {
   deleteImage(url: string) {
     return request<{ url: string }>("/admin/upload", { method: "DELETE", body: JSON.stringify({ url }) });
   },
-  requestPasswordCode() {
-    return request<{ sentTo: string }>("/admin/password/request-code", { method: "POST" });
-  },
-  changePassword(code: string, newPassword: string) {
+  changePassword(currentPassword: string, newPassword: string) {
     return request<{ message: string }>("/admin/password/change", {
       method: "POST",
-      body: JSON.stringify({ code, newPassword }),
+      body: JSON.stringify({ currentPassword, newPassword }),
     });
   },
 };
