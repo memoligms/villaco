@@ -223,6 +223,7 @@ export const de: Translations = {
       phoneInvalid: "Bitte geben Sie eine gültige Telefonnummer ein.",
       guestsRequired: "Bitte geben Sie Vor- und Nachnamen aller Gäste ein.",
       kvkkRequired: "Sie müssen die Datenschutzerklärung akzeptieren, um fortzufahren.",
+      datesUnavailable: "Die Villa ist an den gewählten Daten nicht verfügbar. Bitte wählen Sie andere Daten.",
     },
   },
   payment: {

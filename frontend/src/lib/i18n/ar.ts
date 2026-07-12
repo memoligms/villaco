@@ -222,6 +222,7 @@ export const ar: Translations = {
       phoneInvalid: "يرجى إدخال رقم هاتف صحيح.",
       guestsRequired: "يرجى إدخال الاسم واللقب لكل ضيف.",
       kvkkRequired: "يجب قبول إشعار حماية البيانات للمتابعة.",
+      datesUnavailable: "الفيلا غير متاحة في التواريخ المحددة. يرجى اختيار تواريخ أخرى.",
     },
   },
   payment: {

@@ -182,6 +182,7 @@ export interface Translations {
       phoneInvalid: string;
       guestsRequired: string;
       kvkkRequired: string;
+      datesUnavailable: string;
     };
   };
   payment: {

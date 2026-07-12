@@ -223,6 +223,7 @@ export const tr: Translations = {
       phoneInvalid: "Geçerli bir telefon numarası girin.",
       guestsRequired: "Lütfen tüm misafirlerin ad ve soyadını girin.",
       kvkkRequired: "Devam etmek için KVKK Aydınlatma Metni'ni kabul etmelisiniz.",
+      datesUnavailable: "Seçtiğiniz tarihlerde villa dolu. Lütfen farklı tarih seçin.",
     },
   },
   payment: {

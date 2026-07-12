@@ -274,6 +274,33 @@ export async function adminDeleteExtraService(req: Request, res: Response) {
   res.json({ success: true, data: { id } });
 }
 
+// --- Manuel dolu günler (Airbnb vb.) ---
+
+function toUtcDate(dateStr: string): Date {
+  return new Date(`${dateStr}T00:00:00.000Z`);
+}
+
+export async function adminListBlockedDates(_req: Request, res: Response) {
+  const dates = await prisma.blockedDate.findMany({ orderBy: { date: "asc" } });
+  res.json({ success: true, data: dates.map((d) => d.date.toISOString().slice(0, 10)) });
+}
+
+export async function adminToggleBlockedDate(req: Request, res: Response) {
+  const dateStr = String((req.body as { date?: string })?.date ?? "");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
+    throw new AppError("Geçersiz tarih formatı (YYYY-MM-DD).", 422);
+  }
+  const date = toUtcDate(dateStr);
+
+  const existing = await prisma.blockedDate.findUnique({ where: { date } });
+  if (existing) {
+    await prisma.blockedDate.delete({ where: { date } });
+    return res.json({ success: true, data: { date: dateStr, blocked: false } });
+  }
+  await prisma.blockedDate.create({ data: { date } });
+  res.json({ success: true, data: { date: dateStr, blocked: true } });
+}
+
 // --- Görsel yükleme ---
 
 export async function adminUploadImage(req: Request, res: Response) {

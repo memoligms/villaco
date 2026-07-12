@@ -123,6 +123,16 @@ model ReservationExtraService {
   @@map("reservation_extra_services")
 }
 
+// Manuel olarak dolu işaretlenen günler (ör. Airbnb'de kiralanan tarihler).
+model BlockedDate {
+  id        String   @id @default(uuid())
+  date      DateTime @unique @db.Date
+  note      String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("blocked_dates")
+}
+
 model AdminSetting {
   id                 Int       @id @default(1)
   passwordHash       String?   @map("password_hash")

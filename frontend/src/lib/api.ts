@@ -32,6 +32,10 @@ export function getVilla(lang?: string): Promise<Villa> {
   return request<Villa>(`/villas/${VILLA_SLUG}${q}`, { cache: "no-store" });
 }
 
+export function getUnavailableDates(): Promise<string[]> {
+  return request<string[]>("/reservations/unavailable", { cache: "no-store" });
+}
+
 export function getExtraServices(lang?: string): Promise<ExtraService[]> {
   const q = lang && lang !== "tr" ? `?lang=${lang}` : "";
   return request<ExtraService[]>(`/extra-services${q}`, { cache: "no-store" });

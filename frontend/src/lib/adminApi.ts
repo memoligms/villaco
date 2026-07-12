@@ -159,4 +159,13 @@ export const adminApi = {
       body: JSON.stringify({ currentPassword, newPassword }),
     });
   },
+  blockedDates() {
+    return request<string[]>("/admin/blocked-dates");
+  },
+  toggleBlockedDate(date: string) {
+    return request<{ date: string; blocked: boolean }>("/admin/blocked-dates/toggle", {
+      method: "POST",
+      body: JSON.stringify({ date }),
+    });
+  },
 };

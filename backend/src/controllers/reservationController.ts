@@ -33,7 +33,12 @@ export async function createReservation(req: Request, res: Response) {
       ],
     },
   });
-  if (overlapping) {
+  // Manuel dolu işaretlenen günler (ör. Airbnb) da bloklar.
+  const blocked = await prisma.blockedDate.findFirst({
+    where: { date: { gte: input.checkIn, lt: input.checkOut } },
+  });
+
+  if (overlapping || blocked) {
     throw new AppError("Seçilen tarihler için villa müsait değil.", 409);
   }
 
@@ -99,6 +104,39 @@ export async function createReservation(req: Request, res: Response) {
   });
 
   res.status(201).json({ success: true, data: reservation });
+}
+
+// Public: dolu (müsait olmayan) günler — onaylı rezervasyonlar + son 1 saatteki
+// bekleyen ödemeler + manuel dolu işaretlenen günler.
+export async function getUnavailableDates(_req: Request, res: Response) {
+  const villa = await prisma.villa.findUnique({ where: { slug: VILLA_SLUG } });
+  const pendingCutoff = new Date(Date.now() - 60 * 60 * 1000);
+
+  const reservations = villa
+    ? await prisma.reservation.findMany({
+        where: {
+          villaId: villa.id,
+          OR: [
+            { reservationStatus: "CONFIRMED" },
+            { reservationStatus: "PENDING", createdAt: { gt: pendingCutoff } },
+          ],
+        },
+        select: { checkIn: true, checkOut: true },
+      })
+    : [];
+  const blocked = await prisma.blockedDate.findMany({ select: { date: true } });
+
+  const days = new Set<string>();
+  for (const r of reservations) {
+    const d = new Date(r.checkIn);
+    while (d < r.checkOut) {
+      days.add(d.toISOString().slice(0, 10));
+      d.setUTCDate(d.getUTCDate() + 1);
+    }
+  }
+  for (const b of blocked) days.add(b.date.toISOString().slice(0, 10));
+
+  res.json({ success: true, data: [...days].sort() });
 }
 
 export async function getReservation(req: Request, res: Response) {

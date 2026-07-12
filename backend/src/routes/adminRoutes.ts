@@ -7,6 +7,8 @@ import {
   adminChangePassword,
   adminCreateExtraService,
   adminDeleteExtraService,
+  adminListBlockedDates,
+  adminToggleBlockedDate,
   adminDeleteImage,
   adminGetReservation,
   adminGetVilla,
@@ -31,6 +33,8 @@ router.post("/login", loginRateLimit, asyncHandler(adminLogin));
 router.use(requireAdmin);
 router.get("/stats", asyncHandler(adminStats));
 router.post("/password/change", asyncHandler(adminChangePassword));
+router.get("/blocked-dates", asyncHandler(adminListBlockedDates));
+router.post("/blocked-dates/toggle", asyncHandler(adminToggleBlockedDate));
 router.get("/reservations", asyncHandler(adminListReservations));
 router.get("/reservations/:id", asyncHandler(adminGetReservation));
 router.patch("/reservations/:id", asyncHandler(adminUpdateReservation));

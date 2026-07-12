@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ExtraService, Villa } from "@/lib/types";
-import { getExtraServices, getVilla } from "@/lib/api";
+import { getExtraServices, getVilla, getUnavailableDates } from "@/lib/api";
 import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { ApiError, createReservation, type GuestInput } from "@/lib/api";
@@ -70,6 +70,7 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
   });
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
   const [guests, setGuests] = useState<GuestInput[]>([]);
+  const [unavailable, setUnavailable] = useState<Set<string>>(new Set());
   const [kvkkAccepted, setKvkkAccepted] = useState(false);
   const [kvkkOpen, setKvkkOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -91,6 +92,24 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
 
   function updateGuest(index: number, key: keyof GuestInput, value: string) {
     setGuests((prev) => prev.map((g, i) => (i === index ? { ...g, [key]: value } : g)));
+  }
+
+  // Dolu (müsait olmayan) günleri çek.
+  useEffect(() => {
+    getUnavailableDates()
+      .then((d) => setUnavailable(new Set(d)))
+      .catch(() => {});
+  }, []);
+
+  // Seçilen aralıkta dolu gün var mı?
+  function rangeHasUnavailable(ci: string, co: string): boolean {
+    const d = new Date(`${ci}T00:00:00.000Z`);
+    const end = new Date(`${co}T00:00:00.000Z`);
+    while (d < end) {
+      if (unavailable.has(d.toISOString().slice(0, 10))) return true;
+      d.setUTCDate(d.getUTCDate() + 1);
+    }
+    return false;
   }
 
   const nights = useMemo(() => {
@@ -149,6 +168,8 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
     if (form.checkIn && form.checkIn < today) next.checkIn = t.reservation.validation.checkInPast;
     if (form.checkIn && form.checkOut && form.checkOut <= form.checkIn) {
       next.checkOut = t.reservation.validation.checkOutAfterCheckIn;
+    } else if (form.checkIn && form.checkOut && rangeHasUnavailable(form.checkIn, form.checkOut)) {
+      next.checkOut = t.reservation.validation.datesUnavailable;
     }
     const guestCount = Number(form.guestCount);
     if (!guestCount || guestCount < 1) next.guestCount = t.reservation.validation.guestMin;
