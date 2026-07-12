@@ -123,6 +123,16 @@ model ReservationExtraService {
   @@map("reservation_extra_services")
 }
 
+model AdminSetting {
+  id                 Int       @id @default(1)
+  passwordHash       String?   @map("password_hash")
+  resetCodeHash      String?   @map("reset_code_hash")
+  resetCodeExpiresAt DateTime? @map("reset_code_expires_at")
+  updatedAt          DateTime  @updatedAt @map("updated_at")
+
+  @@map("admin_settings")
+}
+
 model ContactMessage {
   id        String   @id @default(uuid())
   fullName  String   @map("full_name")

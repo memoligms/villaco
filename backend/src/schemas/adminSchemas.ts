@@ -5,6 +5,11 @@ export const adminLoginSchema = z.object({
   password: z.string().min(1),
 });
 
+export const changePasswordSchema = z.object({
+  code: z.string().trim().regex(/^\d{6}$/, "Onay kodu 6 haneli olmalıdır."),
+  newPassword: z.string().min(8, "Yeni şifre en az 8 karakter olmalıdır.").max(100),
+});
+
 export const updateReservationSchema = z
   .object({
     reservationStatus: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "FAILED"]).optional(),

@@ -34,4 +34,12 @@ export const env = {
     jwtSecret: required("JWT_SECRET", "change-this-secret-in-production"),
     tokenTtl: process.env.ADMIN_TOKEN_TTL ?? "12h",
   },
+  // E-posta gönderimi (şifre sıfırlama kodu vb.) — opsiyonel
+  smtp: {
+    host: process.env.SMTP_HOST ?? "",
+    port: Number(process.env.SMTP_PORT ?? 587),
+    user: process.env.SMTP_USER ?? "",
+    pass: process.env.SMTP_PASS ?? "",
+    from: process.env.SMTP_FROM ?? process.env.SMTP_USER ?? "",
+  },
 };

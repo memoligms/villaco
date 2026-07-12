@@ -13,6 +13,7 @@ const navItems = [
   { href: "/admin/mesajlar", label: "Mesajlar" },
   { href: "/admin/ek-hizmetler", label: "Ek Hizmetler" },
   { href: "/admin/villa", label: "Villa Ayarları" },
+  { href: "/admin/sifre", label: "Şifre Değiştir" },
 ];
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
