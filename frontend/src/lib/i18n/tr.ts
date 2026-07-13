@@ -247,6 +247,11 @@ export const tr: Translations = {
     sandboxTitle: "Güvenli Ödeme (Test/Sandbox)",
     sandboxNote: "Bu ortamda gerçek ödeme bilgisi alınmaz. Aşağıdaki form test (sandbox) ödeme altyapısına bağlıdır.",
     alreadyPaid: "Bu rezervasyon için ödeme zaten tamamlanmış. Rezervasyon kodu:",
+    awaitingApprovalTitle: "Rezervasyon talebiniz alındı, onay bekleniyor",
+    awaitingApprovalNote:
+      "Talebiniz tarafımızca inceleniyor. Onaylandıktan sonra bu sayfadan ödeme yapabilirsiniz. Bu sayfayı daha sonra tekrar ziyaret edebilir veya rezervasyon kodunuzu saklayabilirsiniz.",
+    rejectedTitle: "Rezervasyon talebiniz onaylanmadı",
+    rejectedNote: "Maalesef bu talep için ödeme alınamıyor. Lütfen bizimle iletişime geçin.",
     formPreparing: "Güvenli ödeme sayfası hazırlanıyor...",
     formError: "Ödeme formu yüklenemedi.",
     cardHolder: "Kart Üzerindeki İsim",

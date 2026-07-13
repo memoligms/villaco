@@ -115,6 +115,12 @@ export const adminApi = {
   updateReservation(id: string, body: { reservationStatus?: string; paymentStatus?: string }) {
     return request<Reservation>(`/admin/reservations/${id}`, { method: "PATCH", body: JSON.stringify(body) });
   },
+  approveReservation(id: string) {
+    return request<Reservation>(`/admin/reservations/${id}/approve`, { method: "PATCH" });
+  },
+  rejectReservation(id: string) {
+    return request<Reservation>(`/admin/reservations/${id}/reject`, { method: "PATCH" });
+  },
   messages() {
     return request<ContactMessage[]>("/admin/messages");
   },

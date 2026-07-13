@@ -25,6 +25,9 @@ export async function initializePayment(req: Request, res: Response) {
   if (reservation.paymentStatus === "PAID") {
     throw new AppError("Bu rezervasyon için ödeme zaten tamamlanmış.", 409);
   }
+  if (reservation.reservationStatus !== "APPROVED") {
+    throw new AppError("Rezervasyonunuz henüz onaylanmadı. Onaylandıktan sonra ödeme yapabilirsiniz.", 409);
+  }
 
   const conversationId = randomUUID();
   const [firstName, ...rest] = reservation.user.fullName.trim().split(/\s+/);
@@ -124,6 +127,9 @@ export async function initializeSipayPayment(req: Request, res: Response) {
   if (reservation.paymentStatus === "PAID") {
     throw new AppError("Bu rezervasyon için ödeme zaten tamamlanmış.", 409);
   }
+  if (reservation.reservationStatus !== "APPROVED") {
+    throw new AppError("Rezervasyonunuz henüz onaylanmadı. Onaylandıktan sonra ödeme yapabilirsiniz.", 409);
+  }
 
   const [firstName, ...rest] = reservation.user.fullName.trim().split(/\s+/);
   const lastName = rest.join(" ") || firstName;
@@ -209,9 +215,10 @@ export async function handleSipayCallback(req: Request, res: Response) {
       where: { reservationId: reservation.id },
       data: { status: "FAILED", rawResponse: body as never },
     }),
+    // Ödeme başarısız: rezervasyon APPROVED kalır ki müşteri tekrar deneyebilsin.
     prisma.reservation.update({
       where: { id: reservation.id },
-      data: { paymentStatus: "FAILED", reservationStatus: "FAILED" },
+      data: { paymentStatus: "FAILED" },
     }),
   ]);
   return res.redirect(`${env.frontendBaseUrl}/odeme/basarisiz?code=${reservation.reservationCode}`);
@@ -254,9 +261,10 @@ export async function handlePaymentCallback(req: Request, res: Response) {
       where: { id: payment.id },
       data: { status: "FAILED", rawResponse: result.raw as any },
     }),
+    // Ödeme başarısız: rezervasyon durumu korunur (tekrar deneme için).
     prisma.reservation.update({
       where: { id: payment.reservationId },
-      data: { paymentStatus: "FAILED", reservationStatus: "FAILED" },
+      data: { paymentStatus: "FAILED" },
     }),
   ]);
 

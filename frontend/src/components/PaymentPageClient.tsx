@@ -20,6 +20,32 @@ export function PaymentPageClient({ reservation }: { reservation: Reservation })
     );
   }
 
+  // Onay bekleyen talep: ödeme yapılamaz, bilgilendirme gösterilir.
+  if (reservation.reservationStatus === "AWAITING_APPROVAL") {
+    return (
+      <StatusNotice
+        tone="info"
+        title={t.payment.awaitingApprovalTitle}
+        note={t.payment.awaitingApprovalNote}
+        codeLabel={t.payment.reservationCodeLabel}
+        code={reservation.reservationCode}
+      />
+    );
+  }
+
+  // Reddedilen/iptal talep.
+  if (reservation.reservationStatus === "REJECTED" || reservation.reservationStatus === "CANCELLED") {
+    return (
+      <StatusNotice
+        tone="error"
+        title={t.payment.rejectedTitle}
+        note={t.payment.rejectedNote}
+        codeLabel={t.payment.reservationCodeLabel}
+        code={reservation.reservationCode}
+      />
+    );
+  }
+
   const nightsTotal = Number(reservation.nightlyPrice) * reservation.nightCount;
   const extrasTotal = reservation.extraServices.reduce((sum, item) => sum + Number(item.totalPrice), 0);
   const discounts = reservation.discounts ?? [];
@@ -104,6 +130,37 @@ export function PaymentPageClient({ reservation }: { reservation: Reservation })
             <SipayCheckout reservationCode={reservation.reservationCode} />
           </div>
         </div>
+      </div>
+    </div>
+  );
+}
+
+function StatusNotice({
+  tone,
+  title,
+  note,
+  codeLabel,
+  code,
+}: {
+  tone: "info" | "error";
+  title: string;
+  note: string;
+  codeLabel: string;
+  code: string;
+}) {
+  const styles =
+    tone === "info"
+      ? "border-blue-200 bg-blue-50 text-blue-800"
+      : "border-red-200 bg-red-50 text-red-700";
+  return (
+    <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6">
+      <div className={`rounded-2xl border p-6 text-center ${styles}`}>
+        <p className="text-4xl">{tone === "info" ? "⏳" : "⚠️"}</p>
+        <h1 className="mt-3 text-xl font-bold">{title}</h1>
+        <p className="mt-2 text-sm leading-relaxed">{note}</p>
+        <p className="mt-4 text-sm">
+          {codeLabel} <span className="font-semibold">{code}</span>
+        </p>
       </div>
     </div>
   );

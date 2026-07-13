@@ -247,6 +247,11 @@ export const de: Translations = {
     sandboxTitle: "Sichere Zahlung (Test/Sandbox)",
     sandboxNote: "In dieser Umgebung werden keine echten Zahlungsdaten erfasst. Das untenstehende Formular ist mit der Test-Zahlungsinfrastruktur (Sandbox) verbunden.",
     alreadyPaid: "Die Zahlung für diese Reservierung wurde bereits abgeschlossen. Reservierungscode:",
+    awaitingApprovalTitle: "Ihre Reservierungsanfrage ist eingegangen und wartet auf Bestätigung",
+    awaitingApprovalNote:
+      "Ihre Anfrage wird geprüft. Nach der Bestätigung können Sie die Zahlung auf dieser Seite abschließen. Sie können diese Seite später erneut besuchen oder Ihren Reservierungscode aufbewahren.",
+    rejectedTitle: "Ihre Reservierungsanfrage wurde nicht bestätigt",
+    rejectedNote: "Leider kann für diese Anfrage keine Zahlung erfolgen. Bitte kontaktieren Sie uns.",
     formPreparing: "Sichere Zahlungsseite wird vorbereitet...",
     formError: "Das Zahlungsformular konnte nicht geladen werden.",
     cardHolder: "Name auf der Karte",

@@ -26,6 +26,8 @@ import {
   adminGetVilla,
   adminListExtraServices,
   adminListMessages,
+  adminApproveReservation,
+  adminRejectReservation,
   adminListReservations,
   adminLogin,
   adminMarkMessageRead,
@@ -49,6 +51,8 @@ router.get("/blocked-dates", asyncHandler(adminListBlockedDates));
 router.post("/blocked-dates/toggle", asyncHandler(adminToggleBlockedDate));
 router.get("/reservations", asyncHandler(adminListReservations));
 router.get("/reservations/:id", asyncHandler(adminGetReservation));
+router.patch("/reservations/:id/approve", asyncHandler(adminApproveReservation));
+router.patch("/reservations/:id/reject", asyncHandler(adminRejectReservation));
 router.patch("/reservations/:id", asyncHandler(adminUpdateReservation));
 router.get("/messages", asyncHandler(adminListMessages));
 router.patch("/messages/:id/toggle-read", asyncHandler(adminMarkMessageRead));

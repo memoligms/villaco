@@ -12,7 +12,9 @@ export const changePasswordSchema = z.object({
 
 export const updateReservationSchema = z
   .object({
-    reservationStatus: z.enum(["PENDING", "CONFIRMED", "CANCELLED", "FAILED"]).optional(),
+    reservationStatus: z
+      .enum(["PENDING", "AWAITING_APPROVAL", "APPROVED", "CONFIRMED", "REJECTED", "CANCELLED", "FAILED"])
+      .optional(),
     paymentStatus: z.enum(["PENDING", "PAID", "FAILED"]).optional(),
   })
   .refine((d) => d.reservationStatus || d.paymentStatus, {

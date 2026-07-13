@@ -15,7 +15,10 @@ enum PaymentStatus {
 
 enum ReservationStatus {
   PENDING
+  AWAITING_APPROVAL
+  APPROVED
   CONFIRMED
+  REJECTED
   CANCELLED
   FAILED
 }

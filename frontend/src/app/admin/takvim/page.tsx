@@ -44,7 +44,7 @@ export default function AdminCalendarPage() {
   const reservedMap = useMemo(() => {
     const map = new Map<string, "confirmed" | "pending">();
     for (const r of reservations) {
-      if (r.reservationStatus === "CANCELLED" || r.reservationStatus === "FAILED") continue;
+      if (["CANCELLED", "FAILED", "REJECTED"].includes(r.reservationStatus)) continue;
       const start = new Date(r.checkIn);
       const end = new Date(r.checkOut);
       for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {

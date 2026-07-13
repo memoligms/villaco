@@ -62,11 +62,10 @@ export async function adminChangePassword(req: Request, res: Response) {
 }
 
 export async function adminStats(_req: Request, res: Response) {
-  const [total, confirmed, pending, cancelled, paidAgg, unreadMessages, totalMessages] = await Promise.all([
-    prisma.reservation.count(),
+  const [confirmed, pending, cancelled, paidAgg, unreadMessages, totalMessages] = await Promise.all([
     prisma.reservation.count({ where: { reservationStatus: "CONFIRMED" } }),
-    prisma.reservation.count({ where: { reservationStatus: "PENDING" } }),
-    prisma.reservation.count({ where: { reservationStatus: "CANCELLED" } }),
+    prisma.reservation.count({ where: { reservationStatus: "AWAITING_APPROVAL" } }),
+    prisma.reservation.count({ where: { reservationStatus: { in: ["CANCELLED", "REJECTED"] } } }),
     prisma.reservation.aggregate({
       where: { paymentStatus: "PAID" },
       _sum: { totalPrice: true },
@@ -74,8 +73,11 @@ export async function adminStats(_req: Request, res: Response) {
     prisma.contactMessage.count({ where: { isRead: false } }),
     prisma.contactMessage.count(),
   ]);
+  // Panelde yalnızca onay bekleyen + ödenmiş kayıtlar "işlenir".
+  const total = confirmed + pending;
 
   const recent = await prisma.reservation.findMany({
+    where: { OR: [{ reservationStatus: "AWAITING_APPROVAL" }, { paymentStatus: "PAID" }] },
     take: 5,
     orderBy: { createdAt: "desc" },
     include: { user: true },
@@ -103,19 +105,22 @@ export async function adminListReservations(req: Request, res: Response) {
   const from = parseDateParam(req.query.from);
   const to = parseDateParam(req.query.to);
 
-  const where: {
-    reservationStatus?: "PENDING" | "CONFIRMED" | "CANCELLED" | "FAILED";
-    checkIn?: { lte: Date };
-    checkOut?: { gte: Date };
-  } = {};
+  // Görünürlük kuralı: yalnızca onay bekleyenler ve ödemesi alınmış (PAID)
+  // rezervasyonlar panelde görünür; ödemesi alınmamış diğerleri (onaylanıp
+  // ödenmemiş, reddedilen, başarısız vb.) listelenmez.
+  const visibility = {
+    OR: [{ reservationStatus: "AWAITING_APPROVAL" as const }, { paymentStatus: "PAID" as const }],
+  };
 
-  if (status && ["PENDING", "CONFIRMED", "CANCELLED", "FAILED"].includes(status)) {
-    where.reservationStatus = status as "PENDING" | "CONFIRMED" | "CANCELLED" | "FAILED";
+  const filters: Record<string, unknown>[] = [];
+  if (status) {
+    filters.push({ reservationStatus: status });
   }
-
   // Konaklaması seçilen aralıkla çakışan rezervasyonlar: checkIn <= to && checkOut >= from
-  if (to) where.checkIn = { lte: to };
-  if (from) where.checkOut = { gte: from };
+  if (to) filters.push({ checkIn: { lte: to } });
+  if (from) filters.push({ checkOut: { gte: from } });
+
+  const where = { AND: [visibility, ...filters] };
 
   const reservations = await prisma.reservation.findMany({
     where,
@@ -146,6 +151,35 @@ export async function adminGetReservation(req: Request, res: Response) {
     throw new AppError("Rezervasyon bulunamadı.", 404);
   }
 
+  res.json({ success: true, data: reservation });
+}
+
+// Admin: onay bekleyen rezervasyonu onayla (müşteri artık ödeyebilir).
+export async function adminApproveReservation(req: Request, res: Response) {
+  const id = String(req.params.id);
+  const existing = await prisma.reservation.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Rezervasyon bulunamadı.", 404);
+  if (existing.reservationStatus !== "AWAITING_APPROVAL") {
+    throw new AppError("Yalnızca onay bekleyen rezervasyonlar onaylanabilir.", 409);
+  }
+  const reservation = await prisma.reservation.update({
+    where: { id },
+    data: { reservationStatus: "APPROVED" },
+    include: { user: true, payment: true },
+  });
+  res.json({ success: true, data: reservation });
+}
+
+// Admin: onay bekleyen rezervasyonu reddet.
+export async function adminRejectReservation(req: Request, res: Response) {
+  const id = String(req.params.id);
+  const existing = await prisma.reservation.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Rezervasyon bulunamadı.", 404);
+  const reservation = await prisma.reservation.update({
+    where: { id },
+    data: { reservationStatus: "REJECTED" },
+    include: { user: true, payment: true },
+  });
   res.json({ success: true, data: reservation });
 }
 

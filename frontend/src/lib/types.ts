@@ -25,7 +25,14 @@ export interface ExtraService {
 }
 
 export type PaymentStatus = "PENDING" | "PAID" | "FAILED";
-export type ReservationStatus = "PENDING" | "CONFIRMED" | "CANCELLED" | "FAILED";
+export type ReservationStatus =
+  | "PENDING"
+  | "AWAITING_APPROVAL"
+  | "APPROVED"
+  | "CONFIRMED"
+  | "REJECTED"
+  | "CANCELLED"
+  | "FAILED";
 
 export interface AppliedDiscount {
   type: "MOBILE" | "WELCOME" | "LAST_MINUTE" | "DATE_RANGE" | string;

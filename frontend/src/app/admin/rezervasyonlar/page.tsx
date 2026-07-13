@@ -5,16 +5,21 @@ import { adminApi } from "@/lib/adminApi";
 import type { Reservation } from "@/lib/types";
 import { formatCurrency, formatDate } from "@/lib/format";
 
-const reservationStatuses = ["PENDING", "CONFIRMED", "CANCELLED", "FAILED"];
 const statusLabels: Record<string, string> = {
   PENDING: "Beklemede",
-  CONFIRMED: "Onaylandı",
+  AWAITING_APPROVAL: "Onay Bekliyor",
+  APPROVED: "Onaylandı (ödeme bekliyor)",
+  CONFIRMED: "Ödendi",
+  REJECTED: "Reddedildi",
   CANCELLED: "İptal",
   FAILED: "Başarısız",
 };
 const statusColors: Record<string, string> = {
   PENDING: "bg-amber-100 text-amber-700",
+  AWAITING_APPROVAL: "bg-blue-100 text-blue-700",
+  APPROVED: "bg-indigo-100 text-indigo-700",
   CONFIRMED: "bg-green-100 text-green-700",
+  REJECTED: "bg-red-100 text-red-700",
   CANCELLED: "bg-red-100 text-red-700",
   FAILED: "bg-slate-200 text-slate-600",
 };
@@ -100,17 +105,29 @@ export default function AdminReservationsPage() {
     [reservations]
   );
 
-  async function changeStatus(id: string, reservationStatus: string) {
+  async function approve(id: string) {
     setSavingId(id);
+    setError(null);
     try {
-      await adminApi.updateReservation(id, { reservationStatus });
-      setReservations((prev) =>
-        prev.map((r) =>
-          r.id === id ? { ...r, reservationStatus: reservationStatus as Reservation["reservationStatus"] } : r
-        )
-      );
+      const updated = await adminApi.approveReservation(id);
+      setReservations((prev) => prev.map((r) => (r.id === id ? { ...r, ...updated } : r)));
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Güncellenemedi.");
+      setError(e instanceof Error ? e.message : "Onaylanamadı.");
+    } finally {
+      setSavingId(null);
+    }
+  }
+
+  async function reject(id: string) {
+    if (!window.confirm("Bu rezervasyon talebini reddetmek istediğinize emin misiniz?")) return;
+    setSavingId(id);
+    setError(null);
+    try {
+      await adminApi.rejectReservation(id);
+      // Reddedilen kayıt panelde görünmez; listeden çıkar.
+      setReservations((prev) => prev.filter((r) => r.id !== id));
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Reddedilemedi.");
     } finally {
       setSavingId(null);
     }
@@ -134,12 +151,9 @@ export default function AdminReservationsPage() {
           </p>
         </div>
         <select value={status} onChange={(e) => setStatus(e.target.value)} className="input w-48">
-          <option value="">Tüm Durumlar</option>
-          {reservationStatuses.map((s) => (
-            <option key={s} value={s}>
-              {statusLabels[s]}
-            </option>
-          ))}
+          <option value="">Tümü (onay bekleyen + ödenmiş)</option>
+          <option value="AWAITING_APPROVAL">Onay Bekleyenler</option>
+          <option value="CONFIRMED">Ödenmiş</option>
         </select>
       </div>
 
@@ -254,18 +268,26 @@ export default function AdminReservationsPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <select
-                      value={r.reservationStatus}
-                      disabled={savingId === r.id}
-                      onChange={(e) => changeStatus(r.id, e.target.value)}
-                      className="input w-36 py-1.5 text-xs"
-                    >
-                      {reservationStatuses.map((s) => (
-                        <option key={s} value={s}>
-                          {statusLabels[s]}
-                        </option>
-                      ))}
-                    </select>
+                    {r.reservationStatus === "AWAITING_APPROVAL" ? (
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => approve(r.id)}
+                          disabled={savingId === r.id}
+                          className="rounded-full bg-green-600 px-3 py-1.5 text-xs font-semibold text-white transition hover:bg-green-700 disabled:opacity-50"
+                        >
+                          Onayla
+                        </button>
+                        <button
+                          onClick={() => reject(r.id)}
+                          disabled={savingId === r.id}
+                          className="rounded-full bg-red-50 px-3 py-1.5 text-xs font-semibold text-red-600 transition hover:bg-red-100 disabled:opacity-50"
+                        >
+                          Reddet
+                        </button>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-slate-400">—</span>
+                    )}
                   </td>
                 </tr>
               ))

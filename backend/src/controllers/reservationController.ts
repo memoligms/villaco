@@ -20,19 +20,14 @@ export async function createReservation(req: Request, res: Response) {
     throw new AppError(`Bu villa en fazla ${villa.maxGuest} misafir kabul etmektedir.`, 422);
   }
 
-  // Müsaitlik: onaylanan (ödenmiş) rezervasyonlar her zaman bloklar.
-  // PENDING (ödeme bekleyen) yalnızca son 1 saatte oluşturulduysa bloklar; böylece
-  // ödemesi tamamlanmayan/terk edilen denemeler tarihleri kalıcı olarak kapatmaz.
-  const pendingCutoff = new Date(Date.now() - 60 * 60 * 1000);
+  // Müsaitlik: onay bekleyen, onaylanan ve ödenmiş rezervasyonlar tarihleri tutar.
+  // (Reddedilen/iptal/başarısız olanlar tutmaz.)
   const overlapping = await prisma.reservation.findFirst({
     where: {
       villaId: villa.id,
       checkIn: { lt: input.checkOut },
       checkOut: { gt: input.checkIn },
-      OR: [
-        { reservationStatus: "CONFIRMED" },
-        { reservationStatus: "PENDING", createdAt: { gt: pendingCutoff } },
-      ],
+      reservationStatus: { in: ["AWAITING_APPROVAL", "APPROVED", "CONFIRMED"] },
     },
   });
   // Manuel dolu işaretlenen günler (ör. Airbnb) da bloklar.
@@ -105,6 +100,7 @@ export async function createReservation(req: Request, res: Response) {
       nightlyPrice: villa.baseNightlyPrice,
       cleaningFee: villa.cleaningFee,
       depositFee: villa.depositFee,
+      reservationStatus: "AWAITING_APPROVAL",
       totalPrice: discountResult.finalTotal,
       discountTotal: discountResult.discountTotal,
       discounts: discountResult.discounts.length
@@ -126,20 +122,16 @@ export async function createReservation(req: Request, res: Response) {
   res.status(201).json({ success: true, data: reservation });
 }
 
-// Public: dolu (müsait olmayan) günler — onaylı rezervasyonlar + son 1 saatteki
-// bekleyen ödemeler + manuel dolu işaretlenen günler.
+// Public: dolu (müsait olmayan) günler — onay bekleyen/onaylanan/ödenmiş
+// rezervasyonlar + manuel dolu işaretlenen günler.
 export async function getUnavailableDates(_req: Request, res: Response) {
   const villa = await prisma.villa.findUnique({ where: { slug: VILLA_SLUG } });
-  const pendingCutoff = new Date(Date.now() - 60 * 60 * 1000);
 
   const reservations = villa
     ? await prisma.reservation.findMany({
         where: {
           villaId: villa.id,
-          OR: [
-            { reservationStatus: "CONFIRMED" },
-            { reservationStatus: "PENDING", createdAt: { gt: pendingCutoff } },
-          ],
+          reservationStatus: { in: ["AWAITING_APPROVAL", "APPROVED", "CONFIRMED"] },
         },
         select: { checkIn: true, checkOut: true },
       })

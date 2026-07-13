@@ -7,7 +7,10 @@ import { formatCurrency, formatDate } from "@/lib/format";
 
 const statusLabels: Record<string, string> = {
   PENDING: "Beklemede",
-  CONFIRMED: "Onaylandı",
+  AWAITING_APPROVAL: "Onay Bekliyor",
+  APPROVED: "Onaylandı (ödeme bekliyor)",
+  CONFIRMED: "Ödendi",
+  REJECTED: "Reddedildi",
   CANCELLED: "İptal",
   FAILED: "Başarısız",
 };
@@ -24,9 +27,9 @@ export default function AdminDashboardPage() {
   if (!stats) return <p className="text-slate-400">Yükleniyor...</p>;
 
   const cards = [
-    { label: "Toplam Rezervasyon", value: stats.reservations.total, accent: "text-brand-navy" },
-    { label: "Onaylanan", value: stats.reservations.confirmed, accent: "text-green-600" },
-    { label: "Bekleyen", value: stats.reservations.pending, accent: "text-amber-600" },
+    { label: "Toplam (onay bekleyen + ödenmiş)", value: stats.reservations.total, accent: "text-brand-navy" },
+    { label: "Ödenmiş", value: stats.reservations.confirmed, accent: "text-green-600" },
+    { label: "Onay Bekleyen", value: stats.reservations.pending, accent: "text-blue-600" },
     { label: "Toplam Gelir", value: formatCurrency(stats.revenue), accent: "text-brand-blue" },
   ];
 

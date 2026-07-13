@@ -206,6 +206,10 @@ export interface Translations {
     sandboxTitle: string;
     sandboxNote: string;
     alreadyPaid: string;
+    awaitingApprovalTitle: string;
+    awaitingApprovalNote: string;
+    rejectedTitle: string;
+    rejectedNote: string;
     formPreparing: string;
     formError: string;
     cardHolder: string;

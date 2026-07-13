@@ -247,6 +247,11 @@ export const en: Translations = {
     sandboxTitle: "Secure Payment (Test/Sandbox)",
     sandboxNote: "No real payment information is collected in this environment. The form below is connected to the test (sandbox) payment infrastructure.",
     alreadyPaid: "Payment for this reservation has already been completed. Reservation code:",
+    awaitingApprovalTitle: "Your reservation request has been received and is awaiting approval",
+    awaitingApprovalNote:
+      "Your request is being reviewed. Once approved, you can complete payment on this page. You may revisit this page later or keep your reservation code.",
+    rejectedTitle: "Your reservation request was not approved",
+    rejectedNote: "Unfortunately payment cannot be taken for this request. Please contact us.",
     formPreparing: "Preparing secure payment page...",
     formError: "The payment form could not be loaded.",
     cardHolder: "Name on Card",
