@@ -16,6 +16,8 @@ import {
 } from "../schemas/adminSchemas";
 import { VILLA_SLUG } from "../config/constants";
 import { UPLOAD_DIR } from "../middleware/upload";
+import { sendMail } from "../services/mailService";
+import { reservationApprovedEmail } from "../utils/emailTemplates";
 
 export async function adminLogin(req: Request, res: Response) {
   const { username, password } = adminLoginSchema.parse(req.body);
@@ -165,8 +167,23 @@ export async function adminApproveReservation(req: Request, res: Response) {
   const reservation = await prisma.reservation.update({
     where: { id },
     data: { reservationStatus: "APPROVED" },
-    include: { user: true, payment: true },
+    include: { user: true, payment: true, villa: true },
   });
+
+  // Onay bildirimi e-postası (işletmeye). SMTP yoksa sessizce atlanır, akışı bozmaz.
+  const recipient = reservation.villa?.contactEmail || "ahmethafi@gmail.com";
+  const mail = reservationApprovedEmail({
+    reservationCode: reservation.reservationCode,
+    guestName: reservation.user.fullName,
+    checkIn: reservation.checkIn,
+    checkOut: reservation.checkOut,
+    nightCount: reservation.nightCount,
+    guestCount: reservation.guestCount,
+    totalPrice: Number(reservation.totalPrice),
+    paymentStatus: reservation.paymentStatus,
+  });
+  void sendMail({ to: recipient, subject: mail.subject, html: mail.html, text: mail.text });
+
   res.json({ success: true, data: reservation });
 }
 

@@ -224,6 +224,7 @@ export const de: Translations = {
       guestsRequired: "Bitte geben Sie Vor- und Nachnamen aller Gäste ein.",
       kvkkRequired: "Sie müssen die Datenschutzerklärung akzeptieren, um fortzufahren.",
       datesUnavailable: "Die Villa ist an den gewählten Daten nicht verfügbar. Bitte wählen Sie andere Daten.",
+      minStay: (nights: number) => `Der Mindestaufenthalt für diese Daten beträgt ${nights} Nächte.`,
     },
   },
   payment: {
@@ -240,6 +241,8 @@ export const de: Translations = {
     discountTypeMobile: "Mobil-Rabatt",
     discountTypeWelcome: "Willkommensrabatt",
     discountTypeLastMinute: "Last-Minute-Rabatt",
+    discountTypeWeekly: "Wochenrabatt",
+    discountTypeMonthly: "Monatsrabatt",
     totalLabel: "Gesamt",
     customerInfoTitle: "Kundeninformationen",
     reservationCodeLabel: "Reservierungscode:",

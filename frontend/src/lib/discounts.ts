@@ -3,10 +3,11 @@
 // rezervasyon oluşturulurken backend tarafında hesaplanır.
 
 export interface ActivePromotion {
-  type: "MOBILE" | "WELCOME" | "LAST_MINUTE" | "DATE_RANGE" | string;
+  type: "MOBILE" | "WELCOME" | "LAST_MINUTE" | "DATE_RANGE" | "WEEKLY" | "MONTHLY" | string;
   label: string;
   percentage: number;
   daysBefore: number | null;
+  minNights: number | null;
   startDate: string | null;
   endDate: string | null;
 }
@@ -42,6 +43,7 @@ export function computeDiscountPreview(
   data: ActivePromotions | null,
   grandTotal: number,
   checkIn: string,
+  nightCount: number,
   isMobile: boolean
 ): DiscountPreview {
   const empty: DiscountPreview = { discounts: [], discountTotal: 0, finalTotal: grandTotal };
@@ -70,6 +72,10 @@ export function computeDiscountPreview(
       case "DATE_RANGE":
         ok = p.startDate != null && p.endDate != null && checkIn >= p.startDate && checkIn <= p.endDate;
         break;
+      case "WEEKLY":
+      case "MONTHLY":
+        ok = p.minNights != null && nightCount >= p.minNights;
+        break;
     }
     if (ok) {
       applied.push({
@@ -78,6 +84,16 @@ export function computeDiscountPreview(
         percentage: p.percentage,
         amount: round2((grandTotal * p.percentage) / 100),
       });
+    }
+  }
+
+  // Haftalık/aylık birbirini dışlar: en yüksek yüzdeli olan uygulanır.
+  const durationTypes = ["WEEKLY", "MONTHLY"];
+  const durations = applied.filter((a) => durationTypes.includes(a.type));
+  if (durations.length > 1) {
+    const best = durations.reduce((a, b) => (b.percentage > a.percentage ? b : a));
+    for (let i = applied.length - 1; i >= 0; i--) {
+      if (durationTypes.includes(applied[i].type) && applied[i] !== best) applied.splice(i, 1);
     }
   }
 

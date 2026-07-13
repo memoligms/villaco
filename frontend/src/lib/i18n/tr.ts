@@ -224,6 +224,7 @@ export const tr: Translations = {
       guestsRequired: "Lütfen tüm misafirlerin ad ve soyadını girin.",
       kvkkRequired: "Devam etmek için KVKK Aydınlatma Metni'ni kabul etmelisiniz.",
       datesUnavailable: "Seçtiğiniz tarihlerde villa dolu. Lütfen farklı tarih seçin.",
+      minStay: (nights: number) => `Bu tarihler için minimum konaklama süresi ${nights} gecedir.`,
     },
   },
   payment: {
@@ -240,6 +241,8 @@ export const tr: Translations = {
     discountTypeMobile: "Mobil indirimi",
     discountTypeWelcome: "Hoşgeldin indirimi",
     discountTypeLastMinute: "Son dakika indirimi",
+    discountTypeWeekly: "Haftalık indirim",
+    discountTypeMonthly: "Aylık indirim",
     totalLabel: "Toplam",
     customerInfoTitle: "Müşteri Bilgileri",
     reservationCodeLabel: "Rezervasyon kodu:",

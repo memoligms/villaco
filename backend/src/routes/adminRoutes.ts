@@ -16,6 +16,12 @@ import {
   adminDeletePromotion,
 } from "../controllers/promotionController";
 import {
+  adminListStayRules,
+  adminCreateStayRule,
+  adminUpdateStayRule,
+  adminDeleteStayRule,
+} from "../controllers/stayRuleController";
+import {
   adminChangePassword,
   adminCreateExtraService,
   adminDeleteExtraService,
@@ -64,6 +70,12 @@ router.get("/promotions", asyncHandler(adminListPromotions));
 router.post("/promotions", asyncHandler(adminCreatePromotion));
 router.patch("/promotions/:id", asyncHandler(adminUpdatePromotion));
 router.delete("/promotions/:id", asyncHandler(adminDeletePromotion));
+
+// Minimum konaklama kuralları
+router.get("/stay-rules", asyncHandler(adminListStayRules));
+router.post("/stay-rules", asyncHandler(adminCreateStayRule));
+router.patch("/stay-rules/:id", asyncHandler(adminUpdateStayRule));
+router.delete("/stay-rules/:id", asyncHandler(adminDeleteStayRule));
 
 // Müşteri yorumları
 router.get("/reviews", asyncHandler(adminListReviews));

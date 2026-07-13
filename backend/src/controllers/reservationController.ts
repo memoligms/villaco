@@ -7,6 +7,7 @@ import { generateReservationCode } from "../utils/reservationCode";
 import { AppError } from "../utils/AppError";
 import { VILLA_SLUG } from "../config/constants";
 import { computeDiscounts, isMobileUserAgent } from "../utils/promotions";
+import { resolveMinNights } from "../utils/stayRules";
 
 export async function createReservation(req: Request, res: Response) {
   const input = createReservationSchema.parse(req.body);
@@ -68,6 +69,13 @@ export async function createReservation(req: Request, res: Response) {
     throw new AppError("En az 1 gecelik konaklama seçmelisiniz.", 422);
   }
 
+  // Minimum konaklama kuralı (tarih aralığına göre veya varsayılan).
+  const stayRules = await prisma.stayRule.findMany();
+  const minNights = resolveMinNights(stayRules, input.checkIn, villa.defaultMinNights);
+  if (breakdown.nightCount < minNights) {
+    throw new AppError(`Seçtiğiniz tarihler için minimum konaklama süresi ${minNights} gecedir.`, 422);
+  }
+
   // İndirimler: aktif kampanyaları bu rezervasyon bağlamında değerlendir.
   const promotions = await prisma.promotion.findMany({ where: { isActive: true } });
   const needsWelcome = promotions.some((p) => p.type === "WELCOME");
@@ -78,6 +86,7 @@ export async function createReservation(req: Request, res: Response) {
     promotions,
     grandTotal: breakdown.totalPrice,
     checkIn: input.checkIn,
+    nightCount: breakdown.nightCount,
     isMobile: isMobileUserAgent(req.headers["user-agent"]),
     confirmedReservationCount,
   });

@@ -8,6 +8,7 @@ export interface Villa {
   contactEmail: string;
   contactPhone: string;
   maxGuest: number;
+  defaultMinNights: number;
   baseNightlyPrice: string;
   cleaningFee: string;
   depositFee: string;

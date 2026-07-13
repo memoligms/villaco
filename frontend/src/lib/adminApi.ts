@@ -66,14 +66,24 @@ export interface ContactMessage {
 
 export interface Promotion {
   id: string;
-  type: "MOBILE" | "WELCOME" | "LAST_MINUTE" | "DATE_RANGE" | string;
+  type: "MOBILE" | "WELCOME" | "LAST_MINUTE" | "DATE_RANGE" | "WEEKLY" | "MONTHLY" | string;
   label: string;
   percentage: number;
   isActive: boolean;
   maxRedemptions: number | null;
   daysBefore: number | null;
+  minNights: number | null;
   startDate: string | null;
   endDate: string | null;
+  createdAt: string;
+}
+
+export interface StayRule {
+  id: string;
+  label: string;
+  minNights: number;
+  startDate: string;
+  endDate: string;
   createdAt: string;
 }
 
@@ -138,6 +148,7 @@ export const adminApi = {
     contactEmail: string;
     contactPhone: string;
     maxGuest: number;
+    defaultMinNights: number;
     baseNightlyPrice: number;
     cleaningFee: number;
     depositFee: number;
@@ -196,7 +207,14 @@ export const adminApi = {
   },
   updatePromotion(
     id: string,
-    body: Partial<{ label: string; percentage: number; isActive: boolean; maxRedemptions: number | null; daysBefore: number | null }>
+    body: Partial<{
+      label: string;
+      percentage: number;
+      isActive: boolean;
+      maxRedemptions: number | null;
+      daysBefore: number | null;
+      minNights: number | null;
+    }>
   ) {
     return request<Promotion>(`/admin/promotions/${id}`, { method: "PATCH", body: JSON.stringify(body) });
   },
@@ -205,6 +223,21 @@ export const adminApi = {
   },
   deletePromotion(id: string) {
     return request<{ id: string }>(`/admin/promotions/${id}`, { method: "DELETE" });
+  },
+  stayRules() {
+    return request<StayRule[]>("/admin/stay-rules");
+  },
+  createStayRule(body: { label: string; minNights: number; startDate: string; endDate: string }) {
+    return request<StayRule>("/admin/stay-rules", { method: "POST", body: JSON.stringify(body) });
+  },
+  updateStayRule(
+    id: string,
+    body: Partial<{ label: string; minNights: number; startDate: string; endDate: string }>
+  ) {
+    return request<StayRule>(`/admin/stay-rules/${id}`, { method: "PATCH", body: JSON.stringify(body) });
+  },
+  deleteStayRule(id: string) {
+    return request<{ id: string }>(`/admin/stay-rules/${id}`, { method: "DELETE" });
   },
   reviews() {
     return request<AdminReview[]>("/admin/reviews");

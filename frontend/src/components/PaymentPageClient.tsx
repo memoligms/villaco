@@ -4,6 +4,7 @@ import type { Reservation } from "@/lib/types";
 import { useT, useFormatDate } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { SipayCheckout } from "@/components/SipayCheckout";
+import { CurrencySwitcher } from "@/components/CurrencySwitcher";
 
 export function PaymentPageClient({ reservation }: { reservation: Reservation }) {
   const t = useT();
@@ -56,6 +57,8 @@ export function PaymentPageClient({ reservation }: { reservation: Reservation })
     if (type === "MOBILE") return t.payment.discountTypeMobile;
     if (type === "WELCOME") return t.payment.discountTypeWelcome;
     if (type === "LAST_MINUTE") return t.payment.discountTypeLastMinute;
+    if (type === "WEEKLY") return t.payment.discountTypeWeekly;
+    if (type === "MONTHLY") return t.payment.discountTypeMonthly;
     return fallback;
   };
 
@@ -63,7 +66,10 @@ export function PaymentPageClient({ reservation }: { reservation: Reservation })
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3">
       <div className="lg:col-span-1">
         <div className="card">
-          <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">{t.payment.summaryTitle}</p>
+          <div className="flex items-start justify-between gap-2">
+            <p className="text-xs font-semibold uppercase tracking-wide text-brand-blue">{t.payment.summaryTitle}</p>
+            <CurrencySwitcher />
+          </div>
           <h2 className="mt-1 text-lg font-bold text-brand-navy">{reservation.villa.name}</h2>
           <p className="text-sm text-slate-500">{reservation.villa.location}</p>
 

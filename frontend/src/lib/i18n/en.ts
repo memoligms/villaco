@@ -224,6 +224,7 @@ export const en: Translations = {
       guestsRequired: "Please enter the first and last name of every guest.",
       kvkkRequired: "You must accept the Personal Data Notice to continue.",
       datesUnavailable: "The villa is unavailable on the selected dates. Please choose different dates.",
+      minStay: (nights: number) => `The minimum stay for these dates is ${nights} nights.`,
     },
   },
   payment: {
@@ -240,6 +241,8 @@ export const en: Translations = {
     discountTypeMobile: "Mobile discount",
     discountTypeWelcome: "Welcome discount",
     discountTypeLastMinute: "Last-minute discount",
+    discountTypeWeekly: "Weekly discount",
+    discountTypeMonthly: "Monthly discount",
     totalLabel: "Total",
     customerInfoTitle: "Customer Information",
     reservationCodeLabel: "Reservation code:",

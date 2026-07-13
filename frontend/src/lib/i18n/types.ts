@@ -183,6 +183,7 @@ export interface Translations {
       guestsRequired: string;
       kvkkRequired: string;
       datesUnavailable: string;
+      minStay: (nights: number) => string;
     };
   };
   payment: {
@@ -199,6 +200,8 @@ export interface Translations {
     discountTypeMobile: string;
     discountTypeWelcome: string;
     discountTypeLastMinute: string;
+    discountTypeWeekly: string;
+    discountTypeMonthly: string;
     totalLabel: string;
     customerInfoTitle: string;
     reservationCodeLabel: string;

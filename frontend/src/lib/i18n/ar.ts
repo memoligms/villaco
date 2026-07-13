@@ -223,6 +223,7 @@ export const ar: Translations = {
       guestsRequired: "يرجى إدخال الاسم واللقب لكل ضيف.",
       kvkkRequired: "يجب قبول إشعار حماية البيانات للمتابعة.",
       datesUnavailable: "الفيلا غير متاحة في التواريخ المحددة. يرجى اختيار تواريخ أخرى.",
+      minStay: (nights: number) => `الحد الأدنى للإقامة في هذه التواريخ هو ${nights} ليالٍ.`,
     },
   },
   payment: {
@@ -239,6 +240,8 @@ export const ar: Translations = {
     discountTypeMobile: "خصم الجوال",
     discountTypeWelcome: "خصم الترحيب",
     discountTypeLastMinute: "خصم اللحظة الأخيرة",
+    discountTypeWeekly: "خصم أسبوعي",
+    discountTypeMonthly: "خصم شهري",
     totalLabel: "الإجمالي",
     customerInfoTitle: "معلومات العميل",
     reservationCodeLabel: "رمز الحجز:",

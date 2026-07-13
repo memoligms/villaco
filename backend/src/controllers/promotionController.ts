@@ -29,6 +29,7 @@ export async function listActivePromotions(_req: Request, res: Response) {
         label: p.label,
         percentage: p.percentage,
         daysBefore: p.daysBefore,
+        minNights: p.minNights,
         startDate: p.startDate ? p.startDate.toISOString().slice(0, 10) : null,
         endDate: p.endDate ? p.endDate.toISOString().slice(0, 10) : null,
       })),
@@ -48,6 +49,7 @@ const updateSchema = z.object({
   isActive: z.boolean().optional(),
   maxRedemptions: z.coerce.number().int().min(1).max(100000).nullable().optional(),
   daysBefore: z.coerce.number().int().min(1).max(365).nullable().optional(),
+  minNights: z.coerce.number().int().min(1).max(365).nullable().optional(),
 });
 
 // Admin: kampanya güncelle (yüzde, etiket, aktiflik, parametreler).

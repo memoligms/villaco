@@ -35,11 +35,12 @@ export function computeDiscounts(params: {
   promotions: Promotion[];
   grandTotal: number;
   checkIn: Date;
+  nightCount: number;
   isMobile: boolean;
   confirmedReservationCount: number;
   now?: Date;
 }): DiscountResult {
-  const { promotions, grandTotal, checkIn, isMobile, confirmedReservationCount } = params;
+  const { promotions, grandTotal, checkIn, nightCount, isMobile, confirmedReservationCount } = params;
   const now = params.now ?? new Date();
   const dayMs = 1000 * 60 * 60 * 24;
   // Takvim günü farkı (bugünün ve girişin UTC gece yarısı üzerinden).
@@ -70,6 +71,11 @@ export function computeDiscounts(params: {
           checkInDate >= dateStr(p.startDate) &&
           checkInDate <= dateStr(p.endDate);
         break;
+      case "WEEKLY":
+      case "MONTHLY":
+        // Haftalık/aylık: en az minNights gecelik konaklama.
+        ok = p.minNights != null && nightCount >= p.minNights;
+        break;
     }
     if (ok) {
       applied.push({
@@ -78,6 +84,17 @@ export function computeDiscounts(params: {
         percentage: p.percentage,
         amount: round2((grandTotal * p.percentage) / 100),
       });
+    }
+  }
+
+  // Süreye bağlı indirimler (haftalık/aylık) birbirini dışlar: yalnızca en yüksek
+  // yüzdeli olan uygulanır (ör. 30 gecede aylık %20, haftalık %10 değil).
+  const durationTypes = ["WEEKLY", "MONTHLY"];
+  const durationDiscounts = applied.filter((a) => durationTypes.includes(a.type));
+  if (durationDiscounts.length > 1) {
+    const best = durationDiscounts.reduce((a, b) => (b.percentage > a.percentage ? b : a));
+    for (let i = applied.length - 1; i >= 0; i--) {
+      if (durationTypes.includes(applied[i].type) && applied[i] !== best) applied.splice(i, 1);
     }
   }
 

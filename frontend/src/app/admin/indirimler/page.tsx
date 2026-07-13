@@ -7,6 +7,8 @@ const TYPE_INFO: Record<string, { title: string; desc: string }> = {
   MOBILE: { title: "Mobil indirimi", desc: "Mobil cihazdan rezervasyon yapan kullanıcılara uygulanır." },
   WELCOME: { title: "Hoşgeldin indirimi", desc: "Siteden kiralama yapan ilk N müşteriye uygulanır." },
   LAST_MINUTE: { title: "Son dakika indirimi", desc: "Giriş tarihinden en az belirtilen gün önce yapılan (erken) rezervasyonlara uygulanır." },
+  WEEKLY: { title: "Haftalık indirim", desc: "Belirtilen gece ve üzeri konaklamalara uygulanır (ör. 7 gece+)." },
+  MONTHLY: { title: "Aylık indirim", desc: "Belirtilen gece ve üzeri konaklamalara uygulanır (ör. 30 gece+)." },
 };
 
 export default function AdminPromotionsPage() {
@@ -156,6 +158,16 @@ export default function AdminPromotionsPage() {
                         max={365}
                         disabled={busy === p.id}
                         onCommit={(v) => save(p.id, { daysBefore: v })}
+                      />
+                    ) : null}
+                    {p.type === "WEEKLY" || p.type === "MONTHLY" ? (
+                      <NumberField
+                        label="En az kaç gece"
+                        value={p.minNights ?? (p.type === "WEEKLY" ? 7 : 30)}
+                        min={1}
+                        max={365}
+                        disabled={busy === p.id}
+                        onCommit={(v) => save(p.id, { minNights: v })}
                       />
                     ) : null}
                   </div>

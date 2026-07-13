@@ -134,6 +134,23 @@ export function getActivePromotions(): Promise<ActivePromotions> {
   return request<ActivePromotions>("/promotions/active", { cache: "no-store" });
 }
 
+export interface StayRule {
+  id: string;
+  label: string;
+  minNights: number;
+  startDate: string;
+  endDate: string;
+}
+
+export interface StayRulesResponse {
+  defaultMinNights: number;
+  rules: StayRule[];
+}
+
+export function getStayRules(): Promise<StayRulesResponse> {
+  return request<StayRulesResponse>("/stay-rules", { cache: "no-store" });
+}
+
 export interface CreateReviewPayload {
   name: string;
   email: string;

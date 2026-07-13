@@ -3,7 +3,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ExtraService, Villa } from "@/lib/types";
-import { getExtraServices, getVilla, getUnavailableDates, getActivePromotions } from "@/lib/api";
+import {
+  getExtraServices,
+  getVilla,
+  getUnavailableDates,
+  getActivePromotions,
+  getStayRules,
+  type StayRulesResponse,
+} from "@/lib/api";
 import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { ApiError, createReservation, type GuestInput } from "@/lib/api";
@@ -12,6 +19,7 @@ import {
   isMobileDevice,
   type ActivePromotions,
 } from "@/lib/discounts";
+import { CurrencySwitcher } from "./CurrencySwitcher";
 import { CardLogos } from "./CardLogos";
 
 function todayISO() {
@@ -106,8 +114,9 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
       .catch(() => {});
   }, []);
 
-  // Aktif indirimleri çek (Sipariş Özeti önizlemesi için).
+  // Aktif indirimleri + minimum konaklama kurallarını çek.
   const [promotions, setPromotions] = useState<ActivePromotions | null>(null);
+  const [stayRules, setStayRules] = useState<StayRulesResponse | null>(null);
   const [isMobile, setIsMobile] = useState(false);
   useEffect(() => {
     // Cihaz tipini yalnızca istemcide tespit edebiliriz (SSR'de bilinmez).
@@ -116,7 +125,22 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
     getActivePromotions()
       .then(setPromotions)
       .catch(() => {});
+    getStayRules()
+      .then(setStayRules)
+      .catch(() => {});
   }, []);
+
+  // Seçilen giriş tarihi için geçerli minimum gece sayısı.
+  const minNights = useMemo(() => {
+    if (!stayRules) return 0;
+    const ci = form.checkIn;
+    if (!ci) return stayRules.defaultMinNights;
+    let m = 0;
+    for (const r of stayRules.rules) {
+      if (ci >= r.startDate && ci <= r.endDate && r.minNights > m) m = r.minNights;
+    }
+    return m > 0 ? m : stayRules.defaultMinNights;
+  }, [stayRules, form.checkIn]);
 
   // Seçilen aralıkta dolu gün var mı?
   function rangeHasUnavailable(ci: string, co: string): boolean {
@@ -151,8 +175,8 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
 
   // İndirim önizlemesi (Sipariş Özeti). Kesin tutar rezervasyon oluşturulurken backend'de hesaplanır.
   const discountPreview = useMemo(
-    () => computeDiscountPreview(promotions, totalPrice, form.checkIn, isMobile),
-    [promotions, totalPrice, form.checkIn, isMobile]
+    () => computeDiscountPreview(promotions, totalPrice, form.checkIn, nights, isMobile),
+    [promotions, totalPrice, form.checkIn, nights, isMobile]
   );
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
@@ -193,6 +217,8 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
       next.checkOut = t.reservation.validation.checkOutAfterCheckIn;
     } else if (form.checkIn && form.checkOut && rangeHasUnavailable(form.checkIn, form.checkOut)) {
       next.checkOut = t.reservation.validation.datesUnavailable;
+    } else if (form.checkIn && form.checkOut && minNights > 0 && nights < minNights) {
+      next.checkOut = t.reservation.validation.minStay(minNights);
     }
     const guestCount = Number(form.guestCount);
     if (!guestCount || guestCount < 1) next.guestCount = t.reservation.validation.guestMin;
@@ -386,7 +412,15 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
 
       <aside>
         <div className="card sticky top-24">
-          <h3 className="text-lg font-bold text-brand-navy">{t.reservation.summaryHeading}</h3>
+          <div className="flex items-center justify-between gap-2">
+            <h3 className="text-lg font-bold text-brand-navy">{t.reservation.summaryHeading}</h3>
+            <CurrencySwitcher />
+          </div>
+          {minNights > 1 ? (
+            <p className="mt-2 rounded-lg bg-blue-50 px-3 py-2 text-xs text-blue-700">
+              {t.reservation.validation.minStay(minNights)}
+            </p>
+          ) : null}
           <div className="mt-4 space-y-2 text-sm">
             <SummaryRow label={t.reservation.summaryCheckIn} value={form.checkIn || "—"} />
             <SummaryRow label={t.reservation.summaryCheckOut} value={form.checkOut || "—"} />
@@ -413,6 +447,10 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
                       ? t.payment.discountTypeWelcome
                       : d.type === "LAST_MINUTE"
                       ? t.payment.discountTypeLastMinute
+                      : d.type === "WEEKLY"
+                      ? t.payment.discountTypeWeekly
+                      : d.type === "MONTHLY"
+                      ? t.payment.discountTypeMonthly
                       : d.label;
                   return (
                     <div key={`${d.type}-${i}`} className="flex items-center justify-between text-green-600">

@@ -224,6 +224,7 @@ export const ru: Translations = {
       guestsRequired: "Укажите имя и фамилию каждого гостя.",
       kvkkRequired: "Чтобы продолжить, необходимо принять Уведомление о защите данных.",
       datesUnavailable: "Вилла недоступна на выбранные даты. Пожалуйста, выберите другие даты.",
+      minStay: (nights: number) => `Минимальный срок проживания для этих дат — ${nights} ночей.`,
     },
   },
   payment: {
@@ -240,6 +241,8 @@ export const ru: Translations = {
     discountTypeMobile: "Скидка с мобильного",
     discountTypeWelcome: "Приветственная скидка",
     discountTypeLastMinute: "Скидка «последняя минута»",
+    discountTypeWeekly: "Скидка за неделю",
+    discountTypeMonthly: "Скидка за месяц",
     totalLabel: "Итого",
     customerInfoTitle: "Информация о клиенте",
     reservationCodeLabel: "Код бронирования:",
