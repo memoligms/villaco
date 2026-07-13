@@ -3,10 +3,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ExtraService, Villa } from "@/lib/types";
-import { getExtraServices, getVilla, getUnavailableDates } from "@/lib/api";
+import { getExtraServices, getVilla, getUnavailableDates, getActivePromotions } from "@/lib/api";
 import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { ApiError, createReservation, type GuestInput } from "@/lib/api";
+import {
+  computeDiscountPreview,
+  isMobileDevice,
+  type ActivePromotions,
+} from "@/lib/discounts";
 import { CardLogos } from "./CardLogos";
 
 function todayISO() {
@@ -101,6 +106,18 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
       .catch(() => {});
   }, []);
 
+  // Aktif indirimleri çek (Sipariş Özeti önizlemesi için).
+  const [promotions, setPromotions] = useState<ActivePromotions | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    // Cihaz tipini yalnızca istemcide tespit edebiliriz (SSR'de bilinmez).
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMobile(isMobileDevice());
+    getActivePromotions()
+      .then(setPromotions)
+      .catch(() => {});
+  }, []);
+
   // Seçilen aralıkta dolu gün var mı?
   function rangeHasUnavailable(ci: string, co: string): boolean {
     const d = new Date(`${ci}T00:00:00.000Z`);
@@ -131,6 +148,12 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
   }, 0);
 
   const totalPrice = nights > 0 ? nightsTotal + cleaningFee + depositFee + extrasTotal : 0;
+
+  // İndirim önizlemesi (Sipariş Özeti). Kesin tutar rezervasyon oluşturulurken backend'de hesaplanır.
+  const discountPreview = useMemo(
+    () => computeDiscountPreview(promotions, totalPrice, form.checkIn, isMobile),
+    [promotions, totalPrice, form.checkIn, isMobile]
+  );
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -375,9 +398,37 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
             {cleaningFee > 0 ? <SummaryRow label={t.reservation.summaryCleaning} value={formatPrice(cleaningFee)} /> : null}
             {depositFee > 0 ? <SummaryRow label={t.reservation.summaryDeposit} value={formatPrice(depositFee)} /> : null}
             {extrasTotal > 0 ? <SummaryRow label={t.reservation.summaryExtras} value={formatPrice(extrasTotal)} /> : null}
+
+            {discountPreview.discounts.length > 0 ? (
+              <>
+                <div className="flex items-center justify-between border-t border-slate-100 pt-2 text-slate-500">
+                  <span>{t.payment.subtotalLabel}</span>
+                  <span>{formatPrice(totalPrice)}</span>
+                </div>
+                {discountPreview.discounts.map((d, i) => {
+                  const label =
+                    d.type === "MOBILE"
+                      ? t.payment.discountTypeMobile
+                      : d.type === "WELCOME"
+                      ? t.payment.discountTypeWelcome
+                      : d.type === "LAST_MINUTE"
+                      ? t.payment.discountTypeLastMinute
+                      : d.label;
+                  return (
+                    <div key={`${d.type}-${i}`} className="flex items-center justify-between text-green-600">
+                      <span>
+                        {label} (%{d.percentage})
+                      </span>
+                      <span>−{formatPrice(d.amount)}</span>
+                    </div>
+                  );
+                })}
+              </>
+            ) : null}
+
             <div className="flex items-center justify-between border-t border-slate-200 pt-2 text-base font-bold text-brand-navy">
               <span>{t.reservation.summaryTotal}</span>
-              <span>{formatPrice(totalPrice)}</span>
+              <span>{formatPrice(discountPreview.finalTotal)}</span>
             </div>
           </div>
 

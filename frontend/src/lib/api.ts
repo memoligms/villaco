@@ -1,4 +1,5 @@
 import type { ApiResponse, ExtraService, Reservation, Villa } from "./types";
+import type { ActivePromotions } from "./discounts";
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:4000/api";
 export const VILLA_SLUG = "yalikavak-villa";
@@ -127,6 +128,10 @@ export interface Review {
 
 export function getReviews(): Promise<Review[]> {
   return request<Review[]>("/reviews", { cache: "no-store" });
+}
+
+export function getActivePromotions(): Promise<ActivePromotions> {
+  return request<ActivePromotions>("/promotions/active", { cache: "no-store" });
 }
 
 export interface CreateReviewPayload {

@@ -5,6 +5,37 @@ import { AppError } from "../utils/AppError";
 
 const BUILTIN_TYPES = ["MOBILE", "WELCOME", "LAST_MINUTE"];
 
+// Public: aktif indirimler (rezervasyon sayfasındaki özet için önizleme).
+// Nihai tutar rezervasyon oluşturulurken backend'de kesinleşir.
+export async function listActivePromotions(_req: Request, res: Response) {
+  const promotions = await prisma.promotion.findMany({
+    where: { isActive: true },
+    orderBy: { createdAt: "asc" },
+  });
+
+  const welcome = promotions.find((p) => p.type === "WELCOME");
+  let welcomeEligible = false;
+  if (welcome && welcome.maxRedemptions != null) {
+    const confirmed = await prisma.reservation.count({ where: { reservationStatus: "CONFIRMED" } });
+    welcomeEligible = confirmed < welcome.maxRedemptions;
+  }
+
+  res.json({
+    success: true,
+    data: {
+      welcomeEligible,
+      promotions: promotions.map((p) => ({
+        type: p.type,
+        label: p.label,
+        percentage: p.percentage,
+        daysBefore: p.daysBefore,
+        startDate: p.startDate ? p.startDate.toISOString().slice(0, 10) : null,
+        endDate: p.endDate ? p.endDate.toISOString().slice(0, 10) : null,
+      })),
+    },
+  });
+}
+
 // Admin: tüm kampanyalar.
 export async function adminListPromotions(_req: Request, res: Response) {
   const promotions = await prisma.promotion.findMany({ orderBy: { createdAt: "asc" } });
