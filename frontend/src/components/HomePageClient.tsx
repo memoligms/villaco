@@ -10,6 +10,7 @@ import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { BookingSearchWidget } from "@/components/BookingSearchWidget";
 import { TrustBadges } from "@/components/TrustBadges";
 import { HeroSlideshow } from "@/components/HeroSlideshow";
+import { ReviewsSection } from "@/components/ReviewsSection";
 
 export function HomePageClient() {
   const t = useT();
@@ -118,6 +119,8 @@ export function HomePageClient() {
       )}
 
       <TrustBadges />
+
+      <ReviewsSection />
 
       <section className="mx-auto max-w-6xl px-4 py-16 text-center sm:px-6">
         <h2 className="text-2xl font-bold text-brand-navy sm:text-3xl">{t.home.ctaTitle}</h2>

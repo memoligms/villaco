@@ -4,6 +4,11 @@ import { requireAdmin } from "../middleware/requireAdmin";
 import { loginRateLimit } from "../middleware/rateLimiters";
 import { uploadImage } from "../middleware/upload";
 import {
+  adminListReviews,
+  adminToggleReviewVisibility,
+  adminDeleteReview,
+} from "../controllers/reviewController";
+import {
   adminChangePassword,
   adminCreateExtraService,
   adminDeleteExtraService,
@@ -42,6 +47,11 @@ router.get("/messages", asyncHandler(adminListMessages));
 router.patch("/messages/:id/toggle-read", asyncHandler(adminMarkMessageRead));
 router.get("/villa", asyncHandler(adminGetVilla));
 router.patch("/villa", asyncHandler(adminUpdateVilla));
+
+// Müşteri yorumları
+router.get("/reviews", asyncHandler(adminListReviews));
+router.patch("/reviews/:id/toggle-visibility", asyncHandler(adminToggleReviewVisibility));
+router.delete("/reviews/:id", asyncHandler(adminDeleteReview));
 
 // Ek hizmetler
 router.get("/extra-services", asyncHandler(adminListExtraServices));

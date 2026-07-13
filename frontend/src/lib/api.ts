@@ -114,3 +114,31 @@ export function submitContact(payload: ContactPayload): Promise<{ message: strin
     body: JSON.stringify(payload),
   });
 }
+
+export interface Review {
+  id: string;
+  name: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+}
+
+export function getReviews(): Promise<Review[]> {
+  return request<Review[]>("/reviews", { cache: "no-store" });
+}
+
+export interface CreateReviewPayload {
+  name: string;
+  email: string;
+  rating: number;
+  comment: string;
+}
+
+export function submitReview(
+  payload: CreateReviewPayload
+): Promise<{ message: string; review: Review }> {
+  return request<{ message: string; review: Review }>("/reviews", {
+    method: "POST",
+    body: JSON.stringify(payload),
+  });
+}

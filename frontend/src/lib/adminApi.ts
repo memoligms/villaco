@@ -64,6 +64,17 @@ export interface ContactMessage {
   createdAt: string;
 }
 
+export interface AdminReview {
+  id: string;
+  name: string;
+  email: string;
+  rating: number;
+  comment: string;
+  isVisible: boolean;
+  reservationCode: string | null;
+  createdAt: string;
+}
+
 export const adminApi = {
   login(username: string, password: string) {
     return request<{ token: string; username: string }>(
@@ -158,6 +169,15 @@ export const adminApi = {
       method: "POST",
       body: JSON.stringify({ currentPassword, newPassword }),
     });
+  },
+  reviews() {
+    return request<AdminReview[]>("/admin/reviews");
+  },
+  toggleReviewVisibility(id: string) {
+    return request<AdminReview>(`/admin/reviews/${id}/toggle-visibility`, { method: "PATCH" });
+  },
+  deleteReview(id: string) {
+    return request<{ id: string }>(`/admin/reviews/${id}`, { method: "DELETE" });
   },
   blockedDates() {
     return request<string[]>("/admin/blocked-dates");

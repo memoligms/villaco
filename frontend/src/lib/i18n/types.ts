@@ -254,6 +254,32 @@ export interface Translations {
       messageMin: string;
     };
   };
+  reviews: {
+    heading: string;
+    subtitle: string;
+    empty: string;
+    ratingSummary: (avg: string, count: number) => string;
+    writeCta: string;
+    formHeading: string;
+    formNote: string;
+    formName: string;
+    formEmail: string;
+    formEmailHint: string;
+    formRating: string;
+    formComment: string;
+    formCommentPlaceholder: string;
+    submitCta: string;
+    submitting: string;
+    successMessage: string;
+    notEligible: string;
+    cancel: string;
+    validation: {
+      nameMin: string;
+      emailInvalid: string;
+      ratingRequired: string;
+      commentMin: string;
+    };
+  };
   legal: {
     kvkk: { title: string; blocks: LegalBlock[] };
     privacy: { title: string; blocks: LegalBlock[] };

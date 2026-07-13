@@ -10,6 +10,7 @@ import reservationRoutes from "./routes/reservationRoutes";
 import paymentRoutes from "./routes/paymentRoutes";
 import extraServiceRoutes from "./routes/extraServiceRoutes";
 import contactRoutes from "./routes/contactRoutes";
+import reviewRoutes from "./routes/reviewRoutes";
 import adminRoutes from "./routes/adminRoutes";
 
 export function createApp() {
@@ -41,6 +42,7 @@ export function createApp() {
   app.use("/api/payments", paymentRoutes);
   app.use("/api/extra-services", extraServiceRoutes);
   app.use("/api/contact", contactRoutes);
+  app.use("/api/reviews", reviewRoutes);
   app.use("/api/admin", adminRoutes);
 
   app.use(notFoundHandler);

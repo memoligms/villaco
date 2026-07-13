@@ -133,6 +133,22 @@ model BlockedDate {
   @@map("blocked_dates")
 }
 
+// Müşteri yorumları — yalnızca e-postası tamamlanmış bir konaklamayla eşleşen
+// kişilerin yorumu sitede görünür olur. Admin panelinden gizlenebilir/silinebilir.
+model Review {
+  id              String   @id @default(uuid())
+  name            String
+  email           String
+  rating          Int
+  comment         String
+  isVisible       Boolean  @default(true) @map("is_visible")
+  reservationCode String?  @map("reservation_code")
+  createdAt       DateTime @default(now()) @map("created_at")
+
+  @@index([isVisible, createdAt])
+  @@map("reviews")
+}
+
 model AdminSetting {
   id                 Int       @id @default(1)
   passwordHash       String?   @map("password_hash")
