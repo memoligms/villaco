@@ -6,7 +6,7 @@ import { adminApi, type Promotion } from "@/lib/adminApi";
 const TYPE_INFO: Record<string, { title: string; desc: string }> = {
   MOBILE: { title: "Mobil indirimi", desc: "Mobil cihazdan rezervasyon yapan kullanıcılara uygulanır." },
   WELCOME: { title: "Hoşgeldin indirimi", desc: "Siteden kiralama yapan ilk N müşteriye uygulanır." },
-  LAST_MINUTE: { title: "Son dakika indirimi", desc: "Giriş tarihine belirtilen günden az kala yapılan rezervasyonlara uygulanır." },
+  LAST_MINUTE: { title: "Son dakika indirimi", desc: "Giriş tarihinden en az belirtilen gün önce yapılan (erken) rezervasyonlara uygulanır." },
 };
 
 export default function AdminPromotionsPage() {
@@ -150,7 +150,7 @@ export default function AdminPromotionsPage() {
                     ) : null}
                     {p.type === "LAST_MINUTE" ? (
                       <NumberField
-                        label="Kaç gün kala"
+                        label="En az kaç gün önce"
                         value={p.daysBefore ?? 10}
                         min={1}
                         max={365}

@@ -42,7 +42,9 @@ export function computeDiscounts(params: {
   const { promotions, grandTotal, checkIn, isMobile, confirmedReservationCount } = params;
   const now = params.now ?? new Date();
   const dayMs = 1000 * 60 * 60 * 24;
-  const daysUntilCheckIn = Math.floor((checkIn.getTime() - now.getTime()) / dayMs);
+  // Takvim günü farkı (bugünün ve girişin UTC gece yarısı üzerinden).
+  const nowMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const daysUntilCheckIn = Math.round((checkIn.getTime() - nowMidnight) / dayMs);
   const checkInDate = dateStr(checkIn);
 
   const applied: AppliedDiscount[] = [];
@@ -58,7 +60,8 @@ export function computeDiscounts(params: {
         ok = p.maxRedemptions != null && confirmedReservationCount < p.maxRedemptions;
         break;
       case "LAST_MINUTE":
-        ok = p.daysBefore != null && daysUntilCheckIn >= 0 && daysUntilCheckIn <= p.daysBefore;
+        // Girişten en az daysBefore gün önce yapılan rezervasyonlar (erken rezervasyon).
+        ok = p.daysBefore != null && daysUntilCheckIn >= p.daysBefore;
         break;
       case "DATE_RANGE":
         ok =

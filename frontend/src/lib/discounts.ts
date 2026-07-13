@@ -48,8 +48,9 @@ export function computeDiscountPreview(
   if (!data || grandTotal <= 0 || !checkIn) return empty;
 
   const now = new Date();
+  const nowMidnight = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
   const ci = new Date(`${checkIn}T00:00:00.000Z`);
-  const daysUntil = Math.floor((ci.getTime() - now.getTime()) / (1000 * 60 * 60 * 24));
+  const daysUntil = Math.round((ci.getTime() - nowMidnight) / (1000 * 60 * 60 * 24));
 
   const applied: PreviewDiscount[] = [];
   for (const p of data.promotions) {
@@ -63,7 +64,8 @@ export function computeDiscountPreview(
         ok = data.welcomeEligible;
         break;
       case "LAST_MINUTE":
-        ok = p.daysBefore != null && daysUntil >= 0 && daysUntil <= p.daysBefore;
+        // Girişten en az daysBefore gün önce yapılan rezervasyonlar (erken rezervasyon).
+        ok = p.daysBefore != null && daysUntil >= p.daysBefore;
         break;
       case "DATE_RANGE":
         ok = p.startDate != null && p.endDate != null && checkIn >= p.startDate && checkIn <= p.endDate;
