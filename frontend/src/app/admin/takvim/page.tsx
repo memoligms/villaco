@@ -101,6 +101,14 @@ export default function AdminCalendarPage() {
     setError(null);
   }
 
+  // Tüm manuel dolu günleri temizle (rezervasyonlara dokunmaz). Kaydet ile kalıcı olur.
+  function clearAll() {
+    if (draft.size === 0) return;
+    if (!window.confirm("Tüm manuel dolu (mor) günler kaldırılacak. Emin misiniz?")) return;
+    setError(null);
+    setDraft(new Set());
+  }
+
   function toggleDraft(key: string) {
     // Rezervasyondan dolu günler buradan değiştirilemez
     if (reservedMap.has(key)) {
@@ -169,6 +177,13 @@ export default function AdminCalendarPage() {
             </button>
           ) : (
             <>
+              <button
+                onClick={clearAll}
+                disabled={saving || draft.size === 0}
+                className="rounded-lg bg-red-50 px-4 py-1.5 text-sm font-medium text-red-600 hover:bg-red-100 disabled:opacity-50"
+              >
+                Tümünü Temizle
+              </button>
               <button
                 onClick={cancelEdit}
                 disabled={saving}
