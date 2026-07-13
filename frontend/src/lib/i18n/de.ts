@@ -305,6 +305,7 @@ export const de: Translations = {
     empty: "Noch keine Bewertungen. Schreiben Sie die erste!",
     ratingSummary: (avg, count) => `${avg} / 5 · ${count} Bewertungen`,
     writeCta: "Bewertung schreiben",
+    ownerReplyLabel: "Antwort des Gastgebers",
     formHeading: "Teilen Sie Ihre Erfahrung",
     formNote: "Um eine Bewertung abzugeben, müssen Sie zuvor in unserer Villa übernachtet haben. Verwenden Sie die E-Mail aus Ihrer Reservierung.",
     formName: "Ihr Name",

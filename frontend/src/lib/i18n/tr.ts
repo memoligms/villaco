@@ -305,6 +305,7 @@ export const tr: Translations = {
     empty: "Henüz yorum yok. İlk yorumu siz yazın!",
     ratingSummary: (avg, count) => `${avg} / 5 · ${count} değerlendirme`,
     writeCta: "Yorum Yaz",
+    ownerReplyLabel: "İşletmenin yanıtı",
     formHeading: "Deneyiminizi paylaşın",
     formNote: "Yorum yapabilmek için daha önce villamızda konaklamış olmanız gerekir. Rezervasyonunuzdaki e-posta ile gönderin.",
     formName: "Adınız",

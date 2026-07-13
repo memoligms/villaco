@@ -6,6 +6,7 @@ import { uploadImage } from "../middleware/upload";
 import {
   adminListReviews,
   adminToggleReviewVisibility,
+  adminReplyReview,
   adminDeleteReview,
 } from "../controllers/reviewController";
 import {
@@ -63,6 +64,7 @@ router.delete("/promotions/:id", asyncHandler(adminDeletePromotion));
 // Müşteri yorumları
 router.get("/reviews", asyncHandler(adminListReviews));
 router.patch("/reviews/:id/toggle-visibility", asyncHandler(adminToggleReviewVisibility));
+router.patch("/reviews/:id/reply", asyncHandler(adminReplyReview));
 router.delete("/reviews/:id", asyncHandler(adminDeleteReview));
 
 // Ek hizmetler

@@ -49,7 +49,15 @@ export async function listReviews(_req: Request, res: Response) {
   const reviews = await prisma.review.findMany({
     where: { isVisible: true },
     orderBy: { createdAt: "desc" },
-    select: { id: true, name: true, rating: true, comment: true, createdAt: true },
+    select: {
+      id: true,
+      name: true,
+      rating: true,
+      comment: true,
+      reply: true,
+      repliedAt: true,
+      createdAt: true,
+    },
   });
   res.json({ success: true, data: reviews });
 }
@@ -69,6 +77,24 @@ export async function adminToggleReviewVisibility(req: Request, res: Response) {
   const review = await prisma.review.update({
     where: { id },
     data: { isVisible: !existing.isVisible },
+  });
+  res.json({ success: true, data: review });
+}
+
+// Admin: yoruma yanıt yaz (boş gönderilirse yanıtı kaldırır).
+export async function adminReplyReview(req: Request, res: Response) {
+  const id = String(req.params.id);
+  const existing = await prisma.review.findUnique({ where: { id } });
+  if (!existing) throw new AppError("Yorum bulunamadı.", 404);
+
+  const reply = String((req.body?.reply ?? "")).trim();
+  if (reply.length > 1000) throw new AppError("Yanıt en fazla 1000 karakter olabilir.", 422);
+
+  const review = await prisma.review.update({
+    where: { id },
+    data: reply
+      ? { reply, repliedAt: new Date() }
+      : { reply: null, repliedAt: null },
   });
   res.json({ success: true, data: review });
 }

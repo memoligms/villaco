@@ -305,6 +305,7 @@ export const ru: Translations = {
     empty: "Пока нет отзывов. Напишите первый!",
     ratingSummary: (avg, count) => `${avg} / 5 · ${count} отзывов`,
     writeCta: "Написать отзыв",
+    ownerReplyLabel: "Ответ владельца",
     formHeading: "Поделитесь впечатлениями",
     formNote: "Чтобы оставить отзыв, вы должны были ранее проживать на нашей вилле. Используйте e-mail из вашего бронирования.",
     formName: "Ваше имя",

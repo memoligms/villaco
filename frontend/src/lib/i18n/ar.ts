@@ -304,6 +304,7 @@ export const ar: Translations = {
     empty: "لا توجد تعليقات بعد. كن أول من يكتب!",
     ratingSummary: (avg, count) => `${avg} / 5 · ${count} تقييم`,
     writeCta: "اكتب تعليقاً",
+    ownerReplyLabel: "رد المضيف",
     formHeading: "شارك تجربتك",
     formNote: "لكتابة تعليق يجب أن تكون قد أقمت في فيلتنا سابقاً. استخدم البريد الإلكتروني الخاص بحجزك.",
     formName: "اسمك",

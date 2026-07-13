@@ -120,6 +120,8 @@ export interface Review {
   name: string;
   rating: number;
   comment: string;
+  reply?: string | null;
+  repliedAt?: string | null;
   createdAt: string;
 }
 

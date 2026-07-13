@@ -85,6 +85,8 @@ export interface AdminReview {
   comment: string;
   isVisible: boolean;
   reservationCode: string | null;
+  reply: string | null;
+  repliedAt: string | null;
   createdAt: string;
 }
 
@@ -203,6 +205,12 @@ export const adminApi = {
   },
   toggleReviewVisibility(id: string) {
     return request<AdminReview>(`/admin/reviews/${id}/toggle-visibility`, { method: "PATCH" });
+  },
+  replyReview(id: string, reply: string) {
+    return request<AdminReview>(`/admin/reviews/${id}/reply`, {
+      method: "PATCH",
+      body: JSON.stringify({ reply }),
+    });
   },
   deleteReview(id: string) {
     return request<{ id: string }>(`/admin/reviews/${id}`, { method: "DELETE" });

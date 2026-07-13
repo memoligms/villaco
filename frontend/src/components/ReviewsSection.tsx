@@ -184,6 +184,12 @@ export function ReviewsSection() {
                   </div>
                   <p className="mt-3 text-sm leading-relaxed text-slate-600">{r.comment}</p>
                   <p className="mt-4 text-sm font-semibold text-brand-navy">{r.name}</p>
+                  {r.reply ? (
+                    <div className="mt-3 rounded-xl bg-slate-50 p-3 text-sm">
+                      <p className="text-xs font-semibold text-brand-blue">{t.reviews.ownerReplyLabel}</p>
+                      <p className="mt-1 leading-relaxed text-slate-600">{r.reply}</p>
+                    </div>
+                  ) : null}
                 </div>
               ))}
             </div>

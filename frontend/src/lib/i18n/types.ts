@@ -264,6 +264,7 @@ export interface Translations {
     empty: string;
     ratingSummary: (avg: string, count: number) => string;
     writeCta: string;
+    ownerReplyLabel: string;
     formHeading: string;
     formNote: string;
     formName: string;
