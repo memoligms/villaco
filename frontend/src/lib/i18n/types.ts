@@ -195,6 +195,10 @@ export interface Translations {
     cleaningLabel: string;
     depositLabel: string;
     extrasLabel: string;
+    subtotalLabel: string;
+    discountTypeMobile: string;
+    discountTypeWelcome: string;
+    discountTypeLastMinute: string;
     totalLabel: string;
     customerInfoTitle: string;
     reservationCodeLabel: string;

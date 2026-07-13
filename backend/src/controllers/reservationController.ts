@@ -1,10 +1,12 @@
 import type { Request, Response } from "express";
+import { Prisma } from "@prisma/client";
 import { prisma } from "../config/prisma";
 import { createReservationSchema } from "../schemas/reservationSchemas";
 import { calculatePrice } from "../utils/priceCalculator";
 import { generateReservationCode } from "../utils/reservationCode";
 import { AppError } from "../utils/AppError";
 import { VILLA_SLUG } from "../config/constants";
+import { computeDiscounts, isMobileUserAgent } from "../utils/promotions";
 
 export async function createReservation(req: Request, res: Response) {
   const input = createReservationSchema.parse(req.body);
@@ -71,6 +73,20 @@ export async function createReservation(req: Request, res: Response) {
     throw new AppError("En az 1 gecelik konaklama seçmelisiniz.", 422);
   }
 
+  // İndirimler: aktif kampanyaları bu rezervasyon bağlamında değerlendir.
+  const promotions = await prisma.promotion.findMany({ where: { isActive: true } });
+  const needsWelcome = promotions.some((p) => p.type === "WELCOME");
+  const confirmedReservationCount = needsWelcome
+    ? await prisma.reservation.count({ where: { reservationStatus: "CONFIRMED" } })
+    : 0;
+  const discountResult = computeDiscounts({
+    promotions,
+    grandTotal: breakdown.totalPrice,
+    checkIn: input.checkIn,
+    isMobile: isMobileUserAgent(req.headers["user-agent"]),
+    confirmedReservationCount,
+  });
+
   const user = await prisma.user.upsert({
     where: { email: input.email },
     update: { fullName: input.fullName, phone: input.phone },
@@ -89,7 +105,11 @@ export async function createReservation(req: Request, res: Response) {
       nightlyPrice: villa.baseNightlyPrice,
       cleaningFee: villa.cleaningFee,
       depositFee: villa.depositFee,
-      totalPrice: breakdown.totalPrice,
+      totalPrice: discountResult.finalTotal,
+      discountTotal: discountResult.discountTotal,
+      discounts: discountResult.discounts.length
+        ? (discountResult.discounts as unknown as Prisma.InputJsonValue)
+        : undefined,
       note: input.note,
       guests: input.guests ?? undefined,
       extraServices: {

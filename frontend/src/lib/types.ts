@@ -27,6 +27,13 @@ export interface ExtraService {
 export type PaymentStatus = "PENDING" | "PAID" | "FAILED";
 export type ReservationStatus = "PENDING" | "CONFIRMED" | "CANCELLED" | "FAILED";
 
+export interface AppliedDiscount {
+  type: "MOBILE" | "WELCOME" | "LAST_MINUTE" | "DATE_RANGE" | string;
+  label: string;
+  percentage: number;
+  amount: number;
+}
+
 export interface ReservationExtraService {
   id: string;
   quantity: number;
@@ -56,6 +63,8 @@ export interface Reservation {
   cleaningFee: string;
   depositFee: string;
   totalPrice: string;
+  discountTotal?: string;
+  discounts?: AppliedDiscount[] | null;
   note?: string | null;
   guests?: { gender: "male" | "female"; firstName: string; lastName: string }[] | null;
   paymentStatus: PaymentStatus;

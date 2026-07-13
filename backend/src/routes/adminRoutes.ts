@@ -9,6 +9,12 @@ import {
   adminDeleteReview,
 } from "../controllers/reviewController";
 import {
+  adminListPromotions,
+  adminUpdatePromotion,
+  adminCreatePromotion,
+  adminDeletePromotion,
+} from "../controllers/promotionController";
+import {
   adminChangePassword,
   adminCreateExtraService,
   adminDeleteExtraService,
@@ -47,6 +53,12 @@ router.get("/messages", asyncHandler(adminListMessages));
 router.patch("/messages/:id/toggle-read", asyncHandler(adminMarkMessageRead));
 router.get("/villa", asyncHandler(adminGetVilla));
 router.patch("/villa", asyncHandler(adminUpdateVilla));
+
+// Kampanyalar / indirimler
+router.get("/promotions", asyncHandler(adminListPromotions));
+router.post("/promotions", asyncHandler(adminCreatePromotion));
+router.patch("/promotions/:id", asyncHandler(adminUpdatePromotion));
+router.delete("/promotions/:id", asyncHandler(adminDeletePromotion));
 
 // Müşteri yorumları
 router.get("/reviews", asyncHandler(adminListReviews));

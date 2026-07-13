@@ -22,6 +22,16 @@ export function PaymentPageClient({ reservation }: { reservation: Reservation })
 
   const nightsTotal = Number(reservation.nightlyPrice) * reservation.nightCount;
   const extrasTotal = reservation.extraServices.reduce((sum, item) => sum + Number(item.totalPrice), 0);
+  const discounts = reservation.discounts ?? [];
+  const discountTotal = Number(reservation.discountTotal ?? 0);
+  const subtotal = Number(reservation.totalPrice) + discountTotal;
+
+  const discountLabel = (type: string, fallback: string) => {
+    if (type === "MOBILE") return t.payment.discountTypeMobile;
+    if (type === "WELCOME") return t.payment.discountTypeWelcome;
+    if (type === "LAST_MINUTE") return t.payment.discountTypeLastMinute;
+    return fallback;
+  };
 
   return (
     <div className="mx-auto grid max-w-5xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-3">
@@ -47,6 +57,24 @@ export function PaymentPageClient({ reservation }: { reservation: Reservation })
               <Row label={t.payment.depositLabel} value={formatPrice(reservation.depositFee)} />
             ) : null}
             {extrasTotal > 0 ? <Row label={t.payment.extrasLabel} value={formatPrice(extrasTotal)} /> : null}
+
+            {discounts.length > 0 ? (
+              <>
+                <div className="flex items-center justify-between border-t border-slate-100 pt-2 text-slate-500">
+                  <span>{t.payment.subtotalLabel}</span>
+                  <span>{formatPrice(subtotal)}</span>
+                </div>
+                {discounts.map((d, i) => (
+                  <div key={`${d.type}-${i}`} className="flex items-center justify-between text-green-600">
+                    <span>
+                      {discountLabel(d.type, d.label)} (%{d.percentage})
+                    </span>
+                    <span>−{formatPrice(d.amount)}</span>
+                  </div>
+                ))}
+              </>
+            ) : null}
+
             <div className="flex items-center justify-between border-t border-slate-100 pt-2 text-base font-bold text-brand-navy">
               <span>{t.payment.totalLabel}</span>
               <span>{formatPrice(reservation.totalPrice)}</span>

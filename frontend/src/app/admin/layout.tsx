@@ -12,6 +12,7 @@ const navItems = [
   { href: "/admin/rezervasyonlar", label: "Rezervasyonlar" },
   { href: "/admin/mesajlar", label: "Mesajlar" },
   { href: "/admin/yorumlar", label: "Yorumlar" },
+  { href: "/admin/indirimler", label: "İndirimler" },
   { href: "/admin/ek-hizmetler", label: "Ek Hizmetler" },
   { href: "/admin/villa", label: "Villa Ayarları" },
   { href: "/admin/sifre", label: "Şifre Değiştir" },

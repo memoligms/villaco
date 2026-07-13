@@ -73,6 +73,9 @@ model Reservation {
   note             String?
   // [{ gender: "male"|"female", firstName, lastName }, ...] — misafir bilgileri
   guests           Json?
+  discountTotal    Decimal                   @db.Decimal(10, 2) @default(0) @map("discount_total")
+  // [{ type, label, percentage, amount }, ...] — uygulanan indirimler
+  discounts        Json?
   paymentStatus    PaymentStatus             @default(PENDING) @map("payment_status")
   reservationStatus ReservationStatus        @default(PENDING) @map("reservation_status")
   createdAt        DateTime                  @default(now()) @map("created_at")
@@ -147,6 +150,24 @@ model Review {
 
   @@index([isVisible, createdAt])
   @@map("reviews")
+}
+
+// İndirim/kampanya kuralları. Üç yerleşik tür (MOBILE, WELCOME, LAST_MINUTE)
+// migration ile eklenir; admin bunları aç/kapatabilir. DATE_RANGE türünde tarih
+// aralığına özel kampanyalar admin panelinden eklenip silinebilir.
+model Promotion {
+  id             String    @id @default(uuid())
+  type           String    // MOBILE | WELCOME | LAST_MINUTE | DATE_RANGE
+  label          String
+  percentage     Int
+  isActive       Boolean   @default(true) @map("is_active")
+  maxRedemptions Int?      @map("max_redemptions") // WELCOME: ilk N müşteri
+  daysBefore     Int?      @map("days_before")     // LAST_MINUTE: giriş tarihine N gün kala
+  startDate      DateTime? @db.Date @map("start_date") // DATE_RANGE
+  endDate        DateTime? @db.Date @map("end_date")   // DATE_RANGE
+  createdAt      DateTime  @default(now()) @map("created_at")
+
+  @@map("promotions")
 }
 
 model AdminSetting {

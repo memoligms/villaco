@@ -1,0 +1,87 @@
+import type { Promotion } from "@prisma/client";
+
+export interface AppliedDiscount {
+  type: string;
+  label: string;
+  percentage: number;
+  amount: number;
+}
+
+export interface DiscountResult {
+  discounts: AppliedDiscount[];
+  discountTotal: number;
+  finalTotal: number;
+  percentageTotal: number;
+}
+
+function round2(value: number): number {
+  return Math.round(value * 100) / 100;
+}
+
+// Basit User-Agent tabanlı mobil tespiti.
+export function isMobileUserAgent(ua?: string | null): boolean {
+  if (!ua) return false;
+  return /Mobi|Android|iPhone|iPod|Windows Phone|BlackBerry|Opera Mini|IEMobile/i.test(ua);
+}
+
+function dateStr(d: Date): string {
+  return d.toISOString().slice(0, 10);
+}
+
+// Aktif kampanyaları verilen rezervasyon bağlamına göre değerlendirir ve toplam
+// indirimi hesaplar. İndirimler toplanarak uygulanır (kullanıcı tercihi); toplam
+// indirim güvenlik amacıyla genel toplamı aşamaz.
+export function computeDiscounts(params: {
+  promotions: Promotion[];
+  grandTotal: number;
+  checkIn: Date;
+  isMobile: boolean;
+  confirmedReservationCount: number;
+  now?: Date;
+}): DiscountResult {
+  const { promotions, grandTotal, checkIn, isMobile, confirmedReservationCount } = params;
+  const now = params.now ?? new Date();
+  const dayMs = 1000 * 60 * 60 * 24;
+  const daysUntilCheckIn = Math.floor((checkIn.getTime() - now.getTime()) / dayMs);
+  const checkInDate = dateStr(checkIn);
+
+  const applied: AppliedDiscount[] = [];
+
+  for (const p of promotions) {
+    if (!p.isActive || p.percentage <= 0) continue;
+    let ok = false;
+    switch (p.type) {
+      case "MOBILE":
+        ok = isMobile;
+        break;
+      case "WELCOME":
+        ok = p.maxRedemptions != null && confirmedReservationCount < p.maxRedemptions;
+        break;
+      case "LAST_MINUTE":
+        ok = p.daysBefore != null && daysUntilCheckIn >= 0 && daysUntilCheckIn <= p.daysBefore;
+        break;
+      case "DATE_RANGE":
+        ok =
+          p.startDate != null &&
+          p.endDate != null &&
+          checkInDate >= dateStr(p.startDate) &&
+          checkInDate <= dateStr(p.endDate);
+        break;
+    }
+    if (ok) {
+      applied.push({
+        type: p.type,
+        label: p.label,
+        percentage: p.percentage,
+        amount: round2((grandTotal * p.percentage) / 100),
+      });
+    }
+  }
+
+  const rawTotal = round2(applied.reduce((sum, a) => sum + a.amount, 0));
+  const discountTotal = Math.min(rawTotal, grandTotal);
+  const percentageTotal = applied.reduce((sum, a) => sum + a.percentage, 0);
+  const finalTotal = round2(grandTotal - discountTotal);
+
+  return { discounts: applied, discountTotal, finalTotal, percentageTotal };
+}

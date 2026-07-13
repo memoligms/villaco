@@ -64,6 +64,19 @@ export interface ContactMessage {
   createdAt: string;
 }
 
+export interface Promotion {
+  id: string;
+  type: "MOBILE" | "WELCOME" | "LAST_MINUTE" | "DATE_RANGE" | string;
+  label: string;
+  percentage: number;
+  isActive: boolean;
+  maxRedemptions: number | null;
+  daysBefore: number | null;
+  startDate: string | null;
+  endDate: string | null;
+  createdAt: string;
+}
+
 export interface AdminReview {
   id: string;
   name: string;
@@ -169,6 +182,21 @@ export const adminApi = {
       method: "POST",
       body: JSON.stringify({ currentPassword, newPassword }),
     });
+  },
+  promotions() {
+    return request<Promotion[]>("/admin/promotions");
+  },
+  updatePromotion(
+    id: string,
+    body: Partial<{ label: string; percentage: number; isActive: boolean; maxRedemptions: number | null; daysBefore: number | null }>
+  ) {
+    return request<Promotion>(`/admin/promotions/${id}`, { method: "PATCH", body: JSON.stringify(body) });
+  },
+  createPromotion(body: { label: string; percentage: number; startDate: string; endDate: string }) {
+    return request<Promotion>("/admin/promotions", { method: "POST", body: JSON.stringify(body) });
+  },
+  deletePromotion(id: string) {
+    return request<{ id: string }>(`/admin/promotions/${id}`, { method: "DELETE" });
   },
   reviews() {
     return request<AdminReview[]>("/admin/reviews");
