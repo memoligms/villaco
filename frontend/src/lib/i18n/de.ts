@@ -249,8 +249,8 @@ export const de: Translations = {
     customerInfoTitle: "Kundeninformationen",
     reservationCodeLabel: "Reservierungscode:",
     securePaymentLabel: "Sichere Zahlung",
-    sandboxTitle: "Sichere Zahlung (Test/Sandbox)",
-    sandboxNote: "In dieser Umgebung werden keine echten Zahlungsdaten erfasst. Das untenstehende Formular ist mit der Test-Zahlungsinfrastruktur (Sandbox) verbunden.",
+    sandboxTitle: "Sichere Zahlung",
+    sandboxNote: "Ihre Kartendaten werden sicher mit 256-Bit-SSL-Verschlüsselung verarbeitet.",
     alreadyPaid: "Die Zahlung für diese Reservierung wurde bereits abgeschlossen. Reservierungscode:",
     awaitingApprovalTitle: "Ihre Reservierungsanfrage ist eingegangen und wartet auf Bestätigung",
     awaitingApprovalNote:

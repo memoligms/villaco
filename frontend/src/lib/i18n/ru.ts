@@ -249,8 +249,8 @@ export const ru: Translations = {
     customerInfoTitle: "Информация о клиенте",
     reservationCodeLabel: "Код бронирования:",
     securePaymentLabel: "Безопасная оплата",
-    sandboxTitle: "Безопасная оплата (тестовый режим)",
-    sandboxNote: "В этой среде реальные платёжные данные не собираются. Форма ниже подключена к тестовой (sandbox) платёжной инфраструктуре.",
+    sandboxTitle: "Безопасная оплата",
+    sandboxNote: "Данные вашей карты обрабатываются безопасно с 256-битным SSL-шифрованием.",
     alreadyPaid: "Оплата по этому бронированию уже завершена. Код бронирования:",
     awaitingApprovalTitle: "Ваш запрос на бронирование получен и ожидает подтверждения",
     awaitingApprovalNote:

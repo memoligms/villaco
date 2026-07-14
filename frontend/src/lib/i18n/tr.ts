@@ -249,8 +249,8 @@ export const tr: Translations = {
     customerInfoTitle: "Müşteri Bilgileri",
     reservationCodeLabel: "Rezervasyon kodu:",
     securePaymentLabel: "Güvenli Ödeme",
-    sandboxTitle: "Güvenli Ödeme (Test/Sandbox)",
-    sandboxNote: "Bu ortamda gerçek ödeme bilgisi alınmaz. Aşağıdaki form test (sandbox) ödeme altyapısına bağlıdır.",
+    sandboxTitle: "Güvenli Ödeme",
+    sandboxNote: "Kart bilgileriniz 256-bit SSL şifreleme ile güvenli şekilde işlenir.",
     alreadyPaid: "Bu rezervasyon için ödeme zaten tamamlanmış. Rezervasyon kodu:",
     awaitingApprovalTitle: "Rezervasyon talebiniz alındı, onay bekleniyor",
     awaitingApprovalNote:

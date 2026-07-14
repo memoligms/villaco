@@ -248,8 +248,8 @@ export const ar: Translations = {
     customerInfoTitle: "معلومات العميل",
     reservationCodeLabel: "رمز الحجز:",
     securePaymentLabel: "دفع آمن",
-    sandboxTitle: "دفع آمن (اختبار)",
-    sandboxNote: "لا يتم جمع معلومات دفع حقيقية في هذه البيئة. النموذج أدناه متّصل ببنية الدفع التجريبية.",
+    sandboxTitle: "دفع آمن",
+    sandboxNote: "تتم معالجة بيانات بطاقتك بأمان باستخدام تشفير SSL 256 بت.",
     alreadyPaid: "تم إكمال الدفع لهذا الحجز بالفعل. رمز الحجز:",
     awaitingApprovalTitle: "تم استلام طلب الحجز الخاص بك وهو بانتظار الموافقة",
     awaitingApprovalNote:
