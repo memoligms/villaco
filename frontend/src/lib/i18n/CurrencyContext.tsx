@@ -115,8 +115,11 @@ export function CurrencyProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   // Kullanıcı elle seçmediyse, dile göre para birimini uygula.
+  // (localStorage'da kayıt varsa asla ezme — state güncellemesi aynı render'da
+  // yansımayabileceği için doğrudan da kontrol ediyoruz.)
   useEffect(() => {
     if (userChose) return;
+    if (typeof window !== "undefined" && window.localStorage.getItem(CURRENCY_KEY)) return;
     const byLang = LANGUAGE_CURRENCY[language];
     const next: Currency = byLang === "RUB" ? "USD" : (byLang as Currency);
     // eslint-disable-next-line react-hooks/set-state-in-effect
