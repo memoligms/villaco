@@ -104,10 +104,18 @@ export function VillaDetailsPageClient() {
               <div className="mt-4">
                 <VillaGallery images={villa.images} alt={villa.name} />
               </div>
-              {villa.videos && villa.videos.length > 0 ? (
-                <VideoGallery videos={villa.videos} title={t.villaDetails.videosHeading} />
-              ) : null}
             </section>
+
+            {/* Video Galerisi */}
+            {villa.videos && villa.videos.length > 0 ? (
+              <section>
+                <h2 className="text-2xl font-bold text-brand-navy">{t.villaDetails.videosHeading}</h2>
+                <p className="mt-1 text-sm text-slate-500">{t.villaDetails.galleryHint}</p>
+                <div className="mt-4">
+                  <VideoGallery videos={villa.videos} />
+                </div>
+              </section>
+            ) : null}
           </div>
 
           {/* Fiyat / rezervasyon */}

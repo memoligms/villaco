@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { ExtraService, Villa } from "@/lib/types";
 import {
@@ -268,6 +269,13 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
   return (
     <div className="mx-auto grid max-w-6xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-3">
       <div className="lg:col-span-2 space-y-6">
+        <Link
+          href="/rezervasyon-sorgula"
+          className="flex items-center justify-between gap-2 rounded-xl border border-brand-blue/30 bg-brand-blue/5 px-4 py-3 text-sm font-medium text-brand-blue transition hover:bg-brand-blue/10"
+        >
+          <span>{t.header.checkReservation}</span>
+          <span aria-hidden>→</span>
+        </Link>
         <div className="card">
           <h2 className="text-lg font-bold text-brand-navy">{t.reservation.dateGuestHeading}</h2>
           <div className="mt-4 grid grid-cols-2 gap-3">
