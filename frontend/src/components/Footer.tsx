@@ -61,8 +61,26 @@ export function Footer() {
         <div>
           <p className="text-sm font-semibold text-white">{t.footer.contactTitle}</p>
           <ul className="mt-2 space-y-1 text-sm">
-            <li>{contactEmail}</li>
-            <li>{contactPhone}</li>
+            <li>
+              <a href={`mailto:${contactEmail}`} className="hover:text-white">
+                {contactEmail}
+              </a>
+            </li>
+            <li>
+              <a href={`tel:${contactPhone.replace(/\s+/g, "")}`} className="hover:text-white">
+                {contactPhone}
+              </a>
+            </li>
+            <li>
+              <a
+                href={`https://wa.me/${contactPhone.replace(/[^0-9]/g, "")}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-green-400 hover:text-green-300"
+              >
+                <span aria-hidden>💬</span> WhatsApp
+              </a>
+            </li>
           </ul>
           <p className="mt-4 text-xs font-semibold uppercase tracking-wide text-slate-400">
             {t.footer.securePayment}
