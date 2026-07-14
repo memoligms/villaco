@@ -150,7 +150,7 @@ export const de: Translations = {
       "Die Villa Yalıkavak liegt an einer der begehrtesten Lagen von Yalıkavak, mit Panorama-Meerblick und kurzen Wegen zur Marina, zum Ortskern und zu den Strände.",
     mapTitle: "Lagekarte der Villa Yalıkavak",
     addressLabel: "Adresse",
-    addressValue: "Geriş Caddesi, 6441 Sokak Nr. 4, Yalıkavak Sitesi, Block C, Villa 1, Yalıkavak, Bodrum",
+    addressValue: "Geriş Caddesi, 6441 Sokak Nr. 4, Yalıkavak Toscana Sitesi, Block C, Villa 1, Yalıkavak, Bodrum",
     phoneLine: "+90 533 590 05 90",
     emailLine: "ahmethafi@gmail.com",
     directionsCta: "Route anzeigen",

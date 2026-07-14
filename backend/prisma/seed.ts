@@ -19,7 +19,7 @@ async function main() {
     name: "Bodrum Luxury Villa, Sea View and Private Pool",
     description: villaDescriptionTr,
     location: "Yalıkavak, Bodrum",
-    address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Sitesi, C Blok Villa 1, Yalıkavak / Bodrum",
+    address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Toscana Sitesi, C Blok Villa 1, Yalıkavak / Bodrum",
     contactEmail: "ahmethafi@gmail.com",
     contactPhone: "+90 533 590 05 90",
     maxGuest: 10,
@@ -46,7 +46,7 @@ async function main() {
         name: "Bodrum Luxury Villa, Sea View and Private Pool",
         description: villaDescriptionEn,
         location: "Yalıkavak, Bodrum",
-        address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Sitesi, Block C, Villa 1, Yalıkavak / Bodrum",
+        address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Toscana Sitesi, Block C, Villa 1, Yalıkavak / Bodrum",
         amenities: [
           "The entire villa is yours (not per person)",
           "Unobstructed sea view",
@@ -66,7 +66,7 @@ async function main() {
         name: "Bodrum Luxury Villa, Sea View and Private Pool",
         description: villaDescriptionDe,
         location: "Yalıkavak, Bodrum",
-        address: "Geriş Caddesi, 6441 Sokak Nr. 4, Yalıkavak Sitesi, Block C, Villa 1, Yalıkavak / Bodrum",
+        address: "Geriş Caddesi, 6441 Sokak Nr. 4, Yalıkavak Toscana Sitesi, Block C, Villa 1, Yalıkavak / Bodrum",
         amenities: [
           "Die ganze Villa gehört Ihnen (nicht pro Person)",
           "Unverbauter Meerblick",
@@ -86,7 +86,7 @@ async function main() {
         name: "Bodrum Luxury Villa, Sea View and Private Pool",
         description: villaDescriptionRu,
         location: "Ялыкавак, Бодрум",
-        address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Sitesi, блок C, вилла 1, Ялыкавак / Бодрум",
+        address: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Toscana Sitesi, блок C, вилла 1, Ялыкавак / Бодрум",
         amenities: [
           "Вся вилла принадлежит только вам (не за человека)",
           "Открытый вид на море",
@@ -107,7 +107,7 @@ async function main() {
         description:
           "فيلا فاخرة في يالِكافاك ببودروم بإطلالة بحرية غير محجوبة ومسبح خاص منفصل. الفيلا لك بالكامل؛ تُؤجَّر ككل وليس لكل شخص. بأربع غرف نوم وخمسة أسرّة مزدوجة وأربعة حمّامات ومرحاض ضيوف، فهي مثالية للمجموعات الكبيرة والعائلات.\n\nالوصول من الساعة 14:00 والمغادرة بحد أقصى 10:00. الوصول المبكر مجاني حسب التوفّر. خدمة الإفطار غير متوفرة.",
         location: "يالِكافاك، بودروم",
-        address: "شارع غيريش، 6441 سوكاك رقم:4، مجمّع يالِكافاك، مبنى C، فيلا 1، يالِكافاك / بودروم",
+        address: "شارع غيريش، 6441 سوكاك رقم:4، مجمّع يالِكافاك توسكانا، مبنى C، فيلا 1، يالِكافاك / بودروم",
         amenities: [
           "الفيلا بالكامل لك (وليست لكل شخص)",
           "إطلالة بحرية غير محجوبة",

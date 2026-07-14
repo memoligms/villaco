@@ -150,7 +150,7 @@ export const tr: Translations = {
       "Yalıkavak Villa, Yalıkavak'ın en değerli lokasyonlarından birinde; marinaya, çarşıya ve plajlara yakın, panoramik deniz manzaralı özel bir konumda yer almaktadır.",
     mapTitle: "Yalıkavak Villa Konum Haritası",
     addressLabel: "Adres",
-    addressValue: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Sitesi, C Blok Villa 1, Yalıkavak, Bodrum",
+    addressValue: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Toscana Sitesi, C Blok Villa 1, Yalıkavak, Bodrum",
     phoneLine: "+90 533 590 05 90",
     emailLine: "ahmethafi@gmail.com",
     directionsCta: "Yol Tarifi Al",

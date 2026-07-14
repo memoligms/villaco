@@ -150,7 +150,7 @@ export const ru: Translations = {
       "Villa Yalıkavak расположена в одном из самых привлекательных мест Ялыкавака, с панорамным видом на море и близостью к марине, центру и пляжам.",
     mapTitle: "Карта расположения Villa Yalıkavak",
     addressLabel: "Адрес",
-    addressValue: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Sitesi, блок C, вилла 1, Ялыкавак, Бодрум",
+    addressValue: "Geriş Caddesi, 6441 Sokak No:4, Yalıkavak Toscana Sitesi, блок C, вилла 1, Ялыкавак, Бодрум",
     phoneLine: "+90 533 590 05 90",
     emailLine: "ahmethafi@gmail.com",
     directionsCta: "Построить маршрут",
