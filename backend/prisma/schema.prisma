@@ -81,6 +81,8 @@ model Reservation {
   discountTotal    Decimal                   @db.Decimal(10, 2) @default(0) @map("discount_total")
   // [{ type, label, percentage, amount }, ...] — uygulanan indirimler
   discounts        Json?
+  // Müşterinin rezervasyon sırasında seçtiği görüntüleme para birimi (bilgi amaçlı)
+  displayCurrency  String                    @default("TRY") @map("display_currency")
   paymentStatus    PaymentStatus             @default(PENDING) @map("payment_status")
   reservationStatus ReservationStatus        @default(PENDING) @map("reservation_status")
   createdAt        DateTime                  @default(now()) @map("created_at")
@@ -189,6 +191,38 @@ model StayRule {
   createdAt DateTime @default(now()) @map("created_at")
 
   @@map("stay_rules")
+}
+
+// E-posta bildirim sistemi ayarları (panelden yönetilir). Tekil kayıt (id=1).
+model EmailSetting {
+  id                   Int      @id @default(1)
+  senderName           String   @default("Yalıkavak Villa") @map("sender_name")
+  fromEmail            String   @default("yalikavakvillacom@gmail.com") @map("from_email")
+  // Yönetici bildirim adresleri — virgül/yeni satır ile ayrılmış, birden fazla olabilir.
+  adminEmails          String   @default("yalikavakvillacom@gmail.com") @map("admin_emails")
+  notifyNewReservation Boolean  @default(true) @map("notify_new_reservation")
+  notifyApproved       Boolean  @default(true) @map("notify_approved")
+  notifyRejected       Boolean  @default(true) @map("notify_rejected")
+  notifyPaymentSuccess Boolean  @default(true) @map("notify_payment_success")
+  notifyPaymentFailed  Boolean  @default(true) @map("notify_payment_failed")
+  notifyCancelled      Boolean  @default(true) @map("notify_cancelled")
+  updatedAt            DateTime @updatedAt @map("updated_at")
+
+  @@map("email_settings")
+}
+
+// Gönderilen tüm e-postaların kaydı (panelden geçmiş görüntülenir).
+model EmailLog {
+  id        String   @id @default(uuid())
+  toAddress String   @map("to_address")
+  subject   String
+  type      String
+  status    String   // SENT | FAILED
+  error     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("email_logs")
 }
 
 model AdminSetting {

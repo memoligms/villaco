@@ -13,7 +13,7 @@ import {
   type StayRulesResponse,
 } from "@/lib/api";
 import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
-import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
+import { useFormatPrice, useCurrency } from "@/lib/i18n/CurrencyContext";
 import { ApiError, createReservation, type GuestInput } from "@/lib/api";
 import {
   computeDiscountPreview,
@@ -72,6 +72,7 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
   const searchParams = useSearchParams();
   const t = useT();
   const formatPrice = useFormatPrice();
+  const { currency } = useCurrency();
 
   const [form, setForm] = useState<FormState>({
     checkIn: searchParams.get("checkIn") ?? "",
@@ -251,6 +252,7 @@ function ReservationForm({ villa, extraServices }: { villa: Villa; extraServices
         email: form.email.trim(),
         phone: form.phone.trim(),
         note: form.note.trim() || undefined,
+        currency,
         guests: guests.map((g) => ({
           gender: g.gender,
           firstName: g.firstName.trim(),

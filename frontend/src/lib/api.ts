@@ -56,6 +56,7 @@ export interface CreateReservationPayload {
   email: string;
   phone: string;
   note?: string;
+  currency?: string;
   guests?: GuestInput[];
   extraServiceIds?: { id: string; quantity: number }[];
 }

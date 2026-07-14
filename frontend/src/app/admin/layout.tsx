@@ -16,6 +16,7 @@ const navItems = [
   { href: "/admin/konaklama", label: "Konaklama Kuralları" },
   { href: "/admin/ek-hizmetler", label: "Ek Hizmetler" },
   { href: "/admin/villa", label: "Villa Ayarları" },
+  { href: "/admin/eposta", label: "E-posta" },
   { href: "/admin/sifre", label: "Şifre Değiştir" },
 ];
 

@@ -12,6 +12,7 @@ export const createReservationSchema = z
       .trim()
       .regex(/^\+?[0-9 ]{10,15}$/, "Geçerli bir telefon numarası girin."),
     note: z.string().trim().max(1000).optional(),
+    currency: z.string().trim().max(8).optional(),
     guests: z
       .array(
         z.object({

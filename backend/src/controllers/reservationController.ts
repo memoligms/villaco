@@ -8,6 +8,7 @@ import { AppError } from "../utils/AppError";
 import { VILLA_SLUG } from "../config/constants";
 import { computeDiscounts, isMobileUserAgent } from "../utils/promotions";
 import { resolveMinNights } from "../utils/stayRules";
+import { notifyNewReservation } from "../services/reservationEmails";
 
 export async function createReservation(req: Request, res: Response) {
   const input = createReservationSchema.parse(req.body);
@@ -116,6 +117,7 @@ export async function createReservation(req: Request, res: Response) {
         ? (discountResult.discounts as unknown as Prisma.InputJsonValue)
         : undefined,
       note: input.note,
+      displayCurrency: (input.currency ?? "TRY").toUpperCase().slice(0, 8),
       guests: input.guests ?? undefined,
       extraServices: {
         create: extraSelections.map((e) => ({
@@ -127,6 +129,9 @@ export async function createReservation(req: Request, res: Response) {
     },
     include: { villa: true, user: true, extraServices: { include: { extraService: true } } },
   });
+
+  // Yöneticiye yeni rezervasyon bildirimi (asenkron, akışı bloke etmez).
+  notifyNewReservation(reservation);
 
   res.status(201).json({ success: true, data: reservation });
 }

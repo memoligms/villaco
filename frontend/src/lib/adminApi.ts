@@ -87,6 +87,29 @@ export interface StayRule {
   createdAt: string;
 }
 
+export interface EmailSettings {
+  senderName: string;
+  fromEmail: string;
+  adminEmails: string;
+  notifyNewReservation: boolean;
+  notifyApproved: boolean;
+  notifyRejected: boolean;
+  notifyPaymentSuccess: boolean;
+  notifyPaymentFailed: boolean;
+  notifyCancelled: boolean;
+  smtpConfigured?: boolean;
+}
+
+export interface EmailLog {
+  id: string;
+  toAddress: string;
+  subject: string;
+  type: string;
+  status: string;
+  error: string | null;
+  createdAt: string;
+}
+
 export interface AdminReview {
   id: string;
   name: string;
@@ -259,6 +282,18 @@ export const adminApi = {
   },
   deleteStayRule(id: string) {
     return request<{ id: string }>(`/admin/stay-rules/${id}`, { method: "DELETE" });
+  },
+  emailSettings() {
+    return request<EmailSettings>("/admin/email-settings");
+  },
+  updateEmailSettings(body: Partial<Omit<EmailSettings, "smtpConfigured" | "updatedAt" | "id">>) {
+    return request<EmailSettings>("/admin/email-settings", { method: "PATCH", body: JSON.stringify(body) });
+  },
+  sendTestEmail() {
+    return request<{ sentTo: string[] }>("/admin/email-settings/test", { method: "POST" });
+  },
+  emailLogs() {
+    return request<EmailLog[]>("/admin/email-logs");
   },
   reviews() {
     return request<AdminReview[]>("/admin/reviews");

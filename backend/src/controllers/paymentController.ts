@@ -4,6 +4,7 @@ import { prisma } from "../config/prisma";
 import { AppError } from "../utils/AppError";
 import { initiateCheckoutForm, retrieveCheckoutForm } from "../services/iyzicoService";
 import { create3DPayment, isSipayConfigured, validateHashKey } from "../services/sipayService";
+import { notifyPaymentSuccess, notifyPaymentFailed } from "../services/reservationEmails";
 import { env } from "../config/env";
 
 const PAYMENT_CURRENCY = "TRY";
@@ -197,7 +198,7 @@ export async function handleSipayCallback(req: Request, res: Response) {
   }
 
   if (succeeded) {
-    await prisma.$transaction([
+    const [, updated] = await prisma.$transaction([
       prisma.payment.updateMany({
         where: { reservationId: reservation.id },
         data: { status: "PAID", iyzicoPaymentId: parsed?.orderId ?? body.order_no ?? null, rawResponse: body as never },
@@ -205,12 +206,14 @@ export async function handleSipayCallback(req: Request, res: Response) {
       prisma.reservation.update({
         where: { id: reservation.id },
         data: { paymentStatus: "PAID", reservationStatus: "CONFIRMED" },
+        include: { user: true, villa: true },
       }),
     ]);
+    notifyPaymentSuccess(updated);
     return res.redirect(`${env.frontendBaseUrl}/odeme/basarili?code=${reservation.reservationCode}`);
   }
 
-  await prisma.$transaction([
+  const [, failedUpdated] = await prisma.$transaction([
     prisma.payment.updateMany({
       where: { reservationId: reservation.id },
       data: { status: "FAILED", rawResponse: body as never },
@@ -219,8 +222,10 @@ export async function handleSipayCallback(req: Request, res: Response) {
     prisma.reservation.update({
       where: { id: reservation.id },
       data: { paymentStatus: "FAILED" },
+      include: { user: true, villa: true },
     }),
   ]);
+  notifyPaymentFailed(failedUpdated);
   return res.redirect(`${env.frontendBaseUrl}/odeme/basarisiz?code=${reservation.reservationCode}`);
 }
 

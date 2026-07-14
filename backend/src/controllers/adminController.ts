@@ -16,8 +16,7 @@ import {
 } from "../schemas/adminSchemas";
 import { VILLA_SLUG } from "../config/constants";
 import { UPLOAD_DIR } from "../middleware/upload";
-import { sendMail } from "../services/mailService";
-import { reservationApprovedEmail, reservationApprovedCustomerEmail } from "../utils/emailTemplates";
+import { notifyApproved, notifyRejected, notifyCancelled } from "../services/reservationEmails";
 
 export async function adminLogin(req: Request, res: Response) {
   const { username, password } = adminLoginSchema.parse(req.body);
@@ -170,37 +169,9 @@ export async function adminApproveReservation(req: Request, res: Response) {
     include: { user: true, payment: true, villa: true },
   });
 
-  // Onay bildirimi e-postası (işletmeye). SMTP yoksa sessizce atlanır, akışı bozmaz.
-  const recipient = reservation.villa?.contactEmail || "ahmethafi@gmail.com";
-  const mail = reservationApprovedEmail({
-    reservationCode: reservation.reservationCode,
-    guestName: reservation.user.fullName,
-    checkIn: reservation.checkIn,
-    checkOut: reservation.checkOut,
-    nightCount: reservation.nightCount,
-    guestCount: reservation.guestCount,
-    totalPrice: Number(reservation.totalPrice),
-    paymentStatus: reservation.paymentStatus,
-  });
-  void sendMail({ to: recipient, subject: mail.subject, html: mail.html, text: mail.text });
-
-  // Müşteriye ödeme linkli onay e-postası.
-  const customerMail = reservationApprovedCustomerEmail({
-    reservationCode: reservation.reservationCode,
-    guestName: reservation.user.fullName,
-    checkIn: reservation.checkIn,
-    checkOut: reservation.checkOut,
-    nightCount: reservation.nightCount,
-    guestCount: reservation.guestCount,
-    totalPrice: Number(reservation.totalPrice),
-    paymentUrl: `${env.frontendBaseUrl}/odeme/${reservation.reservationCode}`,
-  });
-  void sendMail({
-    to: reservation.user.email,
-    subject: customerMail.subject,
-    html: customerMail.html,
-    text: customerMail.text,
-  });
+  // Müşteriye ödeme linkli onay e-postası (asenkron). Yönetici yeni talebi zaten
+  // oluşturma anında öğreniyor; onayda misafir bilgilendirilir.
+  notifyApproved(reservation);
 
   res.json({ success: true, data: reservation });
 }
@@ -213,8 +184,11 @@ export async function adminRejectReservation(req: Request, res: Response) {
   const reservation = await prisma.reservation.update({
     where: { id },
     data: { reservationStatus: "REJECTED" },
-    include: { user: true, payment: true },
+    include: { user: true, payment: true, villa: true },
   });
+
+  notifyRejected(reservation);
+
   res.json({ success: true, data: reservation });
 }
 
@@ -233,8 +207,13 @@ export async function adminUpdateReservation(req: Request, res: Response) {
       ...(input.reservationStatus ? { reservationStatus: input.reservationStatus } : {}),
       ...(input.paymentStatus ? { paymentStatus: input.paymentStatus } : {}),
     },
-    include: { user: true, payment: true },
+    include: { user: true, payment: true, villa: true },
   });
+
+  // Durum CANCELLED olarak değiştirildiyse ilgili kişilere iptal bildirimi.
+  if (input.reservationStatus === "CANCELLED" && existing.reservationStatus !== "CANCELLED") {
+    notifyCancelled(reservation);
+  }
 
   res.json({ success: true, data: reservation });
 }

@@ -22,6 +22,12 @@ import {
   adminDeleteStayRule,
 } from "../controllers/stayRuleController";
 import {
+  adminGetEmailSettings,
+  adminUpdateEmailSettings,
+  adminListEmailLogs,
+  adminSendTestEmail,
+} from "../controllers/emailAdminController";
+import {
   adminChangePassword,
   adminCreateExtraService,
   adminDeleteExtraService,
@@ -71,6 +77,12 @@ router.get("/promotions", asyncHandler(adminListPromotions));
 router.post("/promotions", asyncHandler(adminCreatePromotion));
 router.patch("/promotions/:id", asyncHandler(adminUpdatePromotion));
 router.delete("/promotions/:id", asyncHandler(adminDeletePromotion));
+
+// E-posta bildirim sistemi
+router.get("/email-settings", asyncHandler(adminGetEmailSettings));
+router.patch("/email-settings", asyncHandler(adminUpdateEmailSettings));
+router.post("/email-settings/test", asyncHandler(adminSendTestEmail));
+router.get("/email-logs", asyncHandler(adminListEmailLogs));
 
 // Minimum konaklama kuralları
 router.get("/stay-rules", asyncHandler(adminListStayRules));
