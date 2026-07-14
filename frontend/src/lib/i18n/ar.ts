@@ -17,6 +17,7 @@ export const ar: Translations = {
     about: "من نحن",
     location: "الموقع والوصول",
     contact: "اتصل بنا",
+    checkReservation: "استعلام الحجز",
     bookNow: "احجز الآن",
   },
   footer: {
@@ -99,6 +100,7 @@ export const ar: Translations = {
       },
     },
     galleryHeading: "معرض الصور",
+    videosHeading: "مقاطع الفيديو",
     galleryHint: "انقر على صورة لتكبيرها.",
     priceCardNightly: "سعر الليلة",
     maxGuestLabel: "الحد الأقصى للضيوف",
@@ -332,6 +334,20 @@ export const ar: Translations = {
       ratingRequired: "الرجاء تقديم تقييم.",
       commentMin: "يجب أن يكون التعليق 10 أحرف على الأقل.",
     },
+  },
+  lookup: {
+    heading: "الاستعلام عن حالة الحجز",
+    intro: "اطلع على حالة طلبك باستخدام رمز الحجز والبريد الإلكتروني. إذا تمت الموافقة، يمكنك المتابعة إلى الدفع.",
+    codeLabel: "رمز الحجز",
+    emailLabel: "البريد الإلكتروني",
+    submitCta: "استعلام",
+    submitting: "جارٍ الاستعلام...",
+    amountLabel: "المبلغ المستحق",
+    payCta: "المتابعة إلى الدفع",
+    statusApprovedNote: "تمت الموافقة على حجزك. يمكنك إتمام الدفع أدناه.",
+    statusAwaitingNote: "طلبك بانتظار الموافقة. بعد الموافقة، استعلم مرة أخرى للدفع.",
+    statusPaidNote: "اكتمل الدفع لهذا الحجز. شكراً لك!",
+    statusRejectedNote: "لم تتم الموافقة على طلب الحجز هذا. يرجى التواصل معنا.",
   },
   legal: {
     kvkk: {

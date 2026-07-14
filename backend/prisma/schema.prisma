@@ -49,6 +49,7 @@ model Villa {
   cleaningFee      Decimal       @db.Decimal(10, 2) @default(0) @map("cleaning_fee")
   depositFee       Decimal       @db.Decimal(10, 2) @default(0) @map("deposit_fee")
   images           String[]
+  videos           String[]      @default([])
   amenities        String[]
   isActive         Boolean       @default(true) @map("is_active")
   // { en: { name, description, location, address, amenities: string[] }, de: {...}, ru: {...} }

@@ -17,6 +17,7 @@ export const ru: Translations = {
     about: "О нас",
     location: "Расположение",
     contact: "Контакты",
+    checkReservation: "Проверить бронь",
     bookNow: "Забронировать",
   },
   footer: {
@@ -100,6 +101,7 @@ export const ru: Translations = {
       },
     },
     galleryHeading: "Фотогалерея",
+    videosHeading: "Видео",
     galleryHint: "Нажмите на фото, чтобы увеличить.",
     priceCardNightly: "Цена за ночь",
     maxGuestLabel: "Максимум гостей",
@@ -333,6 +335,20 @@ export const ru: Translations = {
       ratingRequired: "Пожалуйста, поставьте оценку.",
       commentMin: "Отзыв должен содержать не менее 10 символов.",
     },
+  },
+  lookup: {
+    heading: "Проверить статус бронирования",
+    intro: "Проверьте статус вашей заявки по коду бронирования и e-mail. После подтверждения вы сможете перейти к оплате.",
+    codeLabel: "Код бронирования",
+    emailLabel: "E-mail",
+    submitCta: "Проверить",
+    submitting: "Проверка...",
+    amountLabel: "Сумма к оплате",
+    payCta: "Перейти к оплате",
+    statusApprovedNote: "Ваше бронирование подтверждено. Вы можете завершить оплату ниже.",
+    statusAwaitingNote: "Ваша заявка ожидает подтверждения. После подтверждения проверьте снова для оплаты.",
+    statusPaidNote: "Оплата этого бронирования завершена. Спасибо!",
+    statusRejectedNote: "Эта заявка не была подтверждена. Пожалуйста, свяжитесь с нами.",
   },
   legal: {
     kvkk: {

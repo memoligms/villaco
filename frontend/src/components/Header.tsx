@@ -15,6 +15,7 @@ export function Header() {
     { href: "/hakkinda", label: t.header.about },
     { href: "/konum-ulasim", label: t.header.location },
     { href: "/iletisim", label: t.header.contact },
+    { href: "/rezervasyon-sorgula", label: t.header.checkReservation },
   ];
 
   return (

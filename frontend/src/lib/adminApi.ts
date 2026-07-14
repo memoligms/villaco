@@ -154,6 +154,7 @@ export const adminApi = {
     depositFee: number;
     amenities: string[];
     images: string[];
+    videos: string[];
     isActive: boolean;
   }>) {
     return request<Villa>("/admin/villa", { method: "PATCH", body: JSON.stringify(body) });
@@ -190,6 +191,26 @@ export const adminApi = {
     }
     if (!res.ok || !body.success) {
       throw new AdminApiError(body.message ?? "Görsel yüklenemedi.", res.status);
+    }
+    return body.data as { url: string };
+  },
+  async uploadVideo(file: File): Promise<{ url: string }> {
+    const token = getAdminToken();
+    const fd = new FormData();
+    fd.append("video", file);
+    const res = await fetch(`${API_BASE_URL}/admin/upload-video`, {
+      method: "POST",
+      headers: token ? { Authorization: `Bearer ${token}` } : undefined,
+      body: fd,
+      cache: "no-store",
+    });
+    const body = (await res.json().catch(() => ({}))) as ApiResponse<{ url: string }>;
+    if (res.status === 401) {
+      clearAdminToken();
+      throw new AdminApiError(body.message ?? "Oturum gerekli.", 401);
+    }
+    if (!res.ok || !body.success) {
+      throw new AdminApiError(body.message ?? "Video yüklenemedi.", res.status);
     }
     return body.data as { url: string };
   },

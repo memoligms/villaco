@@ -17,6 +17,7 @@ export const en: Translations = {
     about: "About",
     location: "Location & Access",
     contact: "Contact",
+    checkReservation: "Check Booking",
     bookNow: "Book Now",
   },
   footer: {
@@ -100,6 +101,7 @@ export const en: Translations = {
       },
     },
     galleryHeading: "Photo Gallery",
+    videosHeading: "Videos",
     galleryHint: "Click a photo to enlarge it.",
     priceCardNightly: "Nightly Rate",
     maxGuestLabel: "Maximum Guests",
@@ -333,6 +335,20 @@ export const en: Translations = {
       ratingRequired: "Please give a rating.",
       commentMin: "Review must be at least 10 characters.",
     },
+  },
+  lookup: {
+    heading: "Check Reservation Status",
+    intro: "View the status of your request with your reservation code and email. If approved, you can proceed to payment.",
+    codeLabel: "Reservation Code",
+    emailLabel: "Email",
+    submitCta: "Check",
+    submitting: "Checking...",
+    amountLabel: "Amount Due",
+    payCta: "Proceed to Payment",
+    statusApprovedNote: "Your reservation has been approved. You can complete your payment below.",
+    statusAwaitingNote: "Your request is awaiting approval. Once approved, check again to pay.",
+    statusPaidNote: "Payment for this reservation is complete. Thank you!",
+    statusRejectedNote: "This reservation request was not approved. Please contact us.",
   },
   legal: {
     kvkk: {

@@ -8,6 +8,7 @@ import { getVilla } from "@/lib/api";
 import { useLanguage, useT } from "@/lib/i18n/LanguageContext";
 import { useFormatPrice } from "@/lib/i18n/CurrencyContext";
 import { VillaGallery } from "@/components/VillaGallery";
+import { VideoGallery } from "@/components/VideoGallery";
 
 export function VillaDetailsPageClient() {
   const t = useT();
@@ -103,6 +104,9 @@ export function VillaDetailsPageClient() {
               <div className="mt-4">
                 <VillaGallery images={villa.images} alt={villa.name} />
               </div>
+              {villa.videos && villa.videos.length > 0 ? (
+                <VideoGallery videos={villa.videos} title={t.villaDetails.videosHeading} />
+              ) : null}
             </section>
           </div>
 

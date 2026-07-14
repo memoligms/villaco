@@ -17,6 +17,7 @@ export const de: Translations = {
     about: "Über uns",
     location: "Lage & Anreise",
     contact: "Kontakt",
+    checkReservation: "Buchung prüfen",
     bookNow: "Jetzt buchen",
   },
   footer: {
@@ -100,6 +101,7 @@ export const de: Translations = {
       },
     },
     galleryHeading: "Fotogalerie",
+    videosHeading: "Videos",
     galleryHint: "Klicken Sie auf ein Foto, um es zu vergrößern.",
     priceCardNightly: "Preis pro Nacht",
     maxGuestLabel: "Maximale Gästezahl",
@@ -333,6 +335,20 @@ export const de: Translations = {
       ratingRequired: "Bitte geben Sie eine Bewertung ab.",
       commentMin: "Die Bewertung muss mindestens 10 Zeichen lang sein.",
     },
+  },
+  lookup: {
+    heading: "Reservierungsstatus prüfen",
+    intro: "Sehen Sie den Status Ihrer Anfrage mit Reservierungscode und E-Mail. Nach Bestätigung können Sie zur Zahlung übergehen.",
+    codeLabel: "Reservierungscode",
+    emailLabel: "E-Mail",
+    submitCta: "Prüfen",
+    submitting: "Wird geprüft...",
+    amountLabel: "Fälliger Betrag",
+    payCta: "Zur Zahlung",
+    statusApprovedNote: "Ihre Reservierung wurde bestätigt. Sie können Ihre Zahlung unten abschließen.",
+    statusAwaitingNote: "Ihre Anfrage wartet auf Bestätigung. Nach der Bestätigung erneut prüfen, um zu zahlen.",
+    statusPaidNote: "Die Zahlung für diese Reservierung ist abgeschlossen. Vielen Dank!",
+    statusRejectedNote: "Diese Reservierungsanfrage wurde nicht bestätigt. Bitte kontaktieren Sie uns.",
   },
   legal: {
     kvkk: {

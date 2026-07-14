@@ -1,0 +1,1 @@
+ALTER TABLE "villa" ADD COLUMN "videos" TEXT[] NOT NULL DEFAULT '{}';

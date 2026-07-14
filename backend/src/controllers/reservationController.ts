@@ -160,6 +160,49 @@ export async function getUnavailableDates(_req: Request, res: Response) {
   res.json({ success: true, data: [...days].sort() });
 }
 
+// Public: müşteri kendi rezervasyon durumunu sorgular (rezervasyon kodu + e-posta).
+// Güvenlik için ikisi de eşleşmelidir; onaylıysa ödeme yapabileceği bilgisini döner.
+export async function lookupReservation(req: Request, res: Response) {
+  const code = String((req.body?.reservationCode ?? "")).trim();
+  const email = String((req.body?.email ?? "")).trim().toLowerCase();
+
+  if (!code || !email) {
+    throw new AppError("Rezervasyon kodu ve e-posta zorunludur.", 422);
+  }
+
+  const reservation = await prisma.reservation.findFirst({
+    where: {
+      reservationCode: code,
+      user: { is: { email: { equals: email, mode: "insensitive" } } },
+    },
+    include: { villa: { select: { name: true } }, user: { select: { fullName: true } } },
+  });
+
+  if (!reservation) {
+    throw new AppError("Bu bilgilerle eşleşen bir rezervasyon bulunamadı.", 404);
+  }
+
+  const payable =
+    reservation.reservationStatus === "APPROVED" && reservation.paymentStatus !== "PAID";
+
+  res.json({
+    success: true,
+    data: {
+      reservationCode: reservation.reservationCode,
+      guestName: reservation.user.fullName,
+      villaName: reservation.villa.name,
+      checkIn: reservation.checkIn,
+      checkOut: reservation.checkOut,
+      nightCount: reservation.nightCount,
+      guestCount: reservation.guestCount,
+      totalPrice: reservation.totalPrice,
+      reservationStatus: reservation.reservationStatus,
+      paymentStatus: reservation.paymentStatus,
+      payable,
+    },
+  });
+}
+
 export async function getReservation(req: Request, res: Response) {
   const idOrCode = String(req.params.id);
 

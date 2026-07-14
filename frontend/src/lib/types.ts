@@ -13,6 +13,7 @@ export interface Villa {
   cleaningFee: string;
   depositFee: string;
   images: string[];
+  videos?: string[];
   amenities: string[];
   isActive: boolean;
 }

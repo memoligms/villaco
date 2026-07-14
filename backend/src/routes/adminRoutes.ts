@@ -2,7 +2,7 @@ import { Router } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
 import { requireAdmin } from "../middleware/requireAdmin";
 import { loginRateLimit } from "../middleware/rateLimiters";
-import { uploadImage } from "../middleware/upload";
+import { uploadImage, uploadVideo } from "../middleware/upload";
 import {
   adminListReviews,
   adminToggleReviewVisibility,
@@ -42,6 +42,7 @@ import {
   adminUpdateReservation,
   adminUpdateVilla,
   adminUploadImage,
+  adminUploadVideo,
 } from "../controllers/adminController";
 
 const router = Router();
@@ -91,6 +92,7 @@ router.delete("/extra-services/:id", asyncHandler(adminDeleteExtraService));
 
 // Görsel yükleme / silme
 router.post("/upload", uploadImage.single("image"), asyncHandler(adminUploadImage));
+router.post("/upload-video", uploadVideo.single("video"), asyncHandler(adminUploadVideo));
 router.delete("/upload", asyncHandler(adminDeleteImage));
 
 export default router;

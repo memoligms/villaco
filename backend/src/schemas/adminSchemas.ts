@@ -35,6 +35,7 @@ export const updateVillaSchema = z.object({
   depositFee: z.number().min(0).optional(),
   amenities: z.array(z.string().trim().min(1)).optional(),
   images: z.array(z.string().trim().min(1)).optional(),
+  videos: z.array(z.string().trim().min(1)).max(20).optional(),
   isActive: z.boolean().optional(),
 });
 

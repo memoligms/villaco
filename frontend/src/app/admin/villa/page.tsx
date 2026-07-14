@@ -19,6 +19,7 @@ interface FormState {
   isActive: boolean;
   amenities: string[];
   images: string[];
+  videos: string[];
 }
 
 export default function AdminVillaSettingsPage() {
@@ -29,7 +30,10 @@ export default function AdminVillaSettingsPage() {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
   const [newAmenity, setNewAmenity] = useState("");
+  const [newVideoUrl, setNewVideoUrl] = useState("");
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const videoInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     adminApi
@@ -49,6 +53,7 @@ export default function AdminVillaSettingsPage() {
           isActive: v.isActive,
           amenities: v.amenities ?? [],
           images: v.images ?? [],
+          videos: v.videos ?? [],
         })
       )
       .catch((e) => setError(e.message))
@@ -120,6 +125,48 @@ export default function AdminVillaSettingsPage() {
     }
   }
 
+  function addVideoUrl() {
+    const url = newVideoUrl.trim();
+    if (!url || !form) return;
+    update("videos", [...form.videos, url]);
+    setNewVideoUrl("");
+  }
+
+  async function removeVideo(i: number) {
+    if (!form) return;
+    const url = form.videos[i];
+    update(
+      "videos",
+      form.videos.filter((_, idx) => idx !== i)
+    );
+    if (url.includes("/uploads/")) {
+      try {
+        await adminApi.deleteImage(url);
+      } catch {
+        /* dosya zaten yoksa sorun değil */
+      }
+    }
+  }
+
+  async function handleVideoFiles(files: FileList | null) {
+    if (!files || files.length === 0 || !form) return;
+    setUploadingVideo(true);
+    setError(null);
+    try {
+      const uploaded: string[] = [];
+      for (const file of Array.from(files)) {
+        const { url } = await adminApi.uploadVideo(file);
+        uploaded.push(url);
+      }
+      update("videos", [...form.videos, ...uploaded]);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "Video yüklenemedi.");
+    } finally {
+      setUploadingVideo(false);
+      if (videoInputRef.current) videoInputRef.current.value = "";
+    }
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (!form) return;
@@ -140,6 +187,7 @@ export default function AdminVillaSettingsPage() {
         depositFee: Number(form.depositFee),
         amenities: form.amenities,
         images: form.images,
+        videos: form.videos,
         isActive: form.isActive,
       });
       setSuccess(true);
@@ -380,6 +428,72 @@ export default function AdminVillaSettingsPage() {
                   <span className="text-xs">Görsel Ekle</span>
                 </>
               )}
+            </label>
+          </div>
+        </section>
+
+        {/* Videolar */}
+        <section className="card space-y-4">
+          <h2 className="text-sm font-semibold uppercase tracking-wide text-slate-400">
+            Videolar ({form.videos.length})
+          </h2>
+          <p className="text-xs text-slate-400">
+            MP4/WEBM/MOV video yükleyin (maks. 150 MB) veya YouTube/Vimeo/video bağlantısı ekleyin.
+            Bu videolar sitede fotoğrafların altında açılır/kapanır &quot;Videolar&quot; bölümünde gösterilir.
+          </p>
+
+          {form.videos.length > 0 ? (
+            <div className="space-y-2">
+              {form.videos.map((url, i) => (
+                <div
+                  key={`${url}-${i}`}
+                  className="flex items-center justify-between gap-3 rounded-lg border border-slate-200 px-3 py-2"
+                >
+                  <span className="truncate text-sm text-slate-600">🎬 {url}</span>
+                  <button
+                    type="button"
+                    onClick={() => removeVideo(i)}
+                    className="shrink-0 rounded bg-red-50 px-2.5 py-1 text-xs font-medium text-red-600 hover:bg-red-100"
+                  >
+                    Sil
+                  </button>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <p className="text-sm text-slate-400">Henüz video eklenmedi.</p>
+          )}
+
+          <div className="flex flex-wrap gap-2">
+            <input
+              value={newVideoUrl}
+              onChange={(e) => setNewVideoUrl(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  addVideoUrl();
+                }
+              }}
+              placeholder="Video bağlantısı (YouTube/Vimeo/MP4)"
+              className="input flex-1 min-w-[200px]"
+            />
+            <button
+              type="button"
+              onClick={addVideoUrl}
+              className="rounded-lg bg-slate-100 px-4 text-sm font-medium text-slate-700 hover:bg-slate-200"
+            >
+              Bağlantı Ekle
+            </button>
+            <label className="flex cursor-pointer items-center rounded-lg bg-brand-navy px-4 py-2 text-sm font-medium text-white hover:opacity-90">
+              <input
+                ref={videoInputRef}
+                type="file"
+                accept="video/mp4,video/webm,video/quicktime"
+                multiple
+                className="hidden"
+                onChange={(e) => handleVideoFiles(e.target.files)}
+              />
+              {uploadingVideo ? "Yükleniyor..." : "Video Yükle"}
             </label>
           </div>
         </section>

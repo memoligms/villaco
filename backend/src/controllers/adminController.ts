@@ -17,7 +17,7 @@ import {
 import { VILLA_SLUG } from "../config/constants";
 import { UPLOAD_DIR } from "../middleware/upload";
 import { sendMail } from "../services/mailService";
-import { reservationApprovedEmail } from "../utils/emailTemplates";
+import { reservationApprovedEmail, reservationApprovedCustomerEmail } from "../utils/emailTemplates";
 
 export async function adminLogin(req: Request, res: Response) {
   const { username, password } = adminLoginSchema.parse(req.body);
@@ -183,6 +183,24 @@ export async function adminApproveReservation(req: Request, res: Response) {
     paymentStatus: reservation.paymentStatus,
   });
   void sendMail({ to: recipient, subject: mail.subject, html: mail.html, text: mail.text });
+
+  // Müşteriye ödeme linkli onay e-postası.
+  const customerMail = reservationApprovedCustomerEmail({
+    reservationCode: reservation.reservationCode,
+    guestName: reservation.user.fullName,
+    checkIn: reservation.checkIn,
+    checkOut: reservation.checkOut,
+    nightCount: reservation.nightCount,
+    guestCount: reservation.guestCount,
+    totalPrice: Number(reservation.totalPrice),
+    paymentUrl: `${env.frontendBaseUrl}/odeme/${reservation.reservationCode}`,
+  });
+  void sendMail({
+    to: reservation.user.email,
+    subject: customerMail.subject,
+    html: customerMail.html,
+    text: customerMail.text,
+  });
 
   res.json({ success: true, data: reservation });
 }
@@ -357,6 +375,14 @@ export async function adminToggleBlockedDate(req: Request, res: Response) {
 export async function adminUploadImage(req: Request, res: Response) {
   if (!req.file) {
     throw new AppError("Yüklenecek dosya bulunamadı.", 400);
+  }
+  const url = `${env.backendBaseUrl}/uploads/${req.file.filename}`;
+  res.status(201).json({ success: true, data: { url } });
+}
+
+export async function adminUploadVideo(req: Request, res: Response) {
+  if (!req.file) {
+    throw new AppError("Yüklenecek video bulunamadı.", 400);
   }
   const url = `${env.backendBaseUrl}/uploads/${req.file.filename}`;
   res.status(201).json({ success: true, data: { url } });

@@ -40,3 +40,31 @@ export const uploadImage = multer({
     cb(null, true);
   },
 });
+
+const ALLOWED_VIDEO_MIME = new Set(["video/mp4", "video/webm", "video/quicktime"]);
+const VIDEO_EXT_BY_MIME: Record<string, string> = {
+  "video/mp4": ".mp4",
+  "video/webm": ".webm",
+  "video/quicktime": ".mov",
+};
+
+const videoStorage = multer.diskStorage({
+  destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
+  filename: (_req, file, cb) => {
+    const ext = VIDEO_EXT_BY_MIME[file.mimetype] ?? path.extname(file.originalname) ?? ".mp4";
+    const unique = `${Date.now()}-${crypto.randomBytes(6).toString("hex")}${ext}`;
+    cb(null, unique);
+  },
+});
+
+export const uploadVideo = multer({
+  storage: videoStorage,
+  limits: { fileSize: 150 * 1024 * 1024 }, // 150 MB
+  fileFilter: (_req, file, cb) => {
+    if (!ALLOWED_VIDEO_MIME.has(file.mimetype)) {
+      cb(new AppError("Yalnızca MP4, WEBM veya MOV video yüklenebilir.", 400));
+      return;
+    }
+    cb(null, true);
+  },
+});

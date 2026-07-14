@@ -71,6 +71,27 @@ export function getReservation(idOrCode: string): Promise<Reservation> {
   return request<Reservation>(`/reservations/${idOrCode}`, { cache: "no-store" });
 }
 
+export interface ReservationLookup {
+  reservationCode: string;
+  guestName: string;
+  villaName: string;
+  checkIn: string;
+  checkOut: string;
+  nightCount: number;
+  guestCount: number;
+  totalPrice: string;
+  reservationStatus: string;
+  paymentStatus: string;
+  payable: boolean;
+}
+
+export function lookupReservation(reservationCode: string, email: string): Promise<ReservationLookup> {
+  return request<ReservationLookup>("/reservations/lookup", {
+    method: "POST",
+    body: JSON.stringify({ reservationCode, email }),
+  });
+}
+
 export interface InitiatePaymentResult {
   checkoutFormContent?: string;
   paymentPageUrl?: string;

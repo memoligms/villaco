@@ -20,6 +20,7 @@ export interface Translations {
     about: string;
     location: string;
     contact: string;
+    checkReservation: string;
     bookNow: string;
   };
   footer: {
@@ -85,6 +86,7 @@ export interface Translations {
       extraServices: { title: string; desc: string };
     };
     galleryHeading: string;
+    videosHeading: string;
     galleryHint: string;
     priceCardNightly: string;
     maxGuestLabel: string;
@@ -291,6 +293,20 @@ export interface Translations {
       ratingRequired: string;
       commentMin: string;
     };
+  };
+  lookup: {
+    heading: string;
+    intro: string;
+    codeLabel: string;
+    emailLabel: string;
+    submitCta: string;
+    submitting: string;
+    amountLabel: string;
+    payCta: string;
+    statusApprovedNote: string;
+    statusAwaitingNote: string;
+    statusPaidNote: string;
+    statusRejectedNote: string;
   };
   legal: {
     kvkk: { title: string; blocks: LegalBlock[] };

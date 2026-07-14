@@ -17,6 +17,7 @@ export const tr: Translations = {
     about: "Hakkında",
     location: "Konum & Ulaşım",
     contact: "İletişim",
+    checkReservation: "Rezervasyon Sorgula",
     bookNow: "Rezervasyon Yap",
   },
   footer: {
@@ -100,6 +101,7 @@ export const tr: Translations = {
       },
     },
     galleryHeading: "Fotoğraf Galerisi",
+    videosHeading: "Videolar",
     galleryHint: "Büyütmek için bir fotoğrafa tıklayın.",
     priceCardNightly: "Gecelik Fiyat",
     maxGuestLabel: "Maksimum Misafir",
@@ -333,6 +335,20 @@ export const tr: Translations = {
       ratingRequired: "Lütfen puan verin.",
       commentMin: "Yorum en az 10 karakter olmalı.",
     },
+  },
+  lookup: {
+    heading: "Rezervasyon Durumu Sorgula",
+    intro: "Rezervasyon kodunuz ve e-postanız ile talebinizin durumunu görüntüleyin. Onaylandıysa ödemeye geçebilirsiniz.",
+    codeLabel: "Rezervasyon Kodu",
+    emailLabel: "E-posta",
+    submitCta: "Sorgula",
+    submitting: "Sorgulanıyor...",
+    amountLabel: "Ödenecek Tutar",
+    payCta: "Ödemeye Geç",
+    statusApprovedNote: "Rezervasyonunuz onaylandı. Aşağıdan ödemenizi tamamlayabilirsiniz.",
+    statusAwaitingNote: "Rezervasyon talebiniz onay bekliyor. Onaylandığında tekrar sorgulayıp ödeme yapabilirsiniz.",
+    statusPaidNote: "Bu rezervasyonun ödemesi tamamlanmıştır. Teşekkür ederiz!",
+    statusRejectedNote: "Bu rezervasyon talebi onaylanmadı. Lütfen bizimle iletişime geçin.",
   },
   legal: {
     kvkk: {
